@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 
-#define Q16_16(x) ((int32_t)((x) * 65536.0))
+#define Q8_24(x) ((int32_t)((x) * 16777216.0))
 #define MAX_ITER 1000
 #define MAX_CYCLES 10000
 
@@ -27,7 +27,7 @@ int mandelbrot_ref(double x0, double y0, int max_iter) {
 }
 
 // Run one test point on the DUT and return iterations
-int run_hw_point(VmandelbrotCore* top, int32_t x0_q16, int32_t y0_q16, int max_iter, VerilatedVcdC* tfp = nullptr, vluint64_t* time = nullptr) {
+int run_hw_point(VmandelbrotCore* top, int32_t x0_q8_24, int32_t y0_q8_24, int max_iter, VerilatedVcdC* tfp = nullptr, vluint64_t* time = nullptr) {
     top->clk_i = 0;
     top->rst_i = 1;
     top->start_i = 0;
@@ -37,8 +37,8 @@ int run_hw_point(VmandelbrotCore* top, int32_t x0_q16, int32_t y0_q16, int max_i
     top->rst_i = 0;
 
     // Apply inputs
-    top->x0_i = x0_q16;
-    top->y0_i = y0_q16;
+    top->x0_i = x0_q8_24;
+    top->y0_i = y0_q8_24;
     top->max_iter_i = max_iter;
     top->start_i = 1;
 
@@ -57,7 +57,7 @@ int run_hw_point(VmandelbrotCore* top, int32_t x0_q16, int32_t y0_q16, int max_i
     }
 
     if (!top->done_o) {
-        std::cerr << RED << "ERROR: Timeout at x=" << x0_q16 << ", y=" << y0_q16 << RESET << std::endl;
+        std::cerr << RED << "ERROR: Timeout at x=" << x0_q8_24 << ", y=" << y0_q8_24 << RESET << std::endl;
         return -1;
     }
 
@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
     // Test region: real in [-2, 1], imag in [-1.5, 1.5]
     const double xmin = -2.0, xmax = 1.0;
     const double ymin = -1.5, ymax = 1.5;
-    const int steps = 100;  // Grid resolution
+    const int steps = 1000;  // Grid resolution
 
     int error_count = 0;
 
@@ -83,9 +83,9 @@ int main(int argc, char** argv) {
         for (int i = 0; i < steps; ++i) {
             double x = xmin + i * (xmax - xmin) / steps;
             int ref = mandelbrot_ref(x, y, MAX_ITER);
-            int32_t x_q16 = Q16_16(x);
-            int32_t y_q16 = Q16_16(y);
-            int dut = run_hw_point(top, x_q16, y_q16, MAX_ITER, tfp, &sim_time);
+            int32_t x_q8_24 = Q8_24(x);
+            int32_t y_q8_24 = Q8_24(y);
+            int dut = run_hw_point(top, x_q8_24, y_q8_24, MAX_ITER, tfp, &sim_time);
 
             //if (std::abs(dut - ref) > 2) {
             if (dut != ref) {
