@@ -1,11 +1,12 @@
 module mandelbrotCore#(
-    DATA_WIDTH = 32,
+    INTEGER_BITS = 8,
+    FRACTIONAL_BITS = 24,
     MAX_ITER_WIDTH = 16
 )(
     input logic clk_i,
     input logic rst_i,
     input logic start_i,
-    input logic signed [DATA_WIDTH-1:0] x0_i, // c = x0 + i * y0 using Q16.16 representation
+    input logic signed [DATA_WIDTH-1:0] x0_i, // c = x0 + i * y0 using Q8.24 representation
     input logic signed [DATA_WIDTH-1:0] y0_i,
     input logic [MAX_ITER_WIDTH-1:0] max_iter_i,
 
@@ -13,33 +14,26 @@ module mandelbrotCore#(
     output logic done_o
 );
 
+localparam int DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
+
 logic signed [DATA_WIDTH-1:0] x, y; // z = x + i * y
 logic signed [DATA_WIDTH-1:0] x2, y2, xy; // x^2, y^2, x*y
 logic [MAX_ITER_WIDTH-1:0] iter;
 logic running;
 
-qMult #( 
-    .FRACTIONAL_BITS(16), 
-    .INTEGER_BITS(16)
-) qMult_x2(
+qMult qMult_x2(
     .input1_i(x),
     .input2_i(x),
     .result_o(x2)
 );
 
-qMult #( 
-    .FRACTIONAL_BITS(16), 
-    .INTEGER_BITS(16)
-) qMult_y2(
+qMult qMult_y2(
     .input1_i(y),
     .input2_i(y),
     .result_o(y2)
 );
 
-qMult #( 
-    .FRACTIONAL_BITS(16), 
-    .INTEGER_BITS(16)
-) qMult_xy(
+qMult qMult_xy(
     .input1_i(x),
     .input2_i(y),
     .result_o(xy)
@@ -65,7 +59,7 @@ always_ff @(posedge clk_i or posedge rst_i) begin
         end
         else if (running) begin
             // Check if |z|^2 > 4
-            if (x2 + y2 > 4 << DATA_WIDTH/2) begin
+            if (x2 + y2 > 4 << FRACTIONAL_BITS) begin
                 done_o <= 1;
                 iter_o <= iter + 1; // i think the plus 1 is correct as are checking the previous cycles values
                 running <= 0;
