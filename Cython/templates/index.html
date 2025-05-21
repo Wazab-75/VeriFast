@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal Explorer</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        .back-button {
+            position: absolute;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--primary);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-size: var(--font-size-sm);
+            box-shadow: 0 1px 3px var(--shadow), 0 1px 2px -1px var(--shadow);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px var(--shadow-hover);
+        }
+
+        .fractal-image, .julia-image {
+            width: 100%;
+            cursor: crosshair;
+        }
+
+        .coming-soon {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Mandelbrot Widget -->
+        <div class="mandelbrot-widget">
+            <div class="widget-title">Mandelbrot Set</div>
+            <div class="widget-content">
+                <img id="mandelbrotImage" src="" alt="Mandelbrot Set" class="fractal-image" style="display: none;">
+                <div class="loading-message">Click "Generate Fractal" to start</div>
+                <div class="zoom-controls" style="display: none; position: absolute; bottom: var(--spacing-md); right: var(--spacing-md); gap: var(--spacing-sm);">
+                    <button class="zoom-button" id="zoomOutButton" title="Zoom Out">-</button>
+                    <button class="zoom-button" id="resetZoomButton" title="Reset Zoom">↺</button>
+                    <button class="zoom-button" id="zoomInButton" title="Zoom In">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="parameters-widget">
+            <div class="widget-title">Parameters</div>
+            <div class="widget-content">
+                <div class="control-group">
+                    <label for="iterations">Iterations</label>
+                    <input type="range" id="iterations" min="1" max="1000" value="100">
+                    <div class="value-display">100</div>
+                </div>
+
+                <div class="control-group">
+                    <label for="colorScheme">Color Palette</label>
+                    <select id="colorScheme">
+                        <option value="jet">Jet</option>
+                        <option value="rainbow">Rainbow</option>
+                        <option value="hsv">HSV</option>
+                        <option value="hot">Hot</option>
+                    </select>
+                </div>
+
+                <div class="button-container">
+                    <button class="button" id="generateButton">Generate Fractal</button>
+                    <button class="button" id="downloadButton" disabled>Download</button>
+                    <div class="quality-dropdown" id="qualityDropdown">
+                        <div class="quality-option" data-quality="low">Low (800x600)</div>
+                        <div class="quality-option" data-quality="medium">Medium (1600x1200)</div>
+                        <div class="quality-option" data-quality="high">High (3200x2400)</div>
+                        <div class="quality-option" data-quality="ultra">Ultra (6400x4800)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Julia Widget -->
+        <div class="julia-widget">
+            <div class="widget-title">Julia Set (from Mandelbrot point)</div>
+            <div class="widget-content">
+                <img id="juliaImage" src="" alt="Julia Set" class="julia-image" style="display: none;">
+                <div class="loading-message" id="juliaLoading">Click a point on Mandelbrot to generate Julia Set</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
