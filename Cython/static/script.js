@@ -5,6 +5,8 @@ const currentView = {
     center_y: 0
 };
 
+let debounceTimer = null;
+
 // Update value displays for range inputs
 document.querySelectorAll('input[type="range"]').forEach(input => {
     const display = input.nextElementSibling;
@@ -59,22 +61,24 @@ async function generateFractal() {
     }
 }
 
-// Generate Julia fractal from Mandelbrot click
-async function generateJuliaFromClick(c_real, c_imag) {
+// Generate Julia fractal from Mandelbrot cursor
+async function generateJuliaFromCursor(c_real, c_imag) {
     const juliaImg = document.getElementById('juliaImage');
     const juliaLoading = document.getElementById('juliaLoading');
+    const label = document.getElementById('juliaLabel');
 
     juliaImg.style.display = 'none';
     juliaLoading.textContent = 'Generating Julia Set...';
     juliaLoading.style.display = 'flex';
+    label.textContent = `c = ${c_real.toFixed(4)} + ${c_imag.toFixed(4)}i`;
 
     try {
         const response = await fetch('/generate_julia', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                width: 800,
-                height: 600,
+                width: 400,
+                height: 300,
                 max_iter: parseInt(document.getElementById('iterations').value),
                 zoom: 1.5,
                 zx: 0.0,
@@ -99,33 +103,48 @@ async function generateJuliaFromClick(c_real, c_imag) {
     }
 }
 
-// Handle image click for zoom and Julia
-document.getElementById('mandelbrotImage').addEventListener('click', async (event) => {
-    const img = event.target;
+// Convert mouse position to complex coordinates
+function getComplexFromMouse(event, img) {
     const rect = img.getBoundingClientRect();
-
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
 
     const scale_x = 3.5 / currentView.zoom;
     const scale_y = 2.0 / currentView.zoom;
 
-    const clicked_x = currentView.center_x - scale_x / 2 + scale_x * x;
-    const clicked_y = currentView.center_y - scale_y / 2 + scale_y * y;
+    const c_real = currentView.center_x - scale_x / 2 + scale_x * x;
+    const c_imag = currentView.center_y - scale_y / 2 + scale_y * y;
 
-    // Update Mandelbrot zoom
-    currentView.center_x = clicked_x;
-    currentView.center_y = clicked_y;
-    currentView.zoom *= 2;
+    return { c_real, c_imag };
+}
 
-    await generateFractal(); // Regenerate Mandelbrot view
-    await generateJuliaFromClick(clicked_x, clicked_y); // Generate Julia set from clicked point
+// Live Julia on mouse move
+document.getElementById('mandelbrotImage').addEventListener('mousemove', (event) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        const img = event.target;
+        const { c_real, c_imag } = getComplexFromMouse(event, img);
+        generateJuliaFromCursor(c_real, c_imag);
+    }, 150); // adjust for responsiveness vs. server load
 });
 
-// Handle generate button
+// Zoom + Julia on click
+document.getElementById('mandelbrotImage').addEventListener('click', async (event) => {
+    const img = event.target;
+    const { c_real, c_imag } = getComplexFromMouse(event, img);
+
+    currentView.center_x = c_real;
+    currentView.center_y = c_imag;
+    currentView.zoom *= 2;
+
+    await generateFractal();
+    await generateJuliaFromCursor(c_real, c_imag);
+});
+
+// Generate button
 document.getElementById('generateButton').addEventListener('click', generateFractal);
 
-// Handle download button
+// Download quality
 const downloadButton = document.getElementById('downloadButton');
 const qualityDropdown = document.getElementById('qualityDropdown');
 
@@ -133,7 +152,6 @@ downloadButton.addEventListener('click', () => {
     qualityDropdown.classList.toggle('show');
 });
 
-// Handle quality selection
 document.querySelectorAll('.quality-option').forEach(option => {
     option.addEventListener('click', async () => {
         const quality = option.dataset.quality;
