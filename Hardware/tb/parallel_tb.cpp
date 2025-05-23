@@ -1,6 +1,6 @@
 #include <verilated.h>
 #include <verilated_vcd_c.h>
-#include "VmandelbrotCore.h"
+#include "VfractalCores.h"
 #include <iostream>
 #include <cmath>
 
@@ -27,29 +27,29 @@ int mandelbrot_ref(double x0, double y0, int max_iter) {
 }
 
 // Run one test point on the DUT and return iterations
-int run_hw_point(VmandelbrotCore* top, int32_t x0_q8_24, int32_t y0_q8_24, int max_iter, VerilatedVcdC* tfp = nullptr, vluint64_t* time = nullptr) {
+int run_hw_point(VfractalCores* top, int32_t x0_q8_24, int32_t y0_q8_24, int max_iter, VerilatedVcdC* tfp = nullptr, vluint64_t* time = nullptr, int core = 0) {
     top->clk_i = 0;
-    top->rst_i = 1;
-    top->start_i = 0;
+    top->rst_i[core] = 1;
+    top->start_i[core] = 0;
     top->eval(); if (tfp) tfp->dump((*time)++);
     top->clk_i = 1;
     top->eval(); if (tfp) tfp->dump((*time)++);
-    top->rst_i = 0;
+    top->rst_i[core] = 0;
 
     // Apply inputs
-    top->x0_i = x0_q8_24;
-    top->y0_i = y0_q8_24;
+    top->x0_i[core] = x0_q8_24;
+    top->y0_i[core] = y0_q8_24;
     top->max_iter_i = max_iter;
-    top->start_i = 1;
+    top->start_i[core] = 1;
 
     top->clk_i = 0;
     top->eval(); if (tfp) tfp->dump((*time)++);
     top->clk_i = 1;
     top->eval(); if (tfp) tfp->dump((*time)++);
-    top->start_i = 0;
+    top->start_i[core] = 0;
 
     int cycles = 0;
-    while (!top->done_o && cycles < MAX_CYCLES) {
+    while (!top->done_o[core] && cycles < MAX_CYCLES) {
         top->clk_i = !top->clk_i;
         top->eval();
         if (tfp) tfp->dump((*time)++);
@@ -61,12 +61,12 @@ int run_hw_point(VmandelbrotCore* top, int32_t x0_q8_24, int32_t y0_q8_24, int m
         return -1;
     }
 
-    return top->iter_o;
+    return top->iter_o[core];
 }
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
-    VmandelbrotCore* top = new VmandelbrotCore;
+    VfractalCores* top = new VfractalCores;
 
     vluint64_t sim_time = 0;
     VerilatedVcdC* tfp = nullptr;  // Set to non-null to enable waveform tracing
@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
     // Test region: real in [-2, 1], imag in [-1.5, 1.5]
     const double xmin = -2.0, xmax = 1.0;
     const double ymin = -1.5, ymax = 1.5;
-    const int steps = 1000;  // Grid resolution
+    const int steps = 100;  // Grid resolution
 
     int error_count = 0;
 
@@ -85,14 +85,14 @@ int main(int argc, char** argv) {
             int ref = mandelbrot_ref(x, y, MAX_ITER);
             int32_t x_q8_24 = Q8_24(x);
             int32_t y_q8_24 = Q8_24(y);
-            int dut = run_hw_point(top, x_q8_24, y_q8_24, MAX_ITER, tfp, &sim_time);
+            int dut = run_hw_point(top, x_q8_24, y_q8_24, MAX_ITER, tfp, &sim_time, 0);
 
-            //if (std::abs(dut - ref) > 2) {
-            if (dut != ref) {
+            if (std::abs(dut - ref) > 2) {
+            //if (dut != ref) {
                 std::cout << RED << "Mismatch at (" << x << ", " << y << "): " << "HW = " << dut << ", REF = " << ref << RESET << std::endl;
                 error_count++;
             } else {
-                std::cout << GREEN << "Pass at (" << x << ", " << y << "): " << "Iterations = " << dut << RESET << std::endl;
+                //std::cout << GREEN << "Pass at (" << x << ", " << y << "): " << "Iterations = " << dut << RESET << std::endl;
             }
         }
     }

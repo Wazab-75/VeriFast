@@ -21,19 +21,19 @@ logic signed [DATA_WIDTH-1:0] x2, y2, xy; // x^2, y^2, x*y
 logic [MAX_ITER_WIDTH-1:0] iter;
 logic running;
 
-qMult qMult_x2(
+qMult_sc qMult_x2(
     .input1_i(x),
     .input2_i(x),
     .result_o(x2)
 );
 
-qMult qMult_y2(
+qMult_sc qMult_y2(
     .input1_i(y),
     .input2_i(y),
     .result_o(y2)
 );
 
-qMult qMult_xy(
+qMult_sc qMult_xy(
     .input1_i(x),
     .input2_i(y),
     .result_o(xy)
