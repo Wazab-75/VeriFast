@@ -58,8 +58,8 @@ module fractalCores#(
                 .start_i(start_i[i]),
                 .cx_i(x0_i[i]),
                 .cy_i(y0_i[i]),
-                .zx_i(x0_i[i]),
-                .zy_i(y0_i[i]),
+                .zx_i(zx_i[i]),
+                .zy_i(zy_i[i]),
                 .max_iter_i(max_iter_i),
                 .iter_o(iter_o[i]),
                 .done_o(done_o[i])

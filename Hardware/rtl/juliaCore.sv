@@ -61,7 +61,7 @@ always_ff @(posedge clk_i or posedge rst_i) begin
         else if (running) begin
             if (x2 + y2 > 4 << FRACTIONAL_BITS) begin
                 done_o <= 1;
-                iter_o <= iter + 1;
+                iter_o <= iter; // not sure if need to add +1 here
                 running <= 0;
             end
             else if (iter < max_iter_i) begin
