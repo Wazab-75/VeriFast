@@ -1,63 +1,38 @@
-#include <verilated.h>
-#include <verilated_vcd_c.h>
 #include "VmandelbrotCore.h"
+#include "verilated.h"
 #include <iostream>
-#include <cmath>
+#include <fstream>
 
 #define Q8_24(x) ((int32_t)((x) * 16777216.0))
-#define MAX_ITER 1000
-#define MAX_CYCLES 10000
 
-// ANSI colour codes for terminal output
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
+const int MAX_ITER = 100;
+const int MAX_CYCLES = 10000;
 
-// Software reference implementation of Mandelbrot
-int mandelbrot_ref(double x0, double y0, int max_iter) {
-    double x = 0.0, y = 0.0;
-    int iter = 0;
-    while (x * x + y * y <= 4.0 && iter < max_iter) {
-        double xtemp = x * x - y * y + x0;
-        y = 2 * x * y + y0;
-        x = xtemp;
-        iter++;
-    }
-    return iter;
-}
-
-// Run one test point on the DUT and return iterations
-int run_hw_point(VmandelbrotCore* top, int32_t x0_q8_24, int32_t y0_q8_24, int max_iter, VerilatedVcdC* tfp = nullptr, vluint64_t* time = nullptr) {
-    top->clk_i = 0;
-    top->rst_i = 1;
-    top->start_i = 0;
-    top->eval(); if (tfp) tfp->dump((*time)++);
-    top->clk_i = 1;
-    top->eval(); if (tfp) tfp->dump((*time)++);
-    top->rst_i = 0;
-
-    // Apply inputs
+int run_hw_point(VmandelbrotCore* top, int32_t x0_q8_24, int32_t y0_q8_24, int max_iter) {
     top->x0_i = x0_q8_24;
     top->y0_i = y0_q8_24;
     top->max_iter_i = max_iter;
     top->start_i = 1;
 
     top->clk_i = 0;
-    top->eval(); if (tfp) tfp->dump((*time)++);
+    top->eval();
+
     top->clk_i = 1;
-    top->eval(); if (tfp) tfp->dump((*time)++);
+    top->eval();
+
     top->start_i = 0;
 
     int cycles = 0;
     while (!top->done_o && cycles < MAX_CYCLES) {
         top->clk_i = !top->clk_i;
         top->eval();
-        if (tfp) tfp->dump((*time)++);
         cycles++;
     }
 
     if (!top->done_o) {
-        std::cerr << RED << "ERROR: Timeout at x=" << x0_q8_24 << ", y=" << y0_q8_24 << RESET << std::endl;
+        std::cerr << "ERROR: Timeout at x=" << x0_q8_24 << ", y=" << y0_q8_24 << std::endl;
         return -1;
     }
 
@@ -66,43 +41,50 @@ int run_hw_point(VmandelbrotCore* top, int32_t x0_q8_24, int32_t y0_q8_24, int m
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
+
     VmandelbrotCore* top = new VmandelbrotCore;
 
-    vluint64_t sim_time = 0;
-    VerilatedVcdC* tfp = nullptr;  // Set to non-null to enable waveform tracing
+    // Reset sequence
+    top->rst_i = 1;
+    top->clk_i = 0;
+    top->start_i = 0;
+    top->eval();
 
-    // Test region: real in [-2, 1], imag in [-1.5, 1.5]
+    for (int i = 0; i < 10; ++i) {
+        top->clk_i = !top->clk_i;
+        top->eval();
+    }
+    top->rst_i = 0;
+
     const double xmin = -2.0, xmax = 1.0;
     const double ymin = -1.5, ymax = 1.5;
-    const int steps = 1000;  // Grid resolution
 
-    int error_count = 0;
+    std::ofstream outfile("mandelbrot_pixels.csv");
+    if (!outfile.is_open()) {
+        std::cerr << "ERROR: Could not open output file\n";
+        return 1;
+    }
+    outfile << "x,y,iter\n";
 
-    for (int j = 0; j < steps; ++j) {
-        double y = ymin + j * (ymax - ymin) / steps;
-        for (int i = 0; i < steps; ++i) {
-            double x = xmin + i * (xmax - xmin) / steps;
-            int ref = mandelbrot_ref(x, y, MAX_ITER);
-            int32_t x_q8_24 = Q8_24(x);
-            int32_t y_q8_24 = Q8_24(y);
-            int dut = run_hw_point(top, x_q8_24, y_q8_24, MAX_ITER, tfp, &sim_time);
+    for (int y = 0; y < HEIGHT; ++y) {
+        for (int x = 0; x < WIDTH; ++x) {
+            double fx = xmin + x * (xmax - xmin) / WIDTH;
+            double fy = ymin + y * (ymax - ymin) / HEIGHT;
+            int32_t x_q8_24 = Q8_24(fx);
+            int32_t y_q8_24 = Q8_24(fy);
 
-            //if (std::abs(dut - ref) > 2) {
-            if (dut != ref) {
-                std::cout << RED << "Mismatch at (" << x << ", " << y << "): " << "HW = " << dut << ", REF = " << ref << RESET << std::endl;
-                error_count++;
-            } else {
-                std::cout << GREEN << "Pass at (" << x << ", " << y << "): " << "Iterations = " << dut << RESET << std::endl;
+            int iter = run_hw_point(top, x_q8_24, y_q8_24, MAX_ITER);
+            if (iter == -1) {
+                delete top;
+                return -1;
             }
+
+            outfile << fx << "," << fy << "," << iter << "\n";
         }
     }
 
-    if (error_count == 0) {
-        std::cout << GREEN << "All test points passed." << RESET << std::endl;
-    } else {
-        std::cout << RED << error_count << " mismatches found " << (steps*steps - error_count)*100.0/(steps*steps) << "% passed" << RESET << std::endl;
-    }
-
+    outfile.close();
     delete top;
+    std::cout << "Done. Output saved to mandelbrot_pixels.csv\n";
     return 0;
 }
