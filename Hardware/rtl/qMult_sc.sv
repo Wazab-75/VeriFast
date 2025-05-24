@@ -1,9 +1,10 @@
-module qMult #(parameter
+module qMult_sc #(parameter
     INTEGER_BITS = 8,
     FRACTIONAL_BITS = 24
 ) (
     input logic signed [DATA_WIDTH-1:0] input1_i,
     input logic signed [DATA_WIDTH-1:0] input2_i,
+    
     output logic signed [DATA_WIDTH-1:0] result_o
 );
 

@@ -5,9 +5,9 @@ rm -rf obj_dir
 set -e
 
 # Variables
-TOP_MODULE="mandelbrotCore"
-QMULT_MODULE="qMult"
-CPP_FILE="mandelbrotCore_test.cpp"
+TOP_MODULE="juliaCore"
+QMULT_MODULE="qMult_sc"
+CPP_FILE="julia_tb.cpp"
 
 # Run Verilator
 verilator --sv -Wall --cc --trace ../rtl/${TOP_MODULE}.sv ../rtl/${QMULT_MODULE}.sv --exe ${CPP_FILE}
