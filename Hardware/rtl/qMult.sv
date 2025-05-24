@@ -11,9 +11,7 @@ localparam int DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
 
 localparam logic [2*DATA_WIDTH-1:0] ROUNDING_OFFSET = 1 << (FRACTIONAL_BITS - 1);
 
-/* verilator lint_off UNUSEDSIGNAL */
 logic signed [DATA_WIDTH*2-1:0] mult_result;
-/* verilator lint_on UNUSEDSIGNAL */
 
 always_comb begin
     mult_result = input1_i * input2_i;
