@@ -53,13 +53,13 @@ always_ff @(posedge clk_i or posedge rst_i) begin
         if (start_i && !running) begin
             x <= x0_i;
             y <= y0_i;
-            iter <= 0;
+            iter <= 1;
             done_o <= 0;
             running <= 1;
         end
         else if (running) begin
             // Check if |z|^2 > 4
-            if (x2 + y2 >= 4 << FRACTIONAL_BITS) begin
+            if (x2 + y2 > 4 << FRACTIONAL_BITS) begin
                 done_o <= 1;
                 iter_o <= iter;
                 running <= 0;
