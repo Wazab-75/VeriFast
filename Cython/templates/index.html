@@ -43,12 +43,9 @@
         <div class="mandelbrot-widget">
             <div class="widget-title">Mandelbrot Set</div>
             <div class="widget-content">
-                <img id="mandelbrotImage" src="" alt="Mandelbrot Set" class="fractal-image" style="display: none;">
-                <div class="loading-message">Click "Generate Fractal" to start</div>
-                <div class="zoom-controls" style="display: none; position: absolute; bottom: var(--spacing-md); right: var(--spacing-md); gap: var(--spacing-sm);">
-                    <button class="zoom-button" id="zoomOutButton" title="Zoom Out">-</button>
-                    <button class="zoom-button" id="resetZoomButton" title="Reset Zoom">↺</button>
-                    <button class="zoom-button" id="zoomInButton" title="Zoom In">+</button>
+                <div class="image-container" id="mandelbrotContainer">
+                    <img id="mandelbrotImage" src="" alt="Mandelbrot Set" class="fractal-image">
+                    <div class="loading-message">Click "Generate Fractal" to start</div>
                 </div>
             </div>
         </div>
@@ -88,11 +85,11 @@
 
         <!-- Julia Widget -->
         <div class="julia-widget">
-            <div class="widget-title">Julia Set (from Mandelbrot point)</div>
+            <div class="widget-title">Julia Set</div>
             <div class="widget-content">
-                <img id="juliaImage" src="" alt="Julia Set" class="julia-image" style="display: none;">
-                <div class="loading-message" id="juliaLoading">Hover over Mandelbrot to generate Julia Set</div>
-                <div id="juliaLabel" style="margin-top: 8px; font-size: 0.9rem;"></div>
+                <div class="image-container" id="juliaContainer">
+                    <img id="juliaImage" src="" alt="Julia Set" class="julia-image">
+                </div>
             </div>
         </div>
     </div>

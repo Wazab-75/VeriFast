@@ -86,7 +86,9 @@ body {
 .widget-content {
     padding: var(--spacing-sm);
     height: calc(100% - 32px);
-    overflow: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Image Styles */
@@ -272,4 +274,89 @@ select {
     height: 100%;
     color: var(--text-light);
     font-size: 1.2em;
+}
+
+.image-container {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: #f8f8f8;
+}
+
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1;
+}
+
+/* Ensure the widget content maintains proper dimensions */
+.widget-content {
+    padding: var(--spacing-sm);
+    height: calc(100% - 32px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make sure the image container fills the available space */
+.mandelbrot-widget .widget-content,
+.julia-widget .widget-content {
+    flex: 1;
+    min-height: 0;
+}
+
+.performance-log {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background: var(--background);
+    border-radius: var(--radius);
+    font-size: var(--font-size-sm);
+}
+
+.log-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry .label {
+    color: var(--text-light);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+}
+
+.log-entry .value {
+    font-family: monospace;
+    color: var(--text);
 } 
