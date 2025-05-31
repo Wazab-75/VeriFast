@@ -189,8 +189,6 @@ assign s_axi_lite_wready = (writeState == AWAIT_WADD_AND_DATA || writeState == A
 assign s_axi_lite_bvalid = (writeState == AWAIT_RESP);
 assign s_axi_lite_bresp = (writeAddr < REG_FILE_SIZE) ? AXI_OK : AXI_ERR;
 
-
-
 reg [9:0] x;
 reg [8:0] y;
 
@@ -199,6 +197,7 @@ wire lastx = (x == X_SIZE - 1);
 wire lasty = (y == Y_SIZE - 1);
 wire [7:0] frame = regfile[0];
 wire ready;
+wire valid_int;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -221,14 +220,15 @@ end
 
 wire [7:0] r, g, b;
 wire [15:0] mandelbrot_iter;
+wire mandelbrot_start = 1'b1;
 wire [15:0] max_iter = 16'd70;
 
 mandelbrotCore mandelbrot_inst (
     .clk_i(out_stream_aclk),
     .rst_i(~periph_resetn),
-    .start_i(),
-    .x0_i(),
-    .y0_i(),
+    .start_i(mandelbrot_start),
+    .x0_i(x_0),
+    .y0_i(y_0),
     .max_iter_i(max_iter),
     .iter_o(mandelbrot_iter),
     .done_o(valid_int)
@@ -247,6 +247,4 @@ packer pixel_packer(    .aclk(out_stream_aclk),
                         .out_stream_tdata(out_stream_tdata), .out_stream_tkeep(out_stream_tkeep),
                         .out_stream_tlast(out_stream_tlast), .out_stream_tready(out_stream_tready),
                         .out_stream_tvalid(out_stream_tvalid), .out_stream_tuser(out_stream_tuser) );
-
- 
 endmodule
