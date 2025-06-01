@@ -1,7 +1,7 @@
 # Ignore everything
 *
 
-# But not this folder
+# But not this
 !/ip/
 !/src/
 !.gitignore
