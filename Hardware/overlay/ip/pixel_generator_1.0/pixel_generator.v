@@ -189,8 +189,6 @@ assign s_axi_lite_wready = (writeState == AWAIT_WADD_AND_DATA || writeState == A
 assign s_axi_lite_bvalid = (writeState == AWAIT_RESP);
 assign s_axi_lite_bresp = (writeAddr < REG_FILE_SIZE) ? AXI_OK : AXI_ERR;
 
-
-
 reg [9:0] x;
 reg [8:0] y;
 
@@ -199,6 +197,8 @@ wire lastx = (x == X_SIZE - 1);
 wire lasty = (y == Y_SIZE - 1);
 wire [7:0] frame = regfile[0];
 wire ready;
+wire valid_int;
+reg [31:0] x_0, y_0;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -207,6 +207,8 @@ always @(posedge out_stream_aclk) begin
                 x <= 9'd0;
                 if (lasty) y <= 9'd0;
                 else y <= y + 9'd1;
+                x_0 <= x << 24;
+                y_0 <= y << 24;
             end
             else x <= x + 9'd1;
         end
@@ -217,12 +219,29 @@ always @(posedge out_stream_aclk) begin
     end
 end
 
-wire valid_int = 1'b1;
+
 
 wire [7:0] r, g, b;
-assign r = x[7:0] + frame;
-assign g = y[7:0] + frame;
-assign b = x[6:0]+y[6:0] + frame;
+wire [15:0] mandelbrot_iter;
+wire mandelbrot_start = 1'b1;
+wire [15:0] max_iter = 16'd70;
+
+mandelbrotCore mandelbrot_inst (
+    .clk_i(out_stream_aclk),
+    .rst_i(~periph_resetn),
+    .start_i(mandelbrot_start),
+    .x0_i(x_0),
+    .y0_i(y_0),
+    .max_iter_i(max_iter),
+    .iter_o(mandelbrot_iter),
+    .done_o(valid_int)
+);
+
+
+
+assign r = mandelbrot_iter[7:0];
+assign g = mandelbrot_iter[7:0];
+assign b = mandelbrot_iter[15:8];
 
 packer pixel_packer(    .aclk(out_stream_aclk),
                         .aresetn(periph_resetn),
@@ -231,6 +250,4 @@ packer pixel_packer(    .aclk(out_stream_aclk),
                         .out_stream_tdata(out_stream_tdata), .out_stream_tkeep(out_stream_tkeep),
                         .out_stream_tlast(out_stream_tlast), .out_stream_tready(out_stream_tready),
                         .out_stream_tvalid(out_stream_tvalid), .out_stream_tuser(out_stream_tuser) );
-
- 
 endmodule

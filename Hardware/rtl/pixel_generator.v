@@ -198,6 +198,7 @@ wire lasty = (y == Y_SIZE - 1);
 wire [7:0] frame = regfile[0];
 wire ready;
 wire valid_int;
+reg [31:0] x_0, y_0;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -206,6 +207,8 @@ always @(posedge out_stream_aclk) begin
                 x <= 9'd0;
                 if (lasty) y <= 9'd0;
                 else y <= y + 9'd1;
+                x_0 <= x << 24;
+                y_0 <= y << 24;
             end
             else x <= x + 9'd1;
         end
