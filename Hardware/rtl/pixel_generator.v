@@ -204,13 +204,21 @@ always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
         if (ready & valid_int) begin
             if (lastx) begin
-                x <= 9'd0;
-                if (lasty) y <= 9'd0;
-                else y <= y + 9'd1;
-                x_0 <= x << 24;
-                y_0 <= y << 24;
+                x <= 10'd0;
+                x_0 <= 32'hFE000000;
+                if (lasty)begin
+                    y <= 9'd0;
+                    y_0 <= 32'hFE800000;
+                end
+                else begin
+                    y <= y + 9'd1;
+                    y_0 <= y_0 + 32'h1999A;
+                end
             end
-            else x <= x + 9'd1;
+            else begin
+                x <= x + 9'd1;
+                x_0 <= x_0 + 32'h1999A;
+            end
         end
     end
     else begin
