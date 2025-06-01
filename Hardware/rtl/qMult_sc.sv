@@ -19,5 +19,5 @@ always_comb begin
     mult_result = mult_result + ROUNDING_OFFSET;  // round to nearest
     result_o = mult_result[DATA_WIDTH + FRACTIONAL_BITS -1 : FRACTIONAL_BITS];  // slice bits
 end
-    
+
 endmodule

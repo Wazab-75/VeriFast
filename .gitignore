@@ -35,6 +35,10 @@ ENV/
 **/obj_dir/
 *.vcd
 
+# Generated files
+*.png
+*.csv
+
 # OS
 .DS_Store
 Thumbs.db 

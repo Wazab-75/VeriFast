@@ -87,12 +87,12 @@ int main(int argc, char** argv) {
             int32_t y_q8_24 = Q8_24(y);
             int dut = run_hw_point(top, x_q8_24, y_q8_24, MAX_ITER, tfp, &sim_time);
 
-            if (std::abs(dut - ref) > 2) {
-            //if (dut != ref) {
+            //if (std::abs(dut - ref) > 2) {
+            if (dut != ref) {
                 std::cout << RED << "Mismatch at (" << x << ", " << y << "): " << "HW = " << dut << ", REF = " << ref << RESET << std::endl;
                 error_count++;
             } else {
-                //std::cout << GREEN << "Pass at (" << x << ", " << y << "): " << "Iterations = " << dut << RESET << std::endl;
+                std::cout << GREEN << "Pass at (" << x << ", " << y << "): " << "Iterations = " << dut << RESET << std::endl;
             }
         }
     }

@@ -7,14 +7,13 @@ set -e
 # Variables
 TOP_MODULE="mandelbrotCore"
 QMULT_MODULE="qMult_sc"
-CPP_FILE="mandelbrot_tb"
+CPP_FILE="mandelbrotCore_test.cpp"
 
 # Run Verilator
-verilator --sv -Wall --cc --trace ../rtl/${TOP_MODULE}.sv ../rtl/${QMULT_MODULE}.sv --exe ${CPP_FILE}.cpp
+verilator --sv -Wall --cc --trace ../rtl/${TOP_MODULE}.sv ../rtl/${QMULT_MODULE}.sv --exe ${CPP_FILE}
 
 # Build
 make -C obj_dir -f V${TOP_MODULE}.mk V${TOP_MODULE}
 
 # Run
 ./obj_dir/V${TOP_MODULE}
-

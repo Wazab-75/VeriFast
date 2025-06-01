@@ -6,10 +6,12 @@ module juliaCore#(
     input logic clk_i,
     input logic rst_i,
     input logic start_i,
+    
     input logic signed [DATA_WIDTH-1:0] zx_i, // Initial z = zx + i*zy
     input logic signed [DATA_WIDTH-1:0] zy_i,
     input logic signed [DATA_WIDTH-1:0] cx_i, // Constant c = cx + i*cy
     input logic signed [DATA_WIDTH-1:0] cy_i,
+
     input logic [MAX_ITER_WIDTH-1:0] max_iter_i,
 
     output logic [MAX_ITER_WIDTH-1:0] iter_o,
@@ -61,7 +63,7 @@ always_ff @(posedge clk_i or posedge rst_i) begin
         else if (running) begin
             if (x2 + y2 >= 4 << FRACTIONAL_BITS) begin
                 done_o <= 1;
-                iter_o <= iter; // not sure if need to add +1 here
+                iter_o <= iter;
                 running <= 0;
             end
             else if (iter < max_iter_i) begin
