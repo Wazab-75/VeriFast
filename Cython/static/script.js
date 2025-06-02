@@ -26,6 +26,7 @@ async function generateFractal(keepPrevious = false) {
     const downloadButton = document.getElementById('downloadButton');
     const mandelbrotImg = document.getElementById('mandelbrotImage');
     const loadingMessage = document.querySelector('.mandelbrot-widget .loading-message');
+    const timeDisplay = document.getElementById('computationTime');
 
     generateButton.disabled = true;
     downloadButton.disabled = true;
@@ -47,6 +48,7 @@ async function generateFractal(keepPrevious = false) {
     }
 
     try {
+        const startTime = performance.now();
         const response = await fetch('/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -65,6 +67,10 @@ async function generateFractal(keepPrevious = false) {
 
         const blob = await response.blob();
         if (blob.size === 0) throw new Error('Received empty image');
+
+        const endTime = performance.now();
+        const computationTime = (endTime - startTime) / 1000; // Convert to seconds
+        timeDisplay.textContent = `Computation time: ${computationTime.toFixed(3)}s`;
 
         if (keepPrevious) {
             const tempImg = mandelbrotImg.parentElement.lastElementChild;
@@ -92,6 +98,7 @@ async function generateFractal(keepPrevious = false) {
         downloadButton.disabled = true;
         loadingMessage.textContent = `Generation failed: ${error.message}`;
         loadingMessage.style.display = 'flex';
+        timeDisplay.textContent = 'Computation failed';
     } finally {
         isGenerating = false;
     }
@@ -104,8 +111,10 @@ async function generateJuliaFromClick(cx, cy) {
 
     const juliaContainer = document.getElementById('juliaContainer');
     const currentImage = juliaContainer.querySelector('img');
+    const juliaTimeDisplay = document.getElementById('juliaComputationTime');
     
     try {
+        const startTime = performance.now();
         const response = await fetch('/generate_julia', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -127,6 +136,10 @@ async function generateJuliaFromClick(cx, cy) {
         const blob = await response.blob();
         if (blob.size === 0) throw new Error('Empty Julia image');
 
+        const endTime = performance.now();
+        const computationTime = (endTime - startTime) / 1000; // Convert to seconds
+        juliaTimeDisplay.textContent = `Computation time: ${computationTime.toFixed(3)}s`;
+
         // Create new image element
         const newImage = new Image();
         newImage.className = 'julia-image';
@@ -144,6 +157,7 @@ async function generateJuliaFromClick(cx, cy) {
         newImage.src = URL.createObjectURL(blob);
     } catch (error) {
         console.error('Julia generation failed:', error);
+        juliaTimeDisplay.textContent = 'Computation failed';
     } finally {
         isGenerating = false;
     }
@@ -174,7 +188,7 @@ document.getElementById('mandelbrotImage').addEventListener('click', async (even
     // Update Mandelbrot zoom
     currentView.center_x = c_real;
     currentView.center_y = c_imag;
-    currentView.zoom *= 2;
+    currentView.zoom *= 3;
 
     await generateFractal(true); // Keep previous image during zoom
     await generateJuliaFromClick(c_real, c_imag);

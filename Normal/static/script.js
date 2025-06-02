@@ -57,6 +57,7 @@ async function generateFractal() {
         loadingMessage.textContent = `Generation failed: ${error.message}`;
         loadingMessage.style.display = 'flex';
     }
+
 }
 
 // Generate Julia fractal from Mandelbrot click
@@ -183,3 +184,4 @@ document.addEventListener('click', (event) => {
         qualityDropdown.classList.remove('show');
     }
 });
+

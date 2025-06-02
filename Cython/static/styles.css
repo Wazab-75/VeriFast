@@ -359,4 +359,30 @@ select {
 .log-entry .value {
     font-family: monospace;
     color: var(--text);
+}
+
+.computation-time {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: monospace;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.julia-image {
+    position: relative;
+    z-index: 1;
 } 
