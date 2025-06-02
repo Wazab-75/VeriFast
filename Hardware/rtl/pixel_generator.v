@@ -230,7 +230,7 @@ end
 
 
 wire [7:0] r, g, b;
-wire [15:0] mandelbrot_iter;
+reg [15:0] mandelbrot_iter;
 wire mandelbrot_start = 1'b1;
 wire [15:0] max_iter = 16'd70;
 
@@ -247,7 +247,7 @@ mandelbrotCore mandelbrot_inst (
 
 
 
-assign r = mandelbrot_iter[7:0];
+assign r = 8'b0;
 assign g = mandelbrot_iter[7:0];
 assign b = mandelbrot_iter[15:8];
 
