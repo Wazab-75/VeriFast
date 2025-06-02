@@ -7,7 +7,7 @@ set -e
 # Variables
 TOP_MODULE="mandelbrotCore"
 QMULT_MODULE="qMult_sc"
-CPP_FILE="mandelbrotCore_test.cpp"
+CPP_FILE="mandelbrot_plotter.cpp"
 
 # Run Verilator
 verilator --sv -Wall --cc --trace ../rtl/${TOP_MODULE}.sv ../rtl/${QMULT_MODULE}.sv --exe ${CPP_FILE}

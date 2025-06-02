@@ -42,3 +42,7 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db 
+
+# File types
+*.csv
+*.png
