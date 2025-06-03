@@ -35,19 +35,78 @@
         .coming-soon {
             display: none;
         }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--primary);
+            border-radius: var(--radius) var(--radius) 0 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .version-selector {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .version-selector select {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .version-selector select:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .version-selector select option {
+            background: var(--primary);
+            color: var(--text);
+        }
+
+        .hardware-unavailable {
+            color: #ff4444;
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-sm);
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Mandelbrot Widget -->
         <div class="mandelbrot-widget">
-            <div class="widget-title">Mandelbrot Set</div>
+            <div class="widget-header">
+                <div class="widget-title">Mandelbrot Set</div>
+                <div class="version-selector">
+                    <span>Version:</span>
+                    <select id="versionSelect" onchange="handleVersionChange()">
+                        <option value="software">Software</option>
+                        <option value="hardware">Hardware</option>
+                    </select>
+                </div>
+            </div>
             <div class="widget-content">
                 <div class="image-container" id="mandelbrotContainer">
                     <img id="mandelbrotImage" src="" alt="Mandelbrot Set" class="fractal-image">
                     <div class="loading-message">Click "Generate Fractal" to start</div>
                     <div id="computationTime" class="computation-time"></div>
                 </div>
+                {% if not fpga_available %}
+                <div class="hardware-unavailable">
+                    FPGA not available - Hardware mode disabled
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -96,6 +155,10 @@
         </div>
     </div>
 
+    <script>
+        // Pass FPGA availability to JavaScript
+        const FPGA_AVAILABLE = {{ 'true' if fpga_available else 'false' }};
+    </script>
     <script src="/static/script.js"></script>
 </body>
 </html>

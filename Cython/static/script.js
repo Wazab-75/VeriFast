@@ -8,6 +8,7 @@ const currentView = {
 let isGenerating = false;
 let isInitialized = false;
 let lastClickTime = 0;
+let currentVersion = 'software'; // Default to software version
 
 // Update value displays for range inputs
 document.querySelectorAll('input[type="range"]').forEach(input => {
@@ -16,6 +17,51 @@ document.querySelectorAll('input[type="range"]').forEach(input => {
         display.textContent = input.value;
     });
 });
+
+function handleVersionChange() {
+    const versionSelect = document.getElementById('versionSelect');
+    const generateButton = document.getElementById('generateButton');
+    const iterationsInput = document.getElementById('iterations');
+    const mandelbrotImage = document.getElementById('mandelbrotImage');
+    const juliaImage = document.getElementById('juliaImage');
+    const loadingMessage = document.querySelector('.mandelbrot-widget .loading-message');
+    const computationTime = document.getElementById('computationTime');
+    const juliaComputationTime = document.getElementById('juliaComputationTime');
+    
+    currentVersion = versionSelect.value;
+    
+    // Reset images and messages
+    mandelbrotImage.style.display = 'none';
+    juliaImage.style.display = 'none';
+    loadingMessage.style.display = 'flex';
+    loadingMessage.textContent = 'Click "Generate Fractal" to start';
+    computationTime.textContent = '';
+    juliaComputationTime.textContent = '';
+    
+    if (currentVersion === 'hardware') {
+        if (!FPGA_AVAILABLE) {
+            // Disable hardware mode if FPGA is not available
+            versionSelect.value = 'software';
+            currentVersion = 'software';
+            loadingMessage.textContent = 'FPGA not available - Hardware mode disabled';
+            return;
+        }
+        
+        // Disable iterations control in hardware mode
+        iterationsInput.disabled = true;
+        iterationsInput.value = 100; // Fixed value for hardware
+        document.querySelector('.value-display').textContent = '100';
+        
+        // Enable generate button for hardware mode
+        generateButton.disabled = false;
+        generateButton.textContent = 'Generate Fractal';
+    } else {
+        // Enable iterations control in software mode
+        iterationsInput.disabled = false;
+        generateButton.disabled = false;
+        generateButton.textContent = 'Generate Fractal';
+    }
+}
 
 // Generate Mandelbrot fractal with current parameters
 async function generateFractal(keepPrevious = false) {
@@ -51,7 +97,9 @@ async function generateFractal(keepPrevious = false) {
         const startTime = performance.now();
         const response = await fetch('/generate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
                 width: 800,
                 height: 600,
@@ -59,7 +107,8 @@ async function generateFractal(keepPrevious = false) {
                 zoom: currentView.zoom,
                 center_x: currentView.center_x,
                 center_y: currentView.center_y,
-                cmap: document.getElementById('colorScheme').value
+                cmap: document.getElementById('colorScheme').value,
+                version: currentVersion // Add version to the request
             })
         });
 
@@ -81,7 +130,7 @@ async function generateFractal(keepPrevious = false) {
                     mandelbrotImg.src = tempImg.src;
                     mandelbrotImg.style.display = 'block';
                     tempImg.remove();
-                }, 300);
+                }, 200); // 200ms delay for transition
             };
         } else {
             mandelbrotImg.src = URL.createObjectURL(blob);
@@ -179,7 +228,7 @@ function getComplexFromMouse(event, img) {
 }
 
 // Handle image click for zoom and Julia
-document.getElementById('mandelbrotImage').addEventListener('click', async (event) => {
+document.getElementById('mandelbrotImage').addEventListener('mousedown', async (event) => {
     if (isGenerating || !isInitialized) return;
     
     const img = event.target;
