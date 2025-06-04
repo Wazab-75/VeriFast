@@ -1,149 +1,147 @@
 from flask import Flask, render_template, request, jsonify, send_file
-import numpy as np
-from PIL import Image
+import requests
 import io
-import os
-from mandelbrot_generator import generate_image
-from julia_generator import generate_julia_image
+from PIL import Image
+import socket
 
 app = Flask(__name__)
-performance_log = []  # Track performance of Mandelbrot renders
+performance_log = []  # Track performance of renders
 
-# Check FPGA availability
-FPGA_AVAILABLE = False
-try:
-    from pynq import Overlay
-    from pynq.lib.video import *
-    if os.path.exists("/home/xilinx/elec50015.bit"):
-        overlay = Overlay("/home/xilinx/elec50015.bit")
-        imgen_vdma = overlay.video.axi_vdma_0.readchannel
-        pixgen = overlay.pixel_generator_0
-        
-        # Configure video mode
-        videoMode = common.VideoMode(640, 480, 24)
-        imgen_vdma.mode = videoMode
-        imgen_vdma.start()
-        FPGA_AVAILABLE = True
-        print("FPGA overlay loaded successfully")
-    else:
-        print("FPGA bitstream file not found")
-except Exception as e:
-    print(f"Error initializing FPGA: {e}")
-    overlay = None
+# FPGA server configuration
+FPGA_SERVER_URL = "http://192.168.137.50:5002"# FPGA server IP address
+TIMEOUT = 5  # Timeout in seconds
+
+def check_fpga_server():
+    """Check if FPGA server is reachable"""
+    try:
+        # Try to establish a TCP connection
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(TIMEOUT)
+        result = sock.connect_ex(('192.168.137.50', 5002))
+        sock.close()
+        return result == 0
+    except:
+        return False
 
 @app.route('/')
 def index():
-    return render_template('index.html', fpga_available=FPGA_AVAILABLE)
+    fpga_available = check_fpga_server()
+    return render_template('index.html', fpga_available=fpga_available)
 
 @app.route('/generate', methods=['POST'])
 def generate_mandelbrot():
     try:
+        # Check if FPGA server is available
+        if not check_fpga_server():
+            return "FPGA server is not reachable. Please check if it's running and the IP address is correct.", 503
+
+        # Get parameters from request
         data = request.json
         if not data:
             return "No data provided", 400
 
-        # Get version from request
-        version = data.get('version', 'software')
+        # Prepare request data with all parameters
+        request_data = {
+            "version": data.get('version', 'software'),
+            "width": data.get('width', 640),
+            "height": data.get('height', 480),
+            "max_iter": data.get('max_iter', 300),
+            "zoom": data.get('zoom', 1.0),
+            "center_x": data.get('center_x', -0.7),
+            "center_y": data.get('center_y', 0.0),
+            "cmap": data.get('cmap', 'hot')
+        }
 
-        if version == 'hardware':
-            if not FPGA_AVAILABLE:
-                return "FPGA not available", 503
-            try:
-                # Read frame from FPGA
-                frame = imgen_vdma.readframe()
-                
-                # Convert to image
-                img = Image.fromarray(frame)
-                img_byte_arr = io.BytesIO()
-                img.save(img_byte_arr, format='PNG')
-                img_byte_arr.seek(0)
-                
-                performance_log.append({
-                    'type': 'mandelbrot',
-                    'version': 'hardware',
-                    'resolution': '640x480',
-                    'time': 0  # FPGA is instant
-                })
-                
-                return send_file(img_byte_arr, mimetype='image/png')
-            except Exception as e:
-                print(f"Error reading from FPGA: {e}")
-                return "Error reading from FPGA", 500
+        # Forward the request to the FPGA server with timeout
+        response = requests.post(
+            f"{FPGA_SERVER_URL}/generate", 
+            json=request_data,
+            timeout=TIMEOUT
+        )
+        
+        if response.status_code == 200:
+            # Get the image data from the FPGA server
+            img_data = response.content
+            img_byte_arr = io.BytesIO(img_data)
+            
+            # Log the performance
+            performance_log.append({
+                'type': 'mandelbrot',
+                'version': request_data['version'],
+                'resolution': f"{request_data['width']}x{request_data['height']}",
+                'time': 0  # FPGA is instant
+            })
+            
+            return send_file(img_byte_arr, mimetype='image/png')
         else:
-            return generate_software_mandelbrot(data)
-
+            return f"Error from FPGA server: {response.text}", response.status_code
+            
+    except requests.exceptions.Timeout:
+        print("Request to FPGA server timed out")
+        return "Request to FPGA server timed out. Please try again.", 503
+    except requests.exceptions.ConnectionError:
+        print("Could not connect to FPGA server")
+        return "Could not connect to FPGA server. Please check if it's running.", 503
     except Exception as e:
-        print("Error generating Mandelbrot:", e)
+        print(f"Error generating Mandelbrot: {e}")
         return str(e), 500
-
-def generate_software_mandelbrot(data):
-    """Generate Mandelbrot set using CPU"""
-    required = ['width', 'height', 'max_iter', 'zoom', 'center_x', 'center_y']
-    for param in required:
-        if param not in data:
-            return f"Missing required parameter: {param}", 400
-
-    # Parse and validate
-    width = int(data['width'])
-    height = int(data['height'])
-    max_iter = int(data['max_iter'])
-    zoom = float(data['zoom'])
-    cx = float(data['center_x'])
-    cy = float(data['center_y'])
-    cmap = data.get('cmap', 'hot')
-
-    if width <= 0 or height <= 0 or max_iter <= 0 or zoom <= 0:
-        return "Invalid parameters", 400
-
-    # Generate Mandelbrot image
-    buf, elapsed = generate_image(width, height, max_iter, zoom, cx, cy, cmap)
-    performance_log.append({
-        'type': 'mandelbrot',
-        'version': 'software',
-        'resolution': f'{width}x{height}',
-        'time': round(elapsed, 3)
-    })
-
-    return send_file(buf, mimetype='image/png')
 
 @app.route('/generate_julia', methods=['POST'])
 def generate_julia():
     try:
+        # Check if FPGA server is available
+        if not check_fpga_server():
+            return "FPGA server is not reachable. Please check if it's running and the IP address is correct.", 503
+
+        # Get parameters from request
         data = request.json
         if not data:
             return "No data provided", 400
 
-        required = ['width', 'height', 'max_iter', 'zoom', 'center_x', 'center_y']
-        for param in required:
-            if param not in data:
-                return f"Missing required parameter: {param}", 400
+        # Prepare request data with all parameters
+        request_data = {
+            "version": data.get('version', 'software'),
+            "width": data.get('width', 640),
+            "height": data.get('height', 480),
+            "max_iter": data.get('max_iter', 300),
+            "zoom": data.get('zoom', 1.0),
+            "center_x": data.get('center_x', -0.7),
+            "center_y": data.get('center_y', 0.0),
+            "cmap": data.get('cmap', 'hot')
+        }
 
-        width = int(data['width'])
-        height = int(data['height'])
-        max_iter = int(data['max_iter'])
-        zoom = float(data['zoom'])
-        zx = float(data.get('zx', 0.0))  # View center
-        zy = float(data.get('zy', 0.0))
-        c_real = float(data['center_x'])  # Used as Julia constant
-        c_imag = float(data['center_y'])
-        cmap = data.get('cmap', 'hot')
-
-        if width <= 0 or height <= 0 or max_iter <= 0 or zoom <= 0:
-            return "Invalid parameters", 400
-
-        c = complex(c_real, c_imag)
-        buf, elapsed = generate_julia_image(width, height, max_iter, zoom, zx, zy, c, cmap)
-
-        performance_log.append({
-            'type': 'julia',
-            'resolution': f'{width}x{height}',
-            'time': round(elapsed, 3)
-        })
-
-        return send_file(buf, mimetype='image/png')
-
+        # Forward the request to the FPGA server with timeout
+        response = requests.post(
+            f"{FPGA_SERVER_URL}/generate_julia", 
+            json=request_data,
+            timeout=TIMEOUT
+        )
+        
+        if response.status_code == 200:
+            # Get the image data from the FPGA server
+            img_data = response.content
+            img_byte_arr = io.BytesIO(img_data)
+            
+            # Log the performance
+            performance_log.append({
+                'type': 'julia',
+                'version': request_data['version'],
+                'resolution': f"{request_data['width']}x{request_data['height']}",
+                'time': 0  # FPGA is instant
+            })
+            
+            return send_file(img_byte_arr, mimetype='image/png')
+        else:
+            return f"Error from FPGA server: {response.text}", response.status_code
+            
+    except requests.exceptions.Timeout:
+        print("Request to FPGA server timed out")
+        return "Request to FPGA server timed out. Please try again.", 503
+    except requests.exceptions.ConnectionError:
+        print("Could not connect to FPGA server")
+        return "Could not connect to FPGA server. Please check if it's running.", 503
     except Exception as e:
-        print("Error generating Julia:", e)
+        print(f"Error generating Julia: {e}")
         return str(e), 500
 
 @app.route('/performance')
@@ -151,4 +149,4 @@ def performance():
     return jsonify(performance_log)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)  # Using port 5001 to avoid conflict with FPGA server

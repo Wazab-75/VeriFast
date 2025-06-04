@@ -317,3 +317,138 @@ document.addEventListener('click', (event) => {
         qualityDropdown.classList.remove('show');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const mandelbrotImage = document.getElementById('mandelbrotImage');
+    const juliaImage = document.getElementById('juliaImage');
+    const generateButton = document.getElementById('generateButton');
+    const qualityButton = document.getElementById('qualityButton');
+    const qualityDropdown = document.getElementById('qualityDropdown');
+    const qualityOptions = document.querySelectorAll('.quality-option');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const computationTime = document.getElementById('computationTime');
+    const fpgaStatus = document.getElementById('fpgaStatus');
+
+    // Get all input elements
+    const inputs = document.querySelectorAll('input[type="range"], select');
+    let debounceTimer;
+
+    // Function to generate Mandelbrot
+    async function generateMandelbrot() {
+        try {
+            loadingMessage.style.display = 'flex';
+            computationTime.textContent = '';
+
+            const params = {
+                version: 'hardware',
+                width: 640,
+                height: 480,
+                max_iter: parseInt(document.getElementById('iterations').value),
+                zoom: parseFloat(document.getElementById('zoom').value),
+                center_x: parseFloat(document.getElementById('centerX').value),
+                center_y: parseFloat(document.getElementById('centerY').value),
+                cmap: document.getElementById('colormap').value
+            };
+
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            mandelbrotImage.src = imageUrl;
+            mandelbrotImage.onload = () => {
+                loadingMessage.style.display = 'none';
+                URL.revokeObjectURL(imageUrl);
+            };
+        } catch (error) {
+            console.error('Error:', error);
+            loadingMessage.textContent = 'Error generating image. Please try again.';
+        }
+    }
+
+    // Function to generate Julia
+    async function generateJulia() {
+        try {
+            const params = {
+                version: 'hardware',
+                width: 640,
+                height: 480,
+                max_iter: parseInt(document.getElementById('iterations').value),
+                zoom: parseFloat(document.getElementById('zoom').value),
+                center_x: parseFloat(document.getElementById('centerX').value),
+                center_y: parseFloat(document.getElementById('centerY').value),
+                cmap: document.getElementById('colormap').value
+            };
+
+            const response = await fetch('/generate_julia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            juliaImage.src = imageUrl;
+            juliaImage.onload = () => {
+                URL.revokeObjectURL(imageUrl);
+            };
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Function to handle input changes with debounce
+    function handleInputChange() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            generateMandelbrot();
+            generateJulia();
+        }, 500); // 500ms debounce
+    }
+
+    // Add event listeners to all inputs
+    inputs.forEach(input => {
+        input.addEventListener('input', handleInputChange);
+    });
+
+    // Quality dropdown functionality
+    qualityButton.addEventListener('click', function() {
+        qualityDropdown.classList.toggle('show');
+    });
+
+    qualityOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const quality = this.getAttribute('data-quality');
+            qualityButton.textContent = this.textContent;
+            qualityDropdown.classList.remove('show');
+            handleInputChange();
+        });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('#qualityButton')) {
+            qualityDropdown.classList.remove('show');
+        }
+    });
+
+    // Initial generation
+    generateMandelbrot();
+    generateJulia();
+});
