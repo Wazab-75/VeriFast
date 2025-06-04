@@ -8,7 +8,7 @@ app = Flask(__name__)
 performance_log = []  # Track performance of renders
 
 # FPGA server configuration
-FPGA_SERVER_URL = "http://192.168.137.50:5002"# FPGA server IP address
+FPGA_SERVER_URL = "https://6c7e-146-179-86-130.ngrok-free.app"  # FPGA server ngrok URL
 TIMEOUT = 5  # Timeout in seconds
 
 def check_fpga_server():
@@ -17,7 +17,9 @@ def check_fpga_server():
         # Try to establish a TCP connection
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(TIMEOUT)
-        result = sock.connect_ex(('192.168.137.50', 5002))
+        # Extract hostname from ngrok URL
+        hostname = "6c7e-146-179-86-130.ngrok-free.app"
+        result = sock.connect_ex((hostname, 443))  # Using port 443 for HTTPS
         sock.close()
         return result == 0
     except:
@@ -149,4 +151,4 @@ def performance():
     return jsonify(performance_log)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)  # Using port 5001 to avoid conflict with FPGA server
+    app.run(host='0.0.0.0', port=5000, debug=False)  # Set debug=False for production
