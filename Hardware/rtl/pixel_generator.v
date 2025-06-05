@@ -448,7 +448,7 @@ end
 
 reg [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
 reg [CORE_COUNT-1:0] mandelbrot_start;
-reg [15:0] max_iter = 16'd70;
+reg [15:0] max_iter = 16'd100;
 
 fractalCores #(
     .INTEGER_BITS(INTEGER_BITS),
@@ -465,7 +465,7 @@ fractalCores #(
     .y0_i(y_0),
     .cx_i(cx_i), // used only for julia
     .cy_i(cy_i), // used only for julia
-    .iter_o(mandelbrot_iter),
+    .iter_o(~mandelbrot_iter),
     .done_o(done)
 );
 
