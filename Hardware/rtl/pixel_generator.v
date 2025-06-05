@@ -201,7 +201,7 @@ wire ready;
 reg valid_int;
 reg new_pixel;
 
-reg [CORE_COUNT-1:0] done;
+wire [CORE_COUNT-1:0] done;
 
 reg signed [(DATA_WIDTH) * (CORE_COUNT) - 1:0] x_0, y_0;
 reg signed [DATA_WIDTH-1:0] x_n, y_n; // next x and y values
