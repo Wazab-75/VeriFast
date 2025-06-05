@@ -268,170 +268,178 @@ reg [7:0] r, g, b; // rgb values to send to the packer
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
-        if (ready) begin
-            casez (waiting)
-                WC0: begin
-                    if (done[0]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC1;
-                        new_pixel <= 1'b1;
+        casez (waiting)
+            WC0: begin
+                if (done[0]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC1;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
 
-                        // send rgb here
-                        r <= mandelbrot_iter[WC0*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC0*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC0*2+1) * MAX_ITER_WIDTH +: 8];
+                    // send rgb here
+                    r <= mandelbrot_iter[WC0*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC0*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC0*2+1) * MAX_ITER_WIDTH +: 8];
 
-                    end
-                    else begin
-                        next_waiting <= WC0;
-                    end
                 end
-                WC1: begin
-                    if (done[1]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC2;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC1*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC1*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC1*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC1;
-                    end
-                end
-                WC2: begin
-                    if (done[2]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC3;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC2*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC2*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC2*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC2;
-                    end
-                end
-                WC3: begin
-                    if (done[3]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC4;
-
-                        r <= mandelbrot_iter[WC3*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC3*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC3*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC3;
-                    end
-                end
-                WC4: begin
-                    if (done[4]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC5;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC4*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC4*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC4*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC4;
-                    end
-                end
-                WC5: begin
-                    if (done[5]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC6;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC5*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC5*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC5*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC5;
-                    end
-                end
-                WC6: begin
-                    if (done[6]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC7;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC6*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC6*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC6*2+1) * MAX_ITER_WIDTH +: 8];
-
-                    end
-                    else begin
-                        next_waiting <= WC6;
-                    end
-                end
-                WC7: begin
-                    if (done[7]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC8;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC7*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC7*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC7*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC7;
-                    end
-                end
-                WC8: begin
-                    if (done[8]) begin
-                        next_waiting <= PACKER_WAIT;
-                        packer_waiting <= WC0;
-                        new_pixel <= 1'b1;
-
-                        r <= mandelbrot_iter[WC8*2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC8*2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[(WC8*2+1) * MAX_ITER_WIDTH +: 8];
-                    end
-                    else begin
-                        next_waiting <= WC8;
-                    end
-                end
-                PACKER_WAIT: begin
-                    if (out_stream_tready) begin
-                        next_waiting <= packer_waiting;
-                        valid_int <= 1'b0;
-                        new_pixel <= 1'b0;
-
-                        // start core again
-                        if (packer_waiting == WC0) begin // need to restart C8
-                            mandelbrot_start[WC8-1+1] <= 1'b1;
-                            x_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
-                            y_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
-                            
-                        end
-                        else begin
-                            mandelbrot_start[packer_waiting-1] <= 1'b1;
-                            x_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
-                            y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
-                        end
-
-
-                    end
-                    else begin
-                        next_waiting <= PACKER_WAIT;
-                        valid_int <= 1'b1;
-                        new_pixel <= 1'b0;
-                    end
-                end
-                default: begin
+                else begin
                     next_waiting <= WC0;
+                end
+            end
+            WC1: begin
+                if (done[1]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC2;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC1*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC1*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC1*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC1;
+                end
+            end
+            WC2: begin
+                if (done[2]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC3;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC2*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC2*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC2*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC2;
+                end
+            end
+            WC3: begin
+                if (done[3]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC4;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC3*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC3*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC3*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC3;
+                end
+            end
+            WC4: begin
+                if (done[4]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC5;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC4*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC4*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC4*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC4;
+                end
+            end
+            WC5: begin
+                if (done[5]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC6;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC5*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC5*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC5*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC5;
+                end
+            end
+            WC6: begin
+                if (done[6]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC7;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC6*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC6*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC6*2+1) * MAX_ITER_WIDTH +: 8];
+
+                end
+                else begin
+                    next_waiting <= WC6;
+                end
+            end
+            WC7: begin
+                if (done[7]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC8;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC7*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC7*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC7*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC7;
+                end
+            end
+            WC8: begin
+                if (done[8]) begin
+                    next_waiting <= PACKER_WAIT;
+                    packer_waiting <= WC0;
+                    new_pixel <= 1'b1;
+                    ready <= 1'b1;
+
+                    r <= mandelbrot_iter[WC8*2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC8*2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[(WC8*2+1) * MAX_ITER_WIDTH +: 8];
+                end
+                else begin
+                    next_waiting <= WC8;
+                end
+            end
+            PACKER_WAIT: begin
+                if (out_stream_tready) begin
+                    next_waiting <= packer_waiting;
                     valid_int <= 1'b0;
                     new_pixel <= 1'b0;
+
+                    // start core again
+                    if (packer_waiting == WC0) begin // need to restart C8
+                        mandelbrot_start[WC8-1+1] <= 1'b1;
+                        x_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                        y_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                        
+                    end
+                    else begin
+                        mandelbrot_start[packer_waiting-1] <= 1'b1;
+                        x_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                        y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    end
+
+
                 end
-            endcase
-        end
+                else begin
+                    next_waiting <= PACKER_WAIT;
+                    valid_int <= 1'b1;
+                    new_pixel <= 1'b0;
+                end
+            end
+            default: begin
+                next_waiting <= WC0;
+                valid_int <= 1'b0;
+                new_pixel <= 1'b0;
+            end
+        endcase
     end
     else begin
         next_waiting <= WC0;
