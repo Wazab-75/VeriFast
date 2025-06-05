@@ -2,23 +2,23 @@ module fractalCores #(
     parameter INTEGER_BITS = 8,
     parameter FRACTIONAL_BITS = 24,
     parameter MAX_ITER_WIDTH = 16,
-    parameter MANDEL_CORE_COUNT = 10,
-    parameter JULIA_CORE_COUNT = 10
+    parameter MANDEL_CORE_COUNT = 8,
+    parameter JULIA_CORE_COUNT = 8
 )(
     input wire clk_i,
     
-    input wire [MANDEL_CORE_COUNT + JULIA_CORE_COUNT - 1:0] rst_i,
-    input wire [MANDEL_CORE_COUNT + JULIA_CORE_COUNT - 1:0] start_i,
+    input wire rst_i,
+    input wire [CORE_COUNT - 1:0] start_i,
 
-    input wire signed [(INTEGER_BITS + FRACTIONAL_BITS) * (MANDEL_CORE_COUNT + JULIA_CORE_COUNT) - 1:0] x0_i,
-    input wire signed [(INTEGER_BITS + FRACTIONAL_BITS) * (MANDEL_CORE_COUNT + JULIA_CORE_COUNT) - 1:0] y0_i,
-    input wire signed [INTEGER_BITS+FRACTIONAL_BITS-1:0] cx_i,
-    input wire signed [INTEGER_BITS+FRACTIONAL_BITS-1:0] cy_i,
+    input wire signed [(DATA_WIDTH) * (CORE_COUNT) - 1:0] x0_i,
+    input wire signed [(DATA_WIDTH) * (CORE_COUNT) - 1:0] y0_i,
+    input wire signed [DATA_WIDTH -1:0] cx_i,
+    input wire signed [DATA_WIDTH-1:0] cy_i,
 
     input wire [MAX_ITER_WIDTH-1:0] max_iter_i,
 
-    output wire [(MAX_ITER_WIDTH) * (MANDEL_CORE_COUNT + JULIA_CORE_COUNT) - 1:0] iter_o,
-    output wire [MANDEL_CORE_COUNT + JULIA_CORE_COUNT - 1:0] done_o
+    output wire [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] iter_o,
+    output reg [CORE_COUNT - 1:0] done_o
 );
 
     parameter DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
@@ -34,7 +34,7 @@ module fractalCores #(
             ) 
             core_inst (
                 .clk_i(clk_i),
-                .rst_i(rst_i[i]),
+                .rst_i(rst_i),
                 .start_i(start_i[i]),
                 .x0_i(x0_i[(i+1)*DATA_WIDTH-1 -: DATA_WIDTH]),
                 .y0_i(y0_i[(i+1)*DATA_WIDTH-1 -: DATA_WIDTH]),
@@ -55,7 +55,7 @@ module fractalCores #(
             )
             core_inst (
                 .clk_i(clk_i),
-                .rst_i(rst_i[j]),
+                .rst_i(rst_i),
                 .start_i(start_i[j]),
                 .cx_i(cx_i),
                 .cy_i(cy_i),
