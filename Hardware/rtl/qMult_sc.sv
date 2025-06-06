@@ -1,14 +1,13 @@
 module qMult_sc #(parameter
     INTEGER_BITS = 8,
-    FRACTIONAL_BITS = 24
+    FRACTIONAL_BITS = 24,
+    DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS
 ) (
     input logic signed [DATA_WIDTH-1:0] input1_i,
     input logic signed [DATA_WIDTH-1:0] input2_i,
     
     output logic signed [DATA_WIDTH-1:0] result_o
 );
-
-localparam int DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
 
 localparam logic [2*DATA_WIDTH-1:0] ROUNDING_OFFSET = 1 << (FRACTIONAL_BITS - 1);
 
