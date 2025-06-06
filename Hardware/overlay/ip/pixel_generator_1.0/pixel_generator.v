@@ -189,6 +189,15 @@ assign s_axi_lite_wready = (writeState == AWAIT_WADD_AND_DATA || writeState == A
 assign s_axi_lite_bvalid = (writeState == AWAIT_RESP);
 assign s_axi_lite_bresp = (writeAddr < REG_FILE_SIZE) ? AXI_OK : AXI_ERR;
 
+parameter INTEGER_BITS = 8;
+parameter FRACTIONAL_BITS = 24;
+parameter MAX_ITER_WIDTH = 16;
+parameter DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
+
+parameter MANDEL_CORE_COUNT = 9;
+parameter JULIA_CORE_COUNT = 9;
+parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
+
 reg [9:0] x;
 reg [8:0] y;
 
@@ -211,14 +220,9 @@ reg signed [DATA_WIDTH-1:0] cy_i = 32'h00000000;
 
 reg m_or_j = 1'b0; // 0 for mandelbrot, 1 for julia
 
-parameter INTEGER_BITS = 8;
-parameter FRACTIONAL_BITS = 24;
-parameter MAX_ITER_WIDTH = 16;
-parameter DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
-
-parameter MANDEL_CORE_COUNT = 9;
-parameter JULIA_CORE_COUNT = 9;
-parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
+wire [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
+reg [CORE_COUNT-1:0] mandelbrot_start;
+reg [15:0] max_iter = 16'd100;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -453,12 +457,6 @@ always @(posedge out_stream_aclk) begin
     waiting <= next_waiting;
 end
 
-
-
-reg [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
-reg [CORE_COUNT-1:0] mandelbrot_start;
-reg [15:0] max_iter = 16'd100;
-
 fractalCores #(
     .INTEGER_BITS(INTEGER_BITS),
     .FRACTIONAL_BITS(FRACTIONAL_BITS),
@@ -474,9 +472,10 @@ fractalCores #(
     .y0_i(y_0),
     .cx_i(cx_i), // used only for julia
     .cy_i(cy_i), // used only for julia
-    .iter_o(~mandelbrot_iter),
+    .iter_o(mandelbrot_iter),
     .done_o(done)
 );
+
 packer pixel_packer(    .aclk(out_stream_aclk),
                         .aresetn(periph_resetn),
                         .r(r), .g(g), .b(b),

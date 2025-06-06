@@ -220,7 +220,7 @@ reg signed [DATA_WIDTH-1:0] cy_i = 32'h00000000;
 
 reg m_or_j = 1'b0; // 0 for mandelbrot, 1 for julia
 
-reg [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
+wire [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
 reg [CORE_COUNT-1:0] mandelbrot_start;
 reg [15:0] max_iter = 16'd100;
 
