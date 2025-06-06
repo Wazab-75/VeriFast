@@ -223,7 +223,7 @@ parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
         if (~m_or_j) begin // Mandelbrot
-            if (ready & new_pixel) begin
+            if (new_pixel) begin
                 if (lastx) begin
                     x <= 10'd0;
                     x_n <= 32'hFE000000;
@@ -271,7 +271,7 @@ reg [7:0] r, g, b; // rgb values to send to the packer
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
-        casez (waiting)
+        case (waiting)
             WC0: begin
                 if (done[0]) begin
                     next_waiting <= PACKER_WAIT;
@@ -428,7 +428,6 @@ always @(posedge out_stream_aclk) begin
                         y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
                     end
 
-
                 end
                 else begin
                     next_waiting <= PACKER_WAIT;
@@ -478,8 +477,6 @@ fractalCores #(
     .iter_o(~mandelbrot_iter),
     .done_o(done)
 );
-
-
 packer pixel_packer(    .aclk(out_stream_aclk),
                         .aresetn(periph_resetn),
                         .r(r), .g(g), .b(b),
