@@ -1,123 +1,121 @@
-# fractal_core_fast.pyx
+# fractal_core.pyx
 
 import numpy as np
 cimport numpy as np
+from cython.parallel import prange
 cimport cython
-# from cython.parallel import prange  # Not used for now
 
-# -------------------------------------------------------------------
-# Mandelbrot
-# -------------------------------------------------------------------
+# Type definitions
+ctypedef np.uint8_t DTYPE_t
 
+# Compiler optimizations
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def mandelbrot_cython(int width,
-                      int height,
-                      int max_iter,
-                      double cx,
-                      double cy,
-                      double zoom):
+@cython.cdivision(True)
+def mandelbrot_cython(int width, int height, int max_iter, double cx, double cy, double zoom):
     """
-    Produce an 8-bit grayscale Mandelbrot escape-time image of size (height×width),
-    centered at (cx, cy) with zoom factor `zoom`.
-    - Skips any point inside the main cardioid or period-2 bulb.
+    Generate Mandelbrot fractal image using Cython with parallel processing.
+    
+    Parameters:
+    - width, height: Image dimensions
+    - max_iter: Maximum iterations
+    - cx, cy: Center coordinates
+    - zoom: Zoom level
     """
+    cdef:
+        # Calculate bounds
+        double scale = 3.5 / zoom
+        double xmin = cx - scale / 2
+        double ymin = cy - scale * height / width / 2
+        double dx = scale / width
+        double dy = scale * height / width / height
+        
+        # Image array
+        np.ndarray[DTYPE_t, ndim=2] img = np.zeros((height, width), dtype=np.uint8)
+        
+        # Loop variables
+        double x, y, zx, zy, zx2, zy2
+        int i, j, n
 
-    cdef double scale_x = 3.5 / zoom
-    cdef double scale_y = 2.0 / zoom
-    cdef double xmin = cx - scale_x / 2.0
-    cdef double ymin = cy - scale_y / 2.0
-
-    # Precompute per-pixel increments
-    cdef double xstep = scale_x / (width - 1)
-    cdef double ystep = scale_y / (height - 1)
-
-    # Allocate output array and grab a C-level view
-    cdef np.ndarray[np.uint8_t, ndim=2] img = np.zeros((height, width), dtype=np.uint8)
-    cdef unsigned char[:, :] view = img
-
-    cdef int i, j, n
-    cdef double x0, y0, zx, zy, zx2, zy2, tmp
-    cdef double x_minus_0_25, y_sq, q
-
-    for i in range(height):
-        y0 = ymin + i * ystep
+    # Parallel processing over rows
+    for i in prange(height, nogil=True):
+        y = ymin + i * dy
+        
         for j in range(width):
-            x0 = xmin + j * xstep
-            x_minus_0_25 = x0 - 0.25
-            y_sq = y0 * y0
-            q = x_minus_0_25 * x_minus_0_25 + y_sq
-            if q * (q + x_minus_0_25) <= 0.25 * y_sq:
-                view[i, j] = 255
-            elif (x0 + 1.0) * (x0 + 1.0) + y_sq <= 0.0625:
-                view[i, j] = 255
-            else:
-                zx = 0.0
-                zy = 0.0
-                zx2 = 0.0
-                zy2 = 0.0
-                n = 0
-                while zx2 + zy2 <= 4.0 and n < max_iter:
-                    tmp = zx2 - zy2 + x0
-                    zy = 2.0 * zx * zy + y0
-                    zx = tmp
-                    zx2 = zx * zx
-                    zy2 = zy * zy
-                    n += 1
-                view[i, j] = <unsigned char>(255 * n // max_iter)
+            x = xmin + j * dx
+            
+            # Mandelbrot iteration: z = z^2 + c
+            zx = zy = 0.0
+            
+            for n in range(max_iter):
+                zx2 = zx * zx
+                zy2 = zy * zy
+                
+                # Check if escaped
+                if zx2 + zy2 > 4.0:
+                    break
+                
+                # z = z^2 + c
+                zy = 2.0 * zx * zy + y
+                zx = zx2 - zy2 + x
+            
+            # Color based on iteration count
+            img[i, j] = <DTYPE_t>(255 * n / max_iter) if n < max_iter else 0
+
     return img
 
-# -------------------------------------------------------------------
-# Julia
-# -------------------------------------------------------------------
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def julia_cython(int width,
-                 int height,
-                 int max_iter,
-                 double zx_center,
-                 double zy_center,
-                 double zoom,
-                 double c_real,
-                 double c_imag):
+@cython.cdivision(True)
+def julia_cython(int width, int height, int max_iter, double zx, double zy, double zoom, double c_real, double c_imag):
     """
-    Produce an 8-bit grayscale Julia escape-time image of size (height×width),
-    sampling initial z across a rectangle centered at (zx_center, zy_center) with
-    zoom factor `zoom`. The constant is (c_real, c_imag).
+    Generate Julia set fractal image.
+    
+    Parameters:
+    - width, height: Image dimensions
+    - max_iter: Maximum iterations
+    - zx, zy: Center of view
+    - zoom: Zoom level
+    - c_real, c_imag: Julia constant
     """
+    cdef:
+        # Calculate bounds
+        double scale = 3.5 / zoom
+        double xmin = zx - scale / 2
+        double ymin = zy - scale * height / width / 2
+        double dx = scale / width
+        double dy = scale * height / width / height
+        
+        # Image array
+        np.ndarray[DTYPE_t, ndim=2] img = np.zeros((height, width), dtype=np.uint8)
+        
+        # Loop variables
+        double x, y, x2, y2, temp
+        int i, j, n
 
-    cdef double scale_x = 3.5 / zoom
-    cdef double scale_y = 2.0 / zoom
-    cdef double xmin = zx_center - scale_x / 2.0
-    cdef double ymin = zy_center - scale_y / 2.0
-
-    # Precompute per-pixel increments
-    cdef double xstep = scale_x / (width - 1)
-    cdef double ystep = scale_y / (height - 1)
-
-    # Allocate output and grab C-view
-    cdef np.ndarray[np.uint8_t, ndim=2] img = np.zeros((height, width), dtype=np.uint8)
-    cdef unsigned char[:, :] view = img
-
-    cdef int i, j, n
-    cdef double zx0, zy0, zx2, zy2, tmp
-    cdef double x0, y0
-
-    for i in range(height):
-        y0 = ymin + i * ystep
+    # Parallel processing
+    for i in prange(height, nogil=True):
         for j in range(width):
-            zx0 = xmin + j * xstep
-            zy0 = y0
-            zx2 = zx0 * zx0
-            zy2 = zy0 * zy0
-            n = 0
-            while zx2 + zy2 <= 4.0 and n < max_iter:
-                tmp = zx2 - zy2 + c_real
-                zy0 = 2.0 * zx0 * zy0 + c_imag
-                zx0 = tmp
-                zx2 = zx0 * zx0
-                zy2 = zy0 * zy0
-                n += 1
-            view[i, j] = <unsigned char>(255 * n // max_iter)
+            # Starting point
+            x = xmin + j * dx
+            y = ymin + i * dy
+            
+            # Julia iteration: z = z^2 + c
+            for n in range(max_iter):
+                x2 = x * x
+                y2 = y * y
+                
+                # Check if escaped
+                if x2 + y2 > 4.0:
+                    break
+                
+                # z = z^2 + c
+                temp = x2 - y2 + c_real
+                y = 2.0 * x * y + c_imag
+                x = temp
+            
+            # Color based on iteration count
+            img[i, j] = <DTYPE_t>(255 * n / max_iter) if n < max_iter else 0
+
     return img
