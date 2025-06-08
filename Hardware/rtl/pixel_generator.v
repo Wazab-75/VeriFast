@@ -195,7 +195,7 @@ parameter MAX_ITER_WIDTH = 16;
 parameter DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
 
 parameter MANDEL_CORE_COUNT = 9;
-parameter JULIA_CORE_COUNT = 9;
+parameter JULIA_CORE_COUNT = 0;
 parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 
 reg [9:0] x;
@@ -284,9 +284,9 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
 
                     // send rgb here
-                    r <= mandelbrot_iter[WC0*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC0*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC0*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + 8 +: 8];
 
                 end
                 else begin
@@ -300,9 +300,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC1*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC1*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC1*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC1;
@@ -315,9 +315,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC2*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC2*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC2*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC2;
@@ -330,9 +330,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC3*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC3*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC3*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC3;
@@ -345,9 +345,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC4*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC4*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC4*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC4;
@@ -359,9 +359,9 @@ always @(posedge out_stream_aclk) begin
                     packer_waiting <= WC6;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
-                    r <= mandelbrot_iter[WC5*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC5*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC5*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC5;
@@ -374,9 +374,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC6*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC6*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC6*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
 
                 end
                 else begin
@@ -390,9 +390,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC7*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC7*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC7*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC7;
@@ -405,9 +405,9 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC8*2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC8*2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[(WC8*2+1) * MAX_ITER_WIDTH +: 8];
+                    r <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH +: 8];
+                    g <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH +: 8];
+                    b <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH + 8 +: 8];
                 end
                 else begin
                     next_waiting <= WC8;
@@ -435,7 +435,7 @@ always @(posedge out_stream_aclk) begin
                 end
                 else begin
                     next_waiting <= PACKER_WAIT;
-                    valid_int <= 1'b0;
+                    valid_int <= 1'b1;
                     new_pixel <= 1'b0;
                 end
             end
