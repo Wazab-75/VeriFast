@@ -3364,8 +3364,8 @@ static const char __pyx_k_Step_may_not_be_zero_axis_d[] = "Step may not be zero 
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static const char __pyx_k_Rq_Rq_c_4r_c_4r_HCvRq_HCwb_RvRx[] = "\200\001\360\020\000\t\032\230\024\230R\230q\330\010\031\230\024\230R\230q\330\010\026\220c\230\022\2304\230r\240\021\330\010\026\220c\230\022\2304\230r\240\021\330\010\024\220H\230C\230v\240R\240q\330\010\024\220H\230C\230w\240b\250\001\330\010-\250R\250v\260R\260x\270x\300v\310R\310q\330\010 \240\001\360\006\000\t\032\230\021\330\010\032\230!\340\010\023\2201\220A\330\010\r\210U\220\"\220C\220r\230\021\330\010\014\210E\220\025\220a\220q\330\014\021\220\025\220b\230\003\2302\230Q\330\014\021\220\021\330\014\021\220\021\330\014\022\220!\330\014\022\220!\360\006\000\r\021\220\005\220U\230!\2301\340\020\023\2204\220r\230\024\230R\230q\330\024\027\220t\2302\230T\240\022\2401\330\030\031\360\006\000\021\026\220T\230\022\2303\230b\240\003\2402\240Q\330\020\025\220T\230\022\2304\230r\240\021\360\006\000\021\027\220c\230\022\2301\330\020\026\220c\230\022\2301\360\006\000\021\024\2204\220r\230\024\230R\230q\330\024\025\340\014\020\220\001\220\023\220E\230\036\240t\2502\250S\260\003\2601\330\004\013\2101";
-static const char __pyx_k_Rq_Rq_d_D_d_D_HCvRq_HCwb_RvRxxv[] = "\200\001\360\022\000\t\032\230\024\230R\230q\330\010\031\230\024\230R\230q\330\010\026\220d\230\"\230D\240\002\240!\330\010\026\220d\230\"\230D\240\002\240!\330\010\024\220H\230C\230v\240R\240q\330\010\024\220H\230C\230w\240b\250\001\330\010-\250R\250v\260R\260x\270x\300v\310R\310q\330\010 \240\001\360\006\000\t\032\230\021\330\010\032\230!\340\010\023\2201\220A\330\010\014\210E\220\022\2203\220b\230\001\330\010\014\210E\220\025\220a\220q\330\014\020\220\005\220R\220s\230\"\230A\330\014\021\220\021\330\014\021\220\021\330\014\022\220\"\220B\220a\330\014\022\220\"\220B\220a\360\006\000\r\021\220\005\220U\230!\2301\340\020\023\2204\220r\230\024\230R\230q\330\024\027\220t\2302\230T\240\022\2401\330\030\031\360\006\000\021\026\220T\230\022\2303\230b\240\003\2402\240Q\330\020\025\220T\230\022\2304\230r\240\021\360\006\000\021\027\220c\230\022\2301\330\020\026\220c\230\022\2301\360\006\000\021\024\2204\220r\230\024\230R\230q\330\024\025\340\014\020\220\001\220\023\220E\230\036\240t\2502\250S\260\003\2601\330\004\013\2101";
+static const char __pyx_k_Rq_Rq_c_4r_c_4r_HCvRq_HCwb_RvRx[] = "\200\001\360\020\000\t\032\230\024\230R\230q\330\010\031\230\024\230R\230q\330\010\026\220c\230\022\2304\230r\240\021\330\010\026\220c\230\022\2304\230r\240\021\330\010\024\220H\230C\230v\240R\240q\330\010\024\220H\230C\230w\240b\250\001\330\010-\250R\250v\260R\260x\270x\300v\310R\310q\330\010 \240\001\360\006\000\t\032\230\021\330\010\032\230!\340\004\010\210\005\210U\220!\2201\330\010\r\210U\220\"\220C\220r\230\021\330\010\014\210E\220\025\220a\220q\330\014\021\220\025\220b\230\003\2302\230Q\330\014\021\220\021\330\014\021\220\021\330\014\022\220!\330\014\022\220!\360\006\000\r\021\220\005\220U\230!\2301\340\020\023\2204\220r\230\024\230R\230q\330\024\027\220t\2302\230T\240\022\2401\330\030\031\360\006\000\021\026\220T\230\022\2303\230b\240\003\2402\240Q\330\020\025\220T\230\022\2304\230r\240\021\360\006\000\021\027\220c\230\022\2301\330\020\026\220c\230\022\2301\360\006\000\021\024\2204\220r\230\024\230R\230q\330\024\025\340\014\020\220\001\220\023\220E\230\036\240t\2502\250S\260\003\2601\330\004\013\2101";
+static const char __pyx_k_Rq_Rq_d_D_d_D_HCvRq_HCwb_RvRxxv[] = "\200\001\360\022\000\t\032\230\024\230R\230q\330\010\031\230\024\230R\230q\330\010\026\220d\230\"\230D\240\002\240!\330\010\026\220d\230\"\230D\240\002\240!\330\010\024\220H\230C\230v\240R\240q\330\010\024\220H\230C\230w\240b\250\001\330\010-\250R\250v\260R\260x\270x\300v\310R\310q\330\010 \240\001\360\006\000\t\032\230\021\330\010\032\230!\340\004\010\210\005\210U\220!\2201\330\010\014\210E\220\022\2203\220b\230\001\330\010\014\210E\220\025\220a\220q\330\014\020\220\005\220R\220s\230\"\230A\330\014\021\220\021\330\014\021\220\021\330\014\022\220\"\220B\220a\330\014\022\220\"\220B\220a\360\006\000\r\021\220\005\220U\230!\2301\340\020\023\2204\220r\230\024\230R\230q\330\024\027\220t\2302\230T\240\022\2401\330\030\031\360\006\000\021\026\220T\230\022\2303\230b\240\003\2402\240Q\330\020\025\220T\230\022\2304\230r\240\021\360\006\000\021\027\220c\230\022\2301\330\020\026\220c\230\022\2301\360\006\000\021\024\2204\220r\230\024\230R\230q\330\024\025\340\014\020\220\001\220\023\220E\230\036\240t\2502\250S\260\003\2601\330\004\013\2101";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_All_dimensions_preceding_dimensi[] = "All dimensions preceding dimension %d must be indexed and not sliced";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
@@ -18474,7 +18474,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   return __pyx_r;
 }
 
-/* "fractal_core.pyx":9
+/* "fractal_core.pyx":8
  * cimport cython
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
@@ -18526,67 +18526,67 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_width,&__pyx_mstate_global->__pyx_n_u_height,&__pyx_mstate_global->__pyx_n_u_max_iter,&__pyx_mstate_global->__pyx_n_u_cx,&__pyx_mstate_global->__pyx_n_u_cy,&__pyx_mstate_global->__pyx_n_u_zoom,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 9, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 8, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  6:
         values[5] = __Pyx_ArgRef_FASTCALL(__pyx_args, 5);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 8, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  5:
         values[4] = __Pyx_ArgRef_FASTCALL(__pyx_args, 4);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 8, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  4:
         values[3] = __Pyx_ArgRef_FASTCALL(__pyx_args, 3);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 8, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 8, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 8, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 8, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "mandelbrot_cython", 0) < 0) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "mandelbrot_cython", 0) < 0) __PYX_ERR(0, 8, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 6; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("mandelbrot_cython", 1, 6, 6, i); __PYX_ERR(0, 9, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("mandelbrot_cython", 1, 6, 6, i); __PYX_ERR(0, 8, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 6)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 8, __pyx_L3_error)
       values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 8, __pyx_L3_error)
       values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 8, __pyx_L3_error)
       values[3] = __Pyx_ArgRef_FASTCALL(__pyx_args, 3);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 8, __pyx_L3_error)
       values[4] = __Pyx_ArgRef_FASTCALL(__pyx_args, 4);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 8, __pyx_L3_error)
       values[5] = __Pyx_ArgRef_FASTCALL(__pyx_args, 5);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 9, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 8, __pyx_L3_error)
     }
-    __pyx_v_width = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_width == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
-    __pyx_v_height = __Pyx_PyLong_As_int(values[1]); if (unlikely((__pyx_v_height == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
-    __pyx_v_max_iter = __Pyx_PyLong_As_int(values[2]); if (unlikely((__pyx_v_max_iter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
-    __pyx_v_cx = __Pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_cx == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L3_error)
-    __pyx_v_cy = __Pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_cy == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L3_error)
-    __pyx_v_zoom = __Pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_zoom == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 15, __pyx_L3_error)
+    __pyx_v_width = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_width == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_height = __Pyx_PyLong_As_int(values[1]); if (unlikely((__pyx_v_height == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_max_iter = __Pyx_PyLong_As_int(values[2]); if (unlikely((__pyx_v_max_iter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_cx = __Pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_cx == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
+    __pyx_v_cy = __Pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_cy == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
+    __pyx_v_zoom = __Pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_zoom == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mandelbrot_cython", 1, 6, 6, __pyx_nargs); __PYX_ERR(0, 9, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mandelbrot_cython", 1, 6, 6, __pyx_nargs); __PYX_ERR(0, 8, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18660,7 +18660,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
   __pyx_pybuffernd_img.data = NULL;
   __pyx_pybuffernd_img.rcbuffer = &__pyx_pybuffer_img;
 
-  /* "fractal_core.pyx":17
+  /* "fractal_core.pyx":16
  *                       double zoom):
  *     cdef:
  *         double scale_x = 3.5 / zoom             # <<<<<<<<<<<<<<
@@ -18669,7 +18669,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_scale_x = (3.5 / __pyx_v_zoom);
 
-  /* "fractal_core.pyx":18
+  /* "fractal_core.pyx":17
  *     cdef:
  *         double scale_x = 3.5 / zoom
  *         double scale_y = 2.0 / zoom             # <<<<<<<<<<<<<<
@@ -18678,7 +18678,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_scale_y = (2.0 / __pyx_v_zoom);
 
-  /* "fractal_core.pyx":19
+  /* "fractal_core.pyx":18
  *         double scale_x = 3.5 / zoom
  *         double scale_y = 2.0 / zoom
  *         double xmin = cx - 0.5 * scale_x             # <<<<<<<<<<<<<<
@@ -18687,7 +18687,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_xmin = (__pyx_v_cx - (0.5 * __pyx_v_scale_x));
 
-  /* "fractal_core.pyx":20
+  /* "fractal_core.pyx":19
  *         double scale_y = 2.0 / zoom
  *         double xmin = cx - 0.5 * scale_x
  *         double ymin = cy - 0.5 * scale_y             # <<<<<<<<<<<<<<
@@ -18696,7 +18696,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_ymin = (__pyx_v_cy - (0.5 * __pyx_v_scale_y));
 
-  /* "fractal_core.pyx":21
+  /* "fractal_core.pyx":20
  *         double xmin = cx - 0.5 * scale_x
  *         double ymin = cy - 0.5 * scale_y
  *         double dx = scale_x / (width - 1)             # <<<<<<<<<<<<<<
@@ -18705,7 +18705,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_dx = (__pyx_v_scale_x / ((double)(__pyx_v_width - 1)));
 
-  /* "fractal_core.pyx":22
+  /* "fractal_core.pyx":21
  *         double ymin = cy - 0.5 * scale_y
  *         double dx = scale_x / (width - 1)
  *         double dy = scale_y / (height - 1)             # <<<<<<<<<<<<<<
@@ -18714,7 +18714,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_dy = (__pyx_v_scale_y / ((double)(__pyx_v_height - 1)));
 
-  /* "fractal_core.pyx":23
+  /* "fractal_core.pyx":22
  *         double dx = scale_x / (width - 1)
  *         double dy = scale_y / (height - 1)
  *         np.ndarray[np.uint8_t, ndim=2] img = np.empty((height, width), dtype=np.uint8)             # <<<<<<<<<<<<<<
@@ -18722,26 +18722,26 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
  *         int i, j, n
 */
   __pyx_t_2 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_empty); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_empty); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_height); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_height); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyLong_From_int(__pyx_v_width); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyLong_From_int(__pyx_v_width); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3) != (0)) __PYX_ERR(0, 23, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3) != (0)) __PYX_ERR(0, 22, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_5);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_5) != (0)) __PYX_ERR(0, 23, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_5) != (0)) __PYX_ERR(0, 22, __pyx_L1_error);
   __pyx_t_3 = 0;
   __pyx_t_5 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_uint8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_uint8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_7 = 1;
@@ -18758,43 +18758,43 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
   #endif
   {
     PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_2, __pyx_t_6};
-    __pyx_t_5 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 23, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_3, __pyx_t_5, __pyx_callargs+2, 0) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_3, __pyx_t_5, __pyx_callargs+2, 0) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
     __pyx_t_1 = __Pyx_Object_Vectorcall_CallFromBuilder(__pyx_t_4, __pyx_callargs+__pyx_t_7, (2-__pyx_t_7) | (__pyx_t_7*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 22, __pyx_L1_error)
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_img.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5numpy_uint8_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_img = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_img.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 23, __pyx_L1_error)
+      __PYX_ERR(0, 22, __pyx_L1_error)
     } else {__pyx_pybuffernd_img.diminfo[0].strides = __pyx_pybuffernd_img.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_img.diminfo[0].shape = __pyx_pybuffernd_img.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_img.diminfo[1].strides = __pyx_pybuffernd_img.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_img.diminfo[1].shape = __pyx_pybuffernd_img.rcbuffer->pybuffer.shape[1];
     }
   }
   __pyx_v_img = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "fractal_core.pyx":24
+  /* "fractal_core.pyx":23
  *         double dy = scale_y / (height - 1)
  *         np.ndarray[np.uint8_t, ndim=2] img = np.empty((height, width), dtype=np.uint8)
  *         np.uint8_t[:, :] view = img             # <<<<<<<<<<<<<<
  *         int i, j, n
  *         double x0, y0, zx, zy, zx2, zy2, tmp
 */
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_uint8_t(((PyObject *)__pyx_v_img), PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_uint8_t(((PyObject *)__pyx_v_img), PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_v_view = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "fractal_core.pyx":27
+  /* "fractal_core.pyx":26
  *         int i, j, n
  *         double x0, y0, zx, zy, zx2, zy2, tmp
  *         double bailout = 4.0             # <<<<<<<<<<<<<<
@@ -18803,292 +18803,232 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
 */
   __pyx_v_bailout = 4.0;
 
-  /* "fractal_core.pyx":28
+  /* "fractal_core.pyx":27
  *         double x0, y0, zx, zy, zx2, zy2, tmp
  *         double bailout = 4.0
  *         double bailout2 = 2.0  # Early bailout threshold             # <<<<<<<<<<<<<<
  * 
- *     for i in prange(height, nogil=True):
+ *     for i in range(height):
 */
   __pyx_v_bailout2 = 2.0;
 
-  /* "fractal_core.pyx":30
+  /* "fractal_core.pyx":29
  *         double bailout2 = 2.0  # Early bailout threshold
  * 
- *     for i in prange(height, nogil=True):             # <<<<<<<<<<<<<<
+ *     for i in range(height):             # <<<<<<<<<<<<<<
  *         y0 = ymin + dy * i
  *         for j in range(width):
 */
-  {
-      PyThreadState *_save;
-      _save = NULL;
-      Py_UNBLOCK_THREADS
-      __Pyx_FastGIL_Remember();
-      /*try:*/ {
-        __pyx_t_9 = __pyx_v_height;
-        {
-            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
-                #undef likely
-                #undef unlikely
-                #define likely(x)   (x)
-                #define unlikely(x) (x)
-            #endif
-            __pyx_t_11 = (__pyx_t_9 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_11 > 0)
-            {
-                #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20)
-                #endif /* _OPENMP */
-                {
-                    #ifdef _OPENMP
-                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_n) lastprivate(__pyx_v_x0) lastprivate(__pyx_v_y0) lastprivate(__pyx_v_zx) lastprivate(__pyx_v_zx2) lastprivate(__pyx_v_zy) lastprivate(__pyx_v_zy2)
-                    #endif /* _OPENMP */
-                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
-                        {
-                            __pyx_v_i = (int)(0 + 1 * __pyx_t_10);
-                            /* Initialize private variables to invalid values */
-                            __pyx_v_j = ((int)0xbad0bad0);
-                            __pyx_v_n = ((int)0xbad0bad0);
-                            __pyx_v_x0 = ((double)__PYX_NAN());
-                            __pyx_v_y0 = ((double)__PYX_NAN());
-                            __pyx_v_zx = ((double)__PYX_NAN());
-                            __pyx_v_zx2 = ((double)__PYX_NAN());
-                            __pyx_v_zy = ((double)__PYX_NAN());
-                            __pyx_v_zy2 = ((double)__PYX_NAN());
+  __pyx_t_9 = __pyx_v_height;
+  __pyx_t_10 = __pyx_t_9;
+  for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+    __pyx_v_i = __pyx_t_11;
 
-                            /* "fractal_core.pyx":31
+    /* "fractal_core.pyx":30
  * 
- *     for i in prange(height, nogil=True):
+ *     for i in range(height):
  *         y0 = ymin + dy * i             # <<<<<<<<<<<<<<
  *         for j in range(width):
  *             x0 = xmin + dx * j
 */
-                            __pyx_v_y0 = (__pyx_v_ymin + (__pyx_v_dy * __pyx_v_i));
+    __pyx_v_y0 = (__pyx_v_ymin + (__pyx_v_dy * __pyx_v_i));
 
-                            /* "fractal_core.pyx":32
- *     for i in prange(height, nogil=True):
+    /* "fractal_core.pyx":31
+ *     for i in range(height):
  *         y0 = ymin + dy * i
  *         for j in range(width):             # <<<<<<<<<<<<<<
  *             x0 = xmin + dx * j
  *             zx = 0.0
 */
-                            __pyx_t_12 = __pyx_v_width;
-                            __pyx_t_13 = __pyx_t_12;
-                            for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-                              __pyx_v_j = __pyx_t_14;
+    __pyx_t_12 = __pyx_v_width;
+    __pyx_t_13 = __pyx_t_12;
+    for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
+      __pyx_v_j = __pyx_t_14;
 
-                              /* "fractal_core.pyx":33
+      /* "fractal_core.pyx":32
  *         y0 = ymin + dy * i
  *         for j in range(width):
  *             x0 = xmin + dx * j             # <<<<<<<<<<<<<<
  *             zx = 0.0
  *             zy = 0.0
 */
-                              __pyx_v_x0 = (__pyx_v_xmin + (__pyx_v_dx * __pyx_v_j));
+      __pyx_v_x0 = (__pyx_v_xmin + (__pyx_v_dx * __pyx_v_j));
 
-                              /* "fractal_core.pyx":34
+      /* "fractal_core.pyx":33
  *         for j in range(width):
  *             x0 = xmin + dx * j
  *             zx = 0.0             # <<<<<<<<<<<<<<
  *             zy = 0.0
  *             zx2 = 0.0
 */
-                              __pyx_v_zx = 0.0;
+      __pyx_v_zx = 0.0;
 
-                              /* "fractal_core.pyx":35
+      /* "fractal_core.pyx":34
  *             x0 = xmin + dx * j
  *             zx = 0.0
  *             zy = 0.0             # <<<<<<<<<<<<<<
  *             zx2 = 0.0
  *             zy2 = 0.0
 */
-                              __pyx_v_zy = 0.0;
+      __pyx_v_zy = 0.0;
 
-                              /* "fractal_core.pyx":36
+      /* "fractal_core.pyx":35
  *             zx = 0.0
  *             zy = 0.0
  *             zx2 = 0.0             # <<<<<<<<<<<<<<
  *             zy2 = 0.0
  * 
 */
-                              __pyx_v_zx2 = 0.0;
+      __pyx_v_zx2 = 0.0;
 
-                              /* "fractal_core.pyx":37
+      /* "fractal_core.pyx":36
  *             zy = 0.0
  *             zx2 = 0.0
  *             zy2 = 0.0             # <<<<<<<<<<<<<<
  * 
  *             # escape-time loop with early bailout
 */
-                              __pyx_v_zy2 = 0.0;
+      __pyx_v_zy2 = 0.0;
 
-                              /* "fractal_core.pyx":40
+      /* "fractal_core.pyx":39
  * 
  *             # escape-time loop with early bailout
  *             for n in range(max_iter):             # <<<<<<<<<<<<<<
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:
 */
-                              __pyx_t_15 = __pyx_v_max_iter;
-                              __pyx_t_16 = __pyx_t_15;
-                              for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
-                                __pyx_v_n = __pyx_t_17;
+      __pyx_t_15 = __pyx_v_max_iter;
+      __pyx_t_16 = __pyx_t_15;
+      for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+        __pyx_v_n = __pyx_t_17;
 
-                                /* "fractal_core.pyx":42
+        /* "fractal_core.pyx":41
  *             for n in range(max_iter):
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:             # <<<<<<<<<<<<<<
  *                     if zx2 + zy2 > bailout:
  *                         break
 */
-                                __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout2);
-                                if (__pyx_t_18) {
+        __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout2);
+        if (__pyx_t_18) {
 
-                                  /* "fractal_core.pyx":43
+          /* "fractal_core.pyx":42
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:
  *                     if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                         break
  * 
 */
-                                  __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
-                                  if (__pyx_t_18) {
+          __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
+          if (__pyx_t_18) {
 
-                                    /* "fractal_core.pyx":44
+            /* "fractal_core.pyx":43
  *                 if zx2 + zy2 > bailout2:
  *                     if zx2 + zy2 > bailout:
  *                         break             # <<<<<<<<<<<<<<
  * 
  *                 # Compute next iteration
 */
-                                    goto __pyx_L13_break;
+            goto __pyx_L8_break;
 
-                                    /* "fractal_core.pyx":43
+            /* "fractal_core.pyx":42
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:
  *                     if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                         break
  * 
 */
-                                  }
+          }
 
-                                  /* "fractal_core.pyx":42
+          /* "fractal_core.pyx":41
  *             for n in range(max_iter):
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:             # <<<<<<<<<<<<<<
  *                     if zx2 + zy2 > bailout:
  *                         break
 */
-                                }
+        }
 
-                                /* "fractal_core.pyx":47
+        /* "fractal_core.pyx":46
  * 
  *                 # Compute next iteration
  *                 zy = 2.0 * zx * zy + y0             # <<<<<<<<<<<<<<
  *                 zx = zx2 - zy2 + x0
  * 
 */
-                                __pyx_v_zy = (((2.0 * __pyx_v_zx) * __pyx_v_zy) + __pyx_v_y0);
+        __pyx_v_zy = (((2.0 * __pyx_v_zx) * __pyx_v_zy) + __pyx_v_y0);
 
-                                /* "fractal_core.pyx":48
+        /* "fractal_core.pyx":47
  *                 # Compute next iteration
  *                 zy = 2.0 * zx * zy + y0
  *                 zx = zx2 - zy2 + x0             # <<<<<<<<<<<<<<
  * 
  *                 # Update squares for next iteration
 */
-                                __pyx_v_zx = ((__pyx_v_zx2 - __pyx_v_zy2) + __pyx_v_x0);
+        __pyx_v_zx = ((__pyx_v_zx2 - __pyx_v_zy2) + __pyx_v_x0);
 
-                                /* "fractal_core.pyx":51
+        /* "fractal_core.pyx":50
  * 
  *                 # Update squares for next iteration
  *                 zx2 = zx * zx             # <<<<<<<<<<<<<<
  *                 zy2 = zy * zy
  * 
 */
-                                __pyx_v_zx2 = (__pyx_v_zx * __pyx_v_zx);
+        __pyx_v_zx2 = (__pyx_v_zx * __pyx_v_zx);
 
-                                /* "fractal_core.pyx":52
+        /* "fractal_core.pyx":51
  *                 # Update squares for next iteration
  *                 zx2 = zx * zx
  *                 zy2 = zy * zy             # <<<<<<<<<<<<<<
  * 
  *                 # Final bailout check
 */
-                                __pyx_v_zy2 = (__pyx_v_zy * __pyx_v_zy);
+        __pyx_v_zy2 = (__pyx_v_zy * __pyx_v_zy);
 
-                                /* "fractal_core.pyx":55
+        /* "fractal_core.pyx":54
  * 
  *                 # Final bailout check
  *                 if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                     break
  * 
 */
-                                __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
-                                if (__pyx_t_18) {
+        __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
+        if (__pyx_t_18) {
 
-                                  /* "fractal_core.pyx":56
+          /* "fractal_core.pyx":55
  *                 # Final bailout check
  *                 if zx2 + zy2 > bailout:
  *                     break             # <<<<<<<<<<<<<<
  * 
  *             view[i, j] = <np.uint8_t>((255 * n) // max_iter)
 */
-                                  goto __pyx_L13_break;
+          goto __pyx_L8_break;
 
-                                  /* "fractal_core.pyx":55
+          /* "fractal_core.pyx":54
  * 
  *                 # Final bailout check
  *                 if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                     break
  * 
 */
-                                }
-                              }
-                              __pyx_L13_break:;
+        }
+      }
+      __pyx_L8_break:;
 
-                              /* "fractal_core.pyx":58
+      /* "fractal_core.pyx":57
  *                     break
  * 
  *             view[i, j] = <np.uint8_t>((255 * n) // max_iter)             # <<<<<<<<<<<<<<
  *     return img
  * 
 */
-                              __pyx_t_19 = __pyx_v_i;
-                              __pyx_t_20 = __pyx_v_j;
-                              *((__pyx_t_5numpy_uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_view.data + __pyx_t_19 * __pyx_v_view.strides[0]) ) + __pyx_t_20 * __pyx_v_view.strides[1]) )) = ((__pyx_t_5numpy_uint8_t)((0xFF * __pyx_v_n) / __pyx_v_max_iter));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
-            #undef likely
-            #undef unlikely
-            #define likely(x)   __builtin_expect(!!(x), 1)
-            #define unlikely(x) __builtin_expect(!!(x), 0)
-        #endif
-      }
-
-      /* "fractal_core.pyx":30
- *         double bailout2 = 2.0  # Early bailout threshold
- * 
- *     for i in prange(height, nogil=True):             # <<<<<<<<<<<<<<
- *         y0 = ymin + dy * i
- *         for j in range(width):
-*/
-      /*finally:*/ {
-        /*normal exit:*/{
-          __Pyx_FastGIL_Forget();
-          Py_BLOCK_THREADS
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
+      __pyx_t_19 = __pyx_v_i;
+      __pyx_t_20 = __pyx_v_j;
+      *((__pyx_t_5numpy_uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_view.data + __pyx_t_19 * __pyx_v_view.strides[0]) ) + __pyx_t_20 * __pyx_v_view.strides[1]) )) = ((__pyx_t_5numpy_uint8_t)((0xFF * __pyx_v_n) / __pyx_v_max_iter));
+    }
   }
 
-  /* "fractal_core.pyx":59
+  /* "fractal_core.pyx":58
  * 
  *             view[i, j] = <np.uint8_t>((255 * n) // max_iter)
  *     return img             # <<<<<<<<<<<<<<
@@ -19100,7 +19040,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
   __pyx_r = ((PyObject *)__pyx_v_img);
   goto __pyx_L0;
 
-  /* "fractal_core.pyx":9
+  /* "fractal_core.pyx":8
  * cimport cython
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
@@ -19136,7 +19076,7 @@ static PyObject *__pyx_pf_12fractal_core_mandelbrot_cython(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "fractal_core.pyx":62
+/* "fractal_core.pyx":61
  * 
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
@@ -19190,81 +19130,81 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_width,&__pyx_mstate_global->__pyx_n_u_height,&__pyx_mstate_global->__pyx_n_u_max_iter,&__pyx_mstate_global->__pyx_n_u_zx0,&__pyx_mstate_global->__pyx_n_u_zy0,&__pyx_mstate_global->__pyx_n_u_zoom,&__pyx_mstate_global->__pyx_n_u_c_real,&__pyx_mstate_global->__pyx_n_u_c_imag,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 62, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 61, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  8:
         values[7] = __Pyx_ArgRef_FASTCALL(__pyx_args, 7);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[7])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[7])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  7:
         values[6] = __Pyx_ArgRef_FASTCALL(__pyx_args, 6);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[6])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[6])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  6:
         values[5] = __Pyx_ArgRef_FASTCALL(__pyx_args, 5);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  5:
         values[4] = __Pyx_ArgRef_FASTCALL(__pyx_args, 4);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  4:
         values[3] = __Pyx_ArgRef_FASTCALL(__pyx_args, 3);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 61, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "julia_cython", 0) < 0) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "julia_cython", 0) < 0) __PYX_ERR(0, 61, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 8; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("julia_cython", 1, 8, 8, i); __PYX_ERR(0, 62, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("julia_cython", 1, 8, 8, i); __PYX_ERR(0, 61, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 8)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[3] = __Pyx_ArgRef_FASTCALL(__pyx_args, 3);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[3])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[4] = __Pyx_ArgRef_FASTCALL(__pyx_args, 4);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[4])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[5] = __Pyx_ArgRef_FASTCALL(__pyx_args, 5);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[5])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[6] = __Pyx_ArgRef_FASTCALL(__pyx_args, 6);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[6])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[6])) __PYX_ERR(0, 61, __pyx_L3_error)
       values[7] = __Pyx_ArgRef_FASTCALL(__pyx_args, 7);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[7])) __PYX_ERR(0, 62, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[7])) __PYX_ERR(0, 61, __pyx_L3_error)
     }
-    __pyx_v_width = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_width == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
-    __pyx_v_height = __Pyx_PyLong_As_int(values[1]); if (unlikely((__pyx_v_height == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
-    __pyx_v_max_iter = __Pyx_PyLong_As_int(values[2]); if (unlikely((__pyx_v_max_iter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
-    __pyx_v_zx0 = __Pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_zx0 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L3_error)
-    __pyx_v_zy0 = __Pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_zy0 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L3_error)
-    __pyx_v_zoom = __Pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_zoom == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
-    __pyx_v_c_real = __Pyx_PyFloat_AsDouble(values[6]); if (unlikely((__pyx_v_c_real == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
-    __pyx_v_c_imag = __Pyx_PyFloat_AsDouble(values[7]); if (unlikely((__pyx_v_c_imag == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_width = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_width == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L3_error)
+    __pyx_v_height = __Pyx_PyLong_As_int(values[1]); if (unlikely((__pyx_v_height == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L3_error)
+    __pyx_v_max_iter = __Pyx_PyLong_As_int(values[2]); if (unlikely((__pyx_v_max_iter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
+    __pyx_v_zx0 = __Pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_zx0 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+    __pyx_v_zy0 = __Pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_zy0 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+    __pyx_v_zoom = __Pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_zoom == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L3_error)
+    __pyx_v_c_real = __Pyx_PyFloat_AsDouble(values[6]); if (unlikely((__pyx_v_c_real == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
+    __pyx_v_c_imag = __Pyx_PyFloat_AsDouble(values[7]); if (unlikely((__pyx_v_c_imag == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("julia_cython", 1, 8, 8, __pyx_nargs); __PYX_ERR(0, 62, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("julia_cython", 1, 8, 8, __pyx_nargs); __PYX_ERR(0, 61, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19338,7 +19278,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
   __pyx_pybuffernd_img.data = NULL;
   __pyx_pybuffernd_img.rcbuffer = &__pyx_pybuffer_img;
 
-  /* "fractal_core.pyx":71
+  /* "fractal_core.pyx":70
  *                  double c_real, double c_imag):
  *     cdef:
  *         double scale_x = 3.5 / zoom             # <<<<<<<<<<<<<<
@@ -19347,7 +19287,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_scale_x = (3.5 / __pyx_v_zoom);
 
-  /* "fractal_core.pyx":72
+  /* "fractal_core.pyx":71
  *     cdef:
  *         double scale_x = 3.5 / zoom
  *         double scale_y = 2.0 / zoom             # <<<<<<<<<<<<<<
@@ -19356,7 +19296,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_scale_y = (2.0 / __pyx_v_zoom);
 
-  /* "fractal_core.pyx":73
+  /* "fractal_core.pyx":72
  *         double scale_x = 3.5 / zoom
  *         double scale_y = 2.0 / zoom
  *         double xmin = zx0 - 0.5 * scale_x             # <<<<<<<<<<<<<<
@@ -19365,7 +19305,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_xmin = (__pyx_v_zx0 - (0.5 * __pyx_v_scale_x));
 
-  /* "fractal_core.pyx":74
+  /* "fractal_core.pyx":73
  *         double scale_y = 2.0 / zoom
  *         double xmin = zx0 - 0.5 * scale_x
  *         double ymin = zy0 - 0.5 * scale_y             # <<<<<<<<<<<<<<
@@ -19374,7 +19314,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_ymin = (__pyx_v_zy0 - (0.5 * __pyx_v_scale_y));
 
-  /* "fractal_core.pyx":75
+  /* "fractal_core.pyx":74
  *         double xmin = zx0 - 0.5 * scale_x
  *         double ymin = zy0 - 0.5 * scale_y
  *         double dx = scale_x / (width - 1)             # <<<<<<<<<<<<<<
@@ -19383,7 +19323,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_dx = (__pyx_v_scale_x / ((double)(__pyx_v_width - 1)));
 
-  /* "fractal_core.pyx":76
+  /* "fractal_core.pyx":75
  *         double ymin = zy0 - 0.5 * scale_y
  *         double dx = scale_x / (width - 1)
  *         double dy = scale_y / (height - 1)             # <<<<<<<<<<<<<<
@@ -19392,7 +19332,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_dy = (__pyx_v_scale_y / ((double)(__pyx_v_height - 1)));
 
-  /* "fractal_core.pyx":77
+  /* "fractal_core.pyx":76
  *         double dx = scale_x / (width - 1)
  *         double dy = scale_y / (height - 1)
  *         np.ndarray[np.uint8_t, ndim=2] img = np.empty((height, width), dtype=np.uint8)             # <<<<<<<<<<<<<<
@@ -19400,26 +19340,26 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
  *         int i, j, n
 */
   __pyx_t_2 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_empty); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_empty); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_height); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_height); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyLong_From_int(__pyx_v_width); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyLong_From_int(__pyx_v_width); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3) != (0)) __PYX_ERR(0, 77, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3) != (0)) __PYX_ERR(0, 76, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_5);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_5) != (0)) __PYX_ERR(0, 77, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_5) != (0)) __PYX_ERR(0, 76, __pyx_L1_error);
   __pyx_t_3 = 0;
   __pyx_t_5 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_uint8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_uint8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_7 = 1;
@@ -19436,43 +19376,43 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
   #endif
   {
     PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_2, __pyx_t_6};
-    __pyx_t_5 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_3, __pyx_t_5, __pyx_callargs+2, 0) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
+    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_3, __pyx_t_5, __pyx_callargs+2, 0) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
     __pyx_t_1 = __Pyx_Object_Vectorcall_CallFromBuilder(__pyx_t_4, __pyx_callargs+__pyx_t_7, (2-__pyx_t_7) | (__pyx_t_7*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 76, __pyx_L1_error)
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_img.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5numpy_uint8_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_img = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_img.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 77, __pyx_L1_error)
+      __PYX_ERR(0, 76, __pyx_L1_error)
     } else {__pyx_pybuffernd_img.diminfo[0].strides = __pyx_pybuffernd_img.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_img.diminfo[0].shape = __pyx_pybuffernd_img.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_img.diminfo[1].strides = __pyx_pybuffernd_img.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_img.diminfo[1].shape = __pyx_pybuffernd_img.rcbuffer->pybuffer.shape[1];
     }
   }
   __pyx_v_img = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "fractal_core.pyx":78
+  /* "fractal_core.pyx":77
  *         double dy = scale_y / (height - 1)
  *         np.ndarray[np.uint8_t, ndim=2] img = np.empty((height, width), dtype=np.uint8)
  *         np.uint8_t[:, :] view = img             # <<<<<<<<<<<<<<
  *         int i, j, n
  *         double x, y, zx, zy, zx2, zy2, tmp
 */
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_uint8_t(((PyObject *)__pyx_v_img), PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_uint8_t(((PyObject *)__pyx_v_img), PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 77, __pyx_L1_error)
   __pyx_v_view = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "fractal_core.pyx":81
+  /* "fractal_core.pyx":80
  *         int i, j, n
  *         double x, y, zx, zy, zx2, zy2, tmp
  *         double bailout = 4.0             # <<<<<<<<<<<<<<
@@ -19481,291 +19421,231 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
 */
   __pyx_v_bailout = 4.0;
 
-  /* "fractal_core.pyx":82
+  /* "fractal_core.pyx":81
  *         double x, y, zx, zy, zx2, zy2, tmp
  *         double bailout = 4.0
  *         double bailout2 = 2.0  # Early bailout threshold             # <<<<<<<<<<<<<<
  * 
- *     for i in prange(height, nogil=True):
+ *     for i in range(height):
 */
   __pyx_v_bailout2 = 2.0;
 
-  /* "fractal_core.pyx":84
+  /* "fractal_core.pyx":83
  *         double bailout2 = 2.0  # Early bailout threshold
  * 
- *     for i in prange(height, nogil=True):             # <<<<<<<<<<<<<<
+ *     for i in range(height):             # <<<<<<<<<<<<<<
  *         y = ymin + dy * i
  *         for j in range(width):
 */
-  {
-      PyThreadState *_save;
-      _save = NULL;
-      Py_UNBLOCK_THREADS
-      __Pyx_FastGIL_Remember();
-      /*try:*/ {
-        __pyx_t_9 = __pyx_v_height;
-        {
-            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
-                #undef likely
-                #undef unlikely
-                #define likely(x)   (x)
-                #define unlikely(x) (x)
-            #endif
-            __pyx_t_11 = (__pyx_t_9 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_11 > 0)
-            {
-                #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20)
-                #endif /* _OPENMP */
-                {
-                    #ifdef _OPENMP
-                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_n) lastprivate(__pyx_v_x) lastprivate(__pyx_v_y) lastprivate(__pyx_v_zx) lastprivate(__pyx_v_zx2) lastprivate(__pyx_v_zy) lastprivate(__pyx_v_zy2)
-                    #endif /* _OPENMP */
-                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
-                        {
-                            __pyx_v_i = (int)(0 + 1 * __pyx_t_10);
-                            /* Initialize private variables to invalid values */
-                            __pyx_v_j = ((int)0xbad0bad0);
-                            __pyx_v_n = ((int)0xbad0bad0);
-                            __pyx_v_x = ((double)__PYX_NAN());
-                            __pyx_v_y = ((double)__PYX_NAN());
-                            __pyx_v_zx = ((double)__PYX_NAN());
-                            __pyx_v_zx2 = ((double)__PYX_NAN());
-                            __pyx_v_zy = ((double)__PYX_NAN());
-                            __pyx_v_zy2 = ((double)__PYX_NAN());
+  __pyx_t_9 = __pyx_v_height;
+  __pyx_t_10 = __pyx_t_9;
+  for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+    __pyx_v_i = __pyx_t_11;
 
-                            /* "fractal_core.pyx":85
+    /* "fractal_core.pyx":84
  * 
- *     for i in prange(height, nogil=True):
+ *     for i in range(height):
  *         y = ymin + dy * i             # <<<<<<<<<<<<<<
  *         for j in range(width):
  *             x = xmin + dx * j
 */
-                            __pyx_v_y = (__pyx_v_ymin + (__pyx_v_dy * __pyx_v_i));
+    __pyx_v_y = (__pyx_v_ymin + (__pyx_v_dy * __pyx_v_i));
 
-                            /* "fractal_core.pyx":86
- *     for i in prange(height, nogil=True):
+    /* "fractal_core.pyx":85
+ *     for i in range(height):
  *         y = ymin + dy * i
  *         for j in range(width):             # <<<<<<<<<<<<<<
  *             x = xmin + dx * j
  *             zx = x
 */
-                            __pyx_t_12 = __pyx_v_width;
-                            __pyx_t_13 = __pyx_t_12;
-                            for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-                              __pyx_v_j = __pyx_t_14;
+    __pyx_t_12 = __pyx_v_width;
+    __pyx_t_13 = __pyx_t_12;
+    for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
+      __pyx_v_j = __pyx_t_14;
 
-                              /* "fractal_core.pyx":87
+      /* "fractal_core.pyx":86
  *         y = ymin + dy * i
  *         for j in range(width):
  *             x = xmin + dx * j             # <<<<<<<<<<<<<<
  *             zx = x
  *             zy = y
 */
-                              __pyx_v_x = (__pyx_v_xmin + (__pyx_v_dx * __pyx_v_j));
+      __pyx_v_x = (__pyx_v_xmin + (__pyx_v_dx * __pyx_v_j));
 
-                              /* "fractal_core.pyx":88
+      /* "fractal_core.pyx":87
  *         for j in range(width):
  *             x = xmin + dx * j
  *             zx = x             # <<<<<<<<<<<<<<
  *             zy = y
  *             zx2 = x * x
 */
-                              __pyx_v_zx = __pyx_v_x;
+      __pyx_v_zx = __pyx_v_x;
 
-                              /* "fractal_core.pyx":89
+      /* "fractal_core.pyx":88
  *             x = xmin + dx * j
  *             zx = x
  *             zy = y             # <<<<<<<<<<<<<<
  *             zx2 = x * x
  *             zy2 = y * y
 */
-                              __pyx_v_zy = __pyx_v_y;
+      __pyx_v_zy = __pyx_v_y;
 
-                              /* "fractal_core.pyx":90
+      /* "fractal_core.pyx":89
  *             zx = x
  *             zy = y
  *             zx2 = x * x             # <<<<<<<<<<<<<<
  *             zy2 = y * y
  * 
 */
-                              __pyx_v_zx2 = (__pyx_v_x * __pyx_v_x);
+      __pyx_v_zx2 = (__pyx_v_x * __pyx_v_x);
 
-                              /* "fractal_core.pyx":91
+      /* "fractal_core.pyx":90
  *             zy = y
  *             zx2 = x * x
  *             zy2 = y * y             # <<<<<<<<<<<<<<
  * 
  *             # escape-time loop with early bailout
 */
-                              __pyx_v_zy2 = (__pyx_v_y * __pyx_v_y);
+      __pyx_v_zy2 = (__pyx_v_y * __pyx_v_y);
 
-                              /* "fractal_core.pyx":94
+      /* "fractal_core.pyx":93
  * 
  *             # escape-time loop with early bailout
  *             for n in range(max_iter):             # <<<<<<<<<<<<<<
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:
 */
-                              __pyx_t_15 = __pyx_v_max_iter;
-                              __pyx_t_16 = __pyx_t_15;
-                              for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
-                                __pyx_v_n = __pyx_t_17;
+      __pyx_t_15 = __pyx_v_max_iter;
+      __pyx_t_16 = __pyx_t_15;
+      for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+        __pyx_v_n = __pyx_t_17;
 
-                                /* "fractal_core.pyx":96
+        /* "fractal_core.pyx":95
  *             for n in range(max_iter):
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:             # <<<<<<<<<<<<<<
  *                     if zx2 + zy2 > bailout:
  *                         break
 */
-                                __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout2);
-                                if (__pyx_t_18) {
+        __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout2);
+        if (__pyx_t_18) {
 
-                                  /* "fractal_core.pyx":97
+          /* "fractal_core.pyx":96
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:
  *                     if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                         break
  * 
 */
-                                  __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
-                                  if (__pyx_t_18) {
+          __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
+          if (__pyx_t_18) {
 
-                                    /* "fractal_core.pyx":98
+            /* "fractal_core.pyx":97
  *                 if zx2 + zy2 > bailout2:
  *                     if zx2 + zy2 > bailout:
  *                         break             # <<<<<<<<<<<<<<
  * 
  *                 # Compute next iteration
 */
-                                    goto __pyx_L13_break;
+            goto __pyx_L8_break;
 
-                                    /* "fractal_core.pyx":97
+            /* "fractal_core.pyx":96
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:
  *                     if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                         break
  * 
 */
-                                  }
+          }
 
-                                  /* "fractal_core.pyx":96
+          /* "fractal_core.pyx":95
  *             for n in range(max_iter):
  *                 # Check early bailout condition
  *                 if zx2 + zy2 > bailout2:             # <<<<<<<<<<<<<<
  *                     if zx2 + zy2 > bailout:
  *                         break
 */
-                                }
+        }
 
-                                /* "fractal_core.pyx":101
+        /* "fractal_core.pyx":100
  * 
  *                 # Compute next iteration
  *                 zy = 2.0 * zx * zy + c_imag             # <<<<<<<<<<<<<<
  *                 zx = zx2 - zy2 + c_real
  * 
 */
-                                __pyx_v_zy = (((2.0 * __pyx_v_zx) * __pyx_v_zy) + __pyx_v_c_imag);
+        __pyx_v_zy = (((2.0 * __pyx_v_zx) * __pyx_v_zy) + __pyx_v_c_imag);
 
-                                /* "fractal_core.pyx":102
+        /* "fractal_core.pyx":101
  *                 # Compute next iteration
  *                 zy = 2.0 * zx * zy + c_imag
  *                 zx = zx2 - zy2 + c_real             # <<<<<<<<<<<<<<
  * 
  *                 # Update squares for next iteration
 */
-                                __pyx_v_zx = ((__pyx_v_zx2 - __pyx_v_zy2) + __pyx_v_c_real);
+        __pyx_v_zx = ((__pyx_v_zx2 - __pyx_v_zy2) + __pyx_v_c_real);
 
-                                /* "fractal_core.pyx":105
+        /* "fractal_core.pyx":104
  * 
  *                 # Update squares for next iteration
  *                 zx2 = zx * zx             # <<<<<<<<<<<<<<
  *                 zy2 = zy * zy
  * 
 */
-                                __pyx_v_zx2 = (__pyx_v_zx * __pyx_v_zx);
+        __pyx_v_zx2 = (__pyx_v_zx * __pyx_v_zx);
 
-                                /* "fractal_core.pyx":106
+        /* "fractal_core.pyx":105
  *                 # Update squares for next iteration
  *                 zx2 = zx * zx
  *                 zy2 = zy * zy             # <<<<<<<<<<<<<<
  * 
  *                 # Final bailout check
 */
-                                __pyx_v_zy2 = (__pyx_v_zy * __pyx_v_zy);
+        __pyx_v_zy2 = (__pyx_v_zy * __pyx_v_zy);
 
-                                /* "fractal_core.pyx":109
+        /* "fractal_core.pyx":108
  * 
  *                 # Final bailout check
  *                 if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                     break
  * 
 */
-                                __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
-                                if (__pyx_t_18) {
+        __pyx_t_18 = ((__pyx_v_zx2 + __pyx_v_zy2) > __pyx_v_bailout);
+        if (__pyx_t_18) {
 
-                                  /* "fractal_core.pyx":110
+          /* "fractal_core.pyx":109
  *                 # Final bailout check
  *                 if zx2 + zy2 > bailout:
  *                     break             # <<<<<<<<<<<<<<
  * 
  *             view[i, j] = <np.uint8_t>((255 * n) // max_iter)
 */
-                                  goto __pyx_L13_break;
+          goto __pyx_L8_break;
 
-                                  /* "fractal_core.pyx":109
+          /* "fractal_core.pyx":108
  * 
  *                 # Final bailout check
  *                 if zx2 + zy2 > bailout:             # <<<<<<<<<<<<<<
  *                     break
  * 
 */
-                                }
-                              }
-                              __pyx_L13_break:;
+        }
+      }
+      __pyx_L8_break:;
 
-                              /* "fractal_core.pyx":112
+      /* "fractal_core.pyx":111
  *                     break
  * 
  *             view[i, j] = <np.uint8_t>((255 * n) // max_iter)             # <<<<<<<<<<<<<<
  *     return img
 */
-                              __pyx_t_19 = __pyx_v_i;
-                              __pyx_t_20 = __pyx_v_j;
-                              *((__pyx_t_5numpy_uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_view.data + __pyx_t_19 * __pyx_v_view.strides[0]) ) + __pyx_t_20 * __pyx_v_view.strides[1]) )) = ((__pyx_t_5numpy_uint8_t)((0xFF * __pyx_v_n) / __pyx_v_max_iter));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
-            #undef likely
-            #undef unlikely
-            #define likely(x)   __builtin_expect(!!(x), 1)
-            #define unlikely(x) __builtin_expect(!!(x), 0)
-        #endif
-      }
-
-      /* "fractal_core.pyx":84
- *         double bailout2 = 2.0  # Early bailout threshold
- * 
- *     for i in prange(height, nogil=True):             # <<<<<<<<<<<<<<
- *         y = ymin + dy * i
- *         for j in range(width):
-*/
-      /*finally:*/ {
-        /*normal exit:*/{
-          __Pyx_FastGIL_Forget();
-          Py_BLOCK_THREADS
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
+      __pyx_t_19 = __pyx_v_i;
+      __pyx_t_20 = __pyx_v_j;
+      *((__pyx_t_5numpy_uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_view.data + __pyx_t_19 * __pyx_v_view.strides[0]) ) + __pyx_t_20 * __pyx_v_view.strides[1]) )) = ((__pyx_t_5numpy_uint8_t)((0xFF * __pyx_v_n) / __pyx_v_max_iter));
+    }
   }
 
-  /* "fractal_core.pyx":113
+  /* "fractal_core.pyx":112
  * 
  *             view[i, j] = <np.uint8_t>((255 * n) // max_iter)
  *     return img             # <<<<<<<<<<<<<<
@@ -19775,7 +19655,7 @@ static PyObject *__pyx_pf_12fractal_core_2julia_cython(CYTHON_UNUSED PyObject *_
   __pyx_r = ((PyObject *)__pyx_v_img);
   goto __pyx_L0;
 
-  /* "fractal_core.pyx":62
+  /* "fractal_core.pyx":61
  * 
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
@@ -21892,35 +21772,35 @@ __Pyx_RefNannySetupContext("PyInit_fractal_core", 0);
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
- * from cython.parallel import prange
+ * cimport cython
 */
   __pyx_t_5 = __Pyx_ImportDottedModule(__pyx_mstate_global->__pyx_n_u_numpy, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_np, __pyx_t_5) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "fractal_core.pyx":9
+  /* "fractal_core.pyx":8
  * cimport cython
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
  * @cython.wraparound(False)
  * @cython.cdivision(True)
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_12fractal_core_1mandelbrot_cython, 0, __pyx_mstate_global->__pyx_n_u_mandelbrot_cython, NULL, __pyx_mstate_global->__pyx_n_u_fractal_core, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_12fractal_core_1mandelbrot_cython, 0, __pyx_mstate_global->__pyx_n_u_mandelbrot_cython, NULL, __pyx_mstate_global->__pyx_n_u_fractal_core, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_mandelbrot_cython, __pyx_t_5) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_mandelbrot_cython, __pyx_t_5) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "fractal_core.pyx":62
+  /* "fractal_core.pyx":61
  * 
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
  * @cython.wraparound(False)
  * @cython.cdivision(True)
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_12fractal_core_3julia_cython, 0, __pyx_mstate_global->__pyx_n_u_julia_cython, NULL, __pyx_mstate_global->__pyx_n_u_fractal_core, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_12fractal_core_3julia_cython, 0, __pyx_mstate_global->__pyx_n_u_julia_cython, NULL, __pyx_mstate_global->__pyx_n_u_fractal_core, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_julia_cython, __pyx_t_5) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_julia_cython, __pyx_t_5) < 0) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "fractal_core.pyx":1
@@ -22163,7 +22043,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry const *t, PyObject **target, c
 
 static int __Pyx_InitCachedBuiltins(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_range); if (!__pyx_builtin_range) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_range); if (!__pyx_builtin_range) __PYX_ERR(0, 29, __pyx_L1_error)
   __pyx_builtin___import__ = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_import); if (!__pyx_builtin___import__) __PYX_ERR(1, 101, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 139, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 154, __pyx_L1_error)
@@ -22269,12 +22149,12 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   PyObject* tuple_dedup_map = PyDict_New();
   if (unlikely(!tuple_dedup_map)) return -1;
   {
-    const __Pyx_PyCode_New_function_description descr = {6, 0, 0, 26, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 9, 312};
+    const __Pyx_PyCode_New_function_description descr = {6, 0, 0, 26, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 8, 316};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_width, __pyx_mstate->__pyx_n_u_height, __pyx_mstate->__pyx_n_u_max_iter, __pyx_mstate->__pyx_n_u_cx, __pyx_mstate->__pyx_n_u_cy, __pyx_mstate->__pyx_n_u_zoom, __pyx_mstate->__pyx_n_u_scale_x, __pyx_mstate->__pyx_n_u_scale_y, __pyx_mstate->__pyx_n_u_xmin, __pyx_mstate->__pyx_n_u_ymin, __pyx_mstate->__pyx_n_u_dx, __pyx_mstate->__pyx_n_u_dy, __pyx_mstate->__pyx_n_u_img, __pyx_mstate->__pyx_n_u_view, __pyx_mstate->__pyx_n_u_i, __pyx_mstate->__pyx_n_u_j, __pyx_mstate->__pyx_n_u_n, __pyx_mstate->__pyx_n_u_x0, __pyx_mstate->__pyx_n_u_y0, __pyx_mstate->__pyx_n_u_zx, __pyx_mstate->__pyx_n_u_zy, __pyx_mstate->__pyx_n_u_zx2, __pyx_mstate->__pyx_n_u_zy2, __pyx_mstate->__pyx_n_u_tmp, __pyx_mstate->__pyx_n_u_bailout, __pyx_mstate->__pyx_n_u_bailout2};
     __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_fractal_core_pyx, __pyx_mstate->__pyx_n_u_mandelbrot_cython, __pyx_k_Rq_Rq_c_4r_c_4r_HCvRq_HCwb_RvRx, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {8, 0, 0, 28, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 62, 320};
+    const __Pyx_PyCode_New_function_description descr = {8, 0, 0, 28, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 61, 324};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_width, __pyx_mstate->__pyx_n_u_height, __pyx_mstate->__pyx_n_u_max_iter, __pyx_mstate->__pyx_n_u_zx0, __pyx_mstate->__pyx_n_u_zy0, __pyx_mstate->__pyx_n_u_zoom, __pyx_mstate->__pyx_n_u_c_real, __pyx_mstate->__pyx_n_u_c_imag, __pyx_mstate->__pyx_n_u_scale_x, __pyx_mstate->__pyx_n_u_scale_y, __pyx_mstate->__pyx_n_u_xmin, __pyx_mstate->__pyx_n_u_ymin, __pyx_mstate->__pyx_n_u_dx, __pyx_mstate->__pyx_n_u_dy, __pyx_mstate->__pyx_n_u_img, __pyx_mstate->__pyx_n_u_view, __pyx_mstate->__pyx_n_u_i, __pyx_mstate->__pyx_n_u_j, __pyx_mstate->__pyx_n_u_n, __pyx_mstate->__pyx_n_u_x, __pyx_mstate->__pyx_n_u_y, __pyx_mstate->__pyx_n_u_zx, __pyx_mstate->__pyx_n_u_zy, __pyx_mstate->__pyx_n_u_zx2, __pyx_mstate->__pyx_n_u_zy2, __pyx_mstate->__pyx_n_u_tmp, __pyx_mstate->__pyx_n_u_bailout, __pyx_mstate->__pyx_n_u_bailout2};
     __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_fractal_core_pyx, __pyx_mstate->__pyx_n_u_julia_cython, __pyx_k_Rq_Rq_d_D_d_D_HCvRq_HCwb_RvRxxv, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
   }

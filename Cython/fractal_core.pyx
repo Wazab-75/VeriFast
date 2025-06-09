@@ -3,7 +3,6 @@
 
 import numpy as np
 cimport numpy as np
-from cython.parallel import prange
 cimport cython
 
 @cython.boundscheck(False)
@@ -27,7 +26,7 @@ def mandelbrot_cython(int width, int height,
         double bailout = 4.0
         double bailout2 = 2.0  # Early bailout threshold
 
-    for i in prange(height, nogil=True):
+    for i in range(height):
         y0 = ymin + dy * i
         for j in range(width):
             x0 = xmin + dx * j
@@ -81,7 +80,7 @@ def julia_cython(int width, int height,
         double bailout = 4.0
         double bailout2 = 2.0  # Early bailout threshold
 
-    for i in prange(height, nogil=True):
+    for i in range(height):
         y = ymin + dy * i
         for j in range(width):
             x = xmin + dx * j
