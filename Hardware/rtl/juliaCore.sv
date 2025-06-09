@@ -1,7 +1,8 @@
 module juliaCore#(
     INTEGER_BITS = 8,
     FRACTIONAL_BITS = 24,
-    MAX_ITER_WIDTH = 16
+    MAX_ITER_WIDTH = 16,
+    DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS
 )(
     input logic clk_i,
     input logic rst_i,
@@ -17,8 +18,6 @@ module juliaCore#(
     output logic [MAX_ITER_WIDTH-1:0] iter_o,
     output logic done_o
 );
-
-localparam int DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
 
 logic signed [DATA_WIDTH-1:0] x, y;       // z = x + i*y
 logic signed [DATA_WIDTH-1:0] x2, y2, xy; // x^2, y^2, x*y
