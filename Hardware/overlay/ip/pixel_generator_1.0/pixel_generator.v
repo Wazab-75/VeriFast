@@ -194,8 +194,8 @@ parameter FRACTIONAL_BITS = 24;
 parameter MAX_ITER_WIDTH = 16;
 parameter DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
 
-parameter MANDEL_CORE_COUNT = 9;
-parameter JULIA_CORE_COUNT = 0;
+parameter MANDEL_CORE_COUNT = 8;
+parameter JULIA_CORE_COUNT = 8;
 parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 
 reg [9:0] x;
@@ -215,39 +215,34 @@ wire [CORE_COUNT-1:0] done;
 reg signed [(DATA_WIDTH) * (CORE_COUNT) - 1:0] x_0, y_0;
 reg signed [DATA_WIDTH-1:0] x_n, y_n; // next x and y values
 
-reg signed [DATA_WIDTH-1:0] cx_i = 32'h00000000; // used only for julia
-reg signed [DATA_WIDTH-1:0] cy_i = 32'h00000000;
+reg signed [DATA_WIDTH-1:0] cx_i = 32'hFF333333; // used only for julia
+reg signed [DATA_WIDTH-1:0] cy_i = 32'h0027E3BE;
 
-reg m_or_j = 1'b0; // 0 for mandelbrot, 1 for julia
+reg m_or_j = 1'b1; // 0 for mandelbrot, 1 for julia
 
 wire [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
-reg [CORE_COUNT-1:0] mandelbrot_start;
+reg [CORE_COUNT-1:0] core_start;
 reg [15:0] max_iter = 16'd100;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
-        if (~m_or_j) begin // Mandelbrot
-            if (new_pixel) begin
-                if (lastx) begin
-                    x <= 10'd0;
-                    x_n <= 32'hFE000000;
-                    if (lasty) begin
-                        y <= 9'd0;
-                        y_n <= 32'hFE800000;
-                    end
-                    else begin
-                        y <= y + 9'd1;
-                        y_n <= y_n + 32'h1999A;
-                    end
+        if (new_pixel) begin
+            if (lastx) begin
+                x <= 10'd0;
+                x_n <= 32'hFE000000;
+                if (lasty) begin
+                    y <= 9'd0;
+                    y_n <= 32'hFE800000;
                 end
                 else begin
-                    x <= x + 9'd1;
-                    x_n <= x_n + 32'h1999A;
+                    y <= y + 9'd1;
+                    y_n <= y_n + 32'h1999A;
                 end
             end
-        end
-        else begin // Julia
-            
+            else begin
+                x <= x + 9'd1;
+                x_n <= x_n + 32'h1999A;
+            end
         end
     end
     else begin
@@ -258,18 +253,17 @@ always @(posedge out_stream_aclk) begin
     end
 end
 
-reg [$clog2(MANDEL_CORE_COUNT)-1:0] waiting, next_waiting, packer_waiting;
+reg [$clog2(MANDEL_CORE_COUNT):0] waiting, next_waiting, packer_waiting;
 
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC0 = 0;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC1 = 1;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC2 = 2;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC3 = 3;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC4 = 4;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC5 = 5;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC6 = 6;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC7 = 7;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC8 = 8;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] PACKER_WAIT = 15; // waiting for the packer to be finish so can send next value
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC0 = 0;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC1 = 1;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC2 = 2;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC3 = 3;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC4 = 4;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC5 = 5;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC6 = 6;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC7 = 7;
+localparam [$clog2(MANDEL_CORE_COUNT):0] PACKER_WAIT = 15; // waiting for the packer to be finish so can send next value
 
 reg [7:0] r, g, b; // rgb values to send to the packer
 
@@ -277,16 +271,23 @@ always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
         case (waiting)
             WC0: begin
-                if (done[0]) begin
+                if (done[0] | done[0 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC1;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
                     // send rgb here
-                    r <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + 8 +: 8];
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
 
                 end
                 else begin
@@ -294,123 +295,158 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC1: begin
-                if (done[1]) begin
+                if (done[1] | done[1 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC2;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + 8 +: 8];
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
                     next_waiting <= WC1;
                 end
             end
             WC2: begin
-                if (done[2]) begin
+                if (done[2] | done[2 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC3;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + 8 +: 8];
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
                     next_waiting <= WC2;
                 end
             end
             WC3: begin
-                if (done[3]) begin
+                if (done[3] | done[3 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC4;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + 8 +: 8];
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
                     next_waiting <= WC3;
                 end
             end
             WC4: begin
-                if (done[4]) begin
+                if (done[4] | done[4 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC5;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + 8 +: 8];
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
                     next_waiting <= WC4;
                 end
             end
             WC5: begin
-                if (done[5]) begin
+                if (done[5] | done[5 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC6;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
-                    r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + 8 +: 8];
+                    
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
                     next_waiting <= WC5;
                 end
             end
             WC6: begin
-                if (done[6]) begin
+                if (done[6] | done[6 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC7;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
-
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+                        r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
                     next_waiting <= WC6;
                 end
             end
             WC7: begin
-                if (done[7]) begin
-                    next_waiting <= PACKER_WAIT;
-                    packer_waiting <= WC8;
-                    new_pixel <= 1'b1;
-                    valid_int <= 1'b1;
-
-                    r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + 8 +: 8];
-                end
-                else begin
-                    next_waiting <= WC7;
-                end
-            end
-            WC8: begin
-                if (done[8]) begin
+                if (done[7] | done[7 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC0;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    r <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH +: 8];
-                    g <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH +: 8];
-                    b <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH + 8 +: 8];
+                    if (m_or_j) begin // julia mode
+                        r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
+                    end
+                    else begin // mandelbrot mode
+
+                        r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
+                        g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
+                        b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + 8 +: 8];
+                    end
                 end
                 else begin
-                    next_waiting <= WC8;
+                    next_waiting <= WC7;
                 end
             end
             PACKER_WAIT: begin
@@ -419,19 +455,33 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b0;
                     new_pixel <= 1'b0;
 
-                    // start core again
-                    if (packer_waiting == WC0) begin // need to restart C8
-                        mandelbrot_start[WC8-1+1] <= 1'b1;
-                        x_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
-                        y_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    if (m_or_j) begin // julia mode
+                        if (packer_waiting == WC0) begin // need to restart C8
+                            core_start[WC7-1+1 + MANDEL_CORE_COUNT] <= 1'b1;
+                            x_0[WC7 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                            y_0[WC7 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            
+                        end
+                        else begin
+                            core_start[packer_waiting-1] <= 1'b1;
+                            x_0[(packer_waiting-1) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                            y_0[(packer_waiting-1) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                        end
                         
                     end
-                    else begin
-                        mandelbrot_start[packer_waiting-1] <= 1'b1;
-                        x_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
-                        y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    else begin // mandelbrot mode
+                        if (packer_waiting == WC0) begin // need to restart C8
+                            core_start[WC7-1+1] <= 1'b1;
+                            x_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                            y_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            
+                        end
+                        else begin
+                            core_start[packer_waiting-1] <= 1'b1;
+                            x_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                            y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                        end
                     end
-
                 end
                 else begin
                     next_waiting <= PACKER_WAIT;
@@ -466,7 +516,7 @@ fractalCores #(
 ) fractalCores (
     .clk_i(out_stream_aclk),
     .rst_i(~periph_resetn),
-    .start_i(mandelbrot_start),
+    .start_i(core_start),
     .max_iter_i(max_iter),
     .x0_i(x_0),
     .y0_i(y_0),
