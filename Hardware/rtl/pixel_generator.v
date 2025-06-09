@@ -194,8 +194,8 @@ parameter FRACTIONAL_BITS = 24;
 parameter MAX_ITER_WIDTH = 16;
 parameter DATA_WIDTH = INTEGER_BITS + FRACTIONAL_BITS;
 
-parameter MANDEL_CORE_COUNT = 9;
-parameter JULIA_CORE_COUNT = 9;
+parameter MANDEL_CORE_COUNT = 8;
+parameter JULIA_CORE_COUNT = 8;
 parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 
 reg [9:0] x;
@@ -253,18 +253,17 @@ always @(posedge out_stream_aclk) begin
     end
 end
 
-reg [$clog2(MANDEL_CORE_COUNT)-1:0] waiting, next_waiting, packer_waiting;
+reg [$clog2(MANDEL_CORE_COUNT):0] waiting, next_waiting, packer_waiting;
 
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC0 = 0;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC1 = 1;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC2 = 2;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC3 = 3;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC4 = 4;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC5 = 5;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC6 = 6;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC7 = 7;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] WC8 = 8;
-localparam [$clog2(MANDEL_CORE_COUNT)-1:0] PACKER_WAIT = 15; // waiting for the packer to be finish so can send next value
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC0 = 0;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC1 = 1;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC2 = 2;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC3 = 3;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC4 = 4;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC5 = 5;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC6 = 6;
+localparam [$clog2(MANDEL_CORE_COUNT):0] WC7 = 7;
+localparam [$clog2(MANDEL_CORE_COUNT):0] PACKER_WAIT = 15; // waiting for the packer to be finish so can send next value
 
 reg [7:0] r, g, b; // rgb values to send to the packer
 
@@ -431,7 +430,7 @@ always @(posedge out_stream_aclk) begin
             WC7: begin
                 if (done[7] | done[7 + MANDEL_CORE_COUNT]) begin
                     next_waiting <= PACKER_WAIT;
-                    packer_waiting <= WC8;
+                    packer_waiting <= WC0;
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
@@ -451,28 +450,6 @@ always @(posedge out_stream_aclk) begin
                     next_waiting <= WC7;
                 end
             end
-            WC8: begin
-                if (done[8] | done[8 + MANDEL_CORE_COUNT]) begin
-                    next_waiting <= PACKER_WAIT;
-                    packer_waiting <= WC0;
-                    new_pixel <= 1'b1;
-                    valid_int <= 1'b1;
-
-                    if (m_or_j) begin // julia mode
-                        r <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
-                    end
-                    else begin // mandelbrot mode
-                        r <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC8 * MAX_ITER_WIDTH + 8 +: 8];
-                    end
-                end
-                else begin
-                    next_waiting <= WC8;
-                end
-            end
             PACKER_WAIT: begin
                 if (ready) begin
                     next_waiting <= packer_waiting;
@@ -481,9 +458,9 @@ always @(posedge out_stream_aclk) begin
 
                     if (m_or_j) begin // julia mode
                         if (packer_waiting == WC0) begin // need to restart C8
-                            core_start[WC8-1+1 + MANDEL_CORE_COUNT] <= 1'b1;
-                            x_0[WC8 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
-                            y_0[WC8 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            core_start[WC7-1+1 + MANDEL_CORE_COUNT] <= 1'b1;
+                            x_0[WC7 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                            y_0[WC7 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
                             
                         end
                         else begin
@@ -495,9 +472,9 @@ always @(posedge out_stream_aclk) begin
                     end
                     else begin // mandelbrot mode
                         if (packer_waiting == WC0) begin // need to restart C8
-                            core_start[WC8-1+1] <= 1'b1;
-                            x_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
-                            y_0[WC8 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            core_start[WC7-1+1] <= 1'b1;
+                            x_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                            y_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
                             
                         end
                         else begin
@@ -506,8 +483,6 @@ always @(posedge out_stream_aclk) begin
                             y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
                         end
                     end
-
-
                 end
                 else begin
                     next_waiting <= PACKER_WAIT;
