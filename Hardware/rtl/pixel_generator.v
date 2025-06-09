@@ -215,6 +215,7 @@ wire [CORE_COUNT-1:0] done;
 reg signed [(DATA_WIDTH) * (CORE_COUNT) - 1:0] x_0, y_0;
 reg signed [DATA_WIDTH-1:0] x_n, y_n; // next x and y values
 
+
 reg signed [DATA_WIDTH-1:0] cx_i = 32'hFF333333; // used only for julia
 reg signed [DATA_WIDTH-1:0] cy_i = 32'h0027E3BE;
 
@@ -421,7 +422,6 @@ always @(posedge out_stream_aclk) begin
                         g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
                     end
-
                 end
                 else begin
                     next_waiting <= WC6;

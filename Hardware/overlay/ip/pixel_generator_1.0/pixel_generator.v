@@ -421,7 +421,6 @@ always @(posedge out_stream_aclk) begin
                         g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
                     end
-
                 end
                 else begin
                     next_waiting <= WC6;
