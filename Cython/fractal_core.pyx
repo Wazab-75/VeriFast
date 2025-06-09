@@ -14,8 +14,11 @@ def mandelbrot_cython(int width, int height,
                       double cx, double cy,
                       double zoom):
     cdef:
-        double scale_x = 3.5 / zoom
-        double scale_y = 2.0 / zoom
+        # Calculate scale maintaining aspect ratio
+        double aspect_ratio = <double>width / height
+        double scale = 3.5 / zoom
+        double scale_x = scale
+        double scale_y = scale / aspect_ratio
         double xmin = cx - 0.5 * scale_x
         double ymin = cy - 0.5 * scale_y
         double dx = scale_x / (width - 1)
@@ -68,8 +71,11 @@ def julia_cython(int width, int height,
                  double zoom,
                  double c_real, double c_imag):
     cdef:
-        double scale_x = 3.5 / zoom
-        double scale_y = 2.0 / zoom
+        # Calculate scale maintaining aspect ratio
+        double aspect_ratio = <double>width / height
+        double scale = 3.5 / zoom
+        double scale_x = scale
+        double scale_y = scale / aspect_ratio
         double xmin = zx0 - 0.5 * scale_x
         double ymin = zy0 - 0.5 * scale_y
         double dx = scale_x / (width - 1)
