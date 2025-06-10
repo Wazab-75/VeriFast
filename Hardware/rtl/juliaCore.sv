@@ -1,4 +1,4 @@
-module juliaCore#(
+module juliaCore #(
     INTEGER_BITS = 8,
     FRACTIONAL_BITS = 24,
     MAX_ITER_WIDTH = 16,
@@ -19,7 +19,6 @@ module juliaCore#(
     output logic done_o
 );
 
-    // State registers
     logic signed [DATA_WIDTH-1:0] x_reg, y_reg;
     logic signed [DATA_WIDTH-1:0] cx_reg, cy_reg;
     logic [MAX_ITER_WIDTH-1:0] iter_reg;
@@ -31,13 +30,7 @@ module juliaCore#(
     qMult_sc qMult_y2(.input1_i(y_reg), .input2_i(y_reg), .result_o(y2_s1));
     qMult_sc qMult_xy(.input1_i(x_reg), .input2_i(y_reg), .result_o(xy_s1));
 
-    // Stage 2: pipeline registers
-    logic signed [DATA_WIDTH-1:0] x2_s2, y2_s2, xy_s2;
-    logic signed [DATA_WIDTH-1:0] cx_s2, cy_s2;
-    logic [MAX_ITER_WIDTH-1:0] iter_s2;
-    logic running_s2;
-
-    // Stage 3: combinational next-state logic
+    // Stage 2: combinational next-state logic
     logic signed [DATA_WIDTH-1:0] x_next, y_next;
     logic [MAX_ITER_WIDTH-1:0] iter_next;
     logic done_next;
@@ -48,20 +41,20 @@ module juliaCore#(
         iter_next = iter_reg;
         done_next = 0;
 
-        if (running_s2) begin
-            if ((x2_s2 + y2_s2) > (4 <<< FRACTIONAL_BITS)) begin
+        if (running_reg) begin
+            if ((x2_s1 + y2_s1) > (4 <<< FRACTIONAL_BITS)) begin
                 done_next = 1;
-                iter_next = iter_s2;
+                iter_next = iter_reg;
             end
-            else if (iter_s2 < max_iter_i) begin
-                x_next = x2_s2 - y2_s2 + cx_s2;
-                y_next = (xy_s2 <<< 1) + cy_s2;
-                iter_next = iter_s2 + 1;
+            else if (iter_reg < max_iter_i) begin
+                x_next = x2_s1 - y2_s1 + cx_reg;
+                y_next = (xy_s1 <<< 1) + cy_reg;
+                iter_next = iter_reg + 1;
                 done_next = 0;
             end
             else begin
                 done_next = 1;
-                iter_next = iter_s2;
+                iter_next = iter_reg;
             end
         end
     end
@@ -76,14 +69,6 @@ module juliaCore#(
             running_reg <= 0;
             done_o <= 0;
             iter_o <= 0;
-
-            x2_s2 <= 0;
-            y2_s2 <= 0;
-            xy_s2 <= 0;
-            cx_s2 <= 0;
-            cy_s2 <= 0;
-            iter_s2 <= 0;
-            running_s2 <= 0;
         end
         else begin
             if (start_i && !running_reg) begin
@@ -106,14 +91,6 @@ module juliaCore#(
                     running_reg <= 0;
                 end
             end
-
-            x2_s2 <= x2_s1;
-            y2_s2 <= y2_s1;
-            xy_s2 <= xy_s1;
-            cx_s2 <= cx_reg;
-            cy_s2 <= cy_reg;
-            iter_s2 <= iter_reg;
-            running_s2 <= running_reg;
         end
     end
 
