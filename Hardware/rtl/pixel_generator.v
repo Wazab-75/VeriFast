@@ -219,38 +219,45 @@ reg signed [DATA_WIDTH-1:0] x_n, y_n; // next x and y values
 reg signed [DATA_WIDTH-1:0] cx_i = 32'hFF333333; // used only for julia
 reg signed [DATA_WIDTH-1:0] cy_i = 32'h0027E3BE;
 
-reg m_or_j = 1'b1; // 0 for mandelbrot, 1 for julia
+//reg m_or_j = 1'b1; // 0 for mandelbrot, 1 for julia
 
 wire [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
 reg [CORE_COUNT-1:0] core_start;
-reg [15:0] max_iter = 16'd100;
+//reg [15:0] max_iter = 16'd100;
+
+// Registers from AXI-Lite
+wire signed [31:0] start_x_0 = regfile[1];
+wire signed [31:0] start_y_0 = regfile[2];
+wire [31:0] step_size = regfile[3];
+wire [15:0] max_iter = regfile[4][15:0];
+wire m_or_j = regfile[5][0];
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
         if (new_pixel) begin
             if (lastx) begin
                 x <= 10'd0;
-                x_n <= 32'hFE000000;
+                x_n <= start_x_0;
                 if (lasty) begin
                     y <= 9'd0;
-                    y_n <= 32'hFE800000;
+                    y_n <= start_y_0;
                 end
                 else begin
                     y <= y + 9'd1;
-                    y_n <= y_n + 32'h1999A;
+                    y_n <= y_n + step_size;
                 end
             end
             else begin
                 x <= x + 9'd1;
-                x_n <= x_n + 32'h1999A;
+                x_n <= x_n + step_size;
             end
         end
     end
     else begin
         x <= 0;
         y <= 0;
-        x_n <= 32'hFE000000;
-        y_n <= 32'hFE800000;
+        x_n <= start_x_0;
+        y_n <= start_y_0;
     end
 end
 
