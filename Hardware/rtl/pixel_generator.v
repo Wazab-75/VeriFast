@@ -216,8 +216,8 @@ reg signed [(DATA_WIDTH) * (CORE_COUNT) - 1:0] x_0, y_0;
 reg signed [DATA_WIDTH-1:0] x_n, y_n; // next x and y values
 
 
-reg signed [DATA_WIDTH-1:0] cx_i = 32'hFF333333; // used only for julia
-reg signed [DATA_WIDTH-1:0] cy_i = 32'h0027E3BE;
+//reg signed [DATA_WIDTH-1:0] cx_i = 32'hFF333333; // used only for julia
+//reg signed [DATA_WIDTH-1:0] cy_i = 32'h0027E3BE;
 
 //reg m_or_j = 1'b1; // 0 for mandelbrot, 1 for julia
 
@@ -231,6 +231,8 @@ wire signed [31:0] start_y_0 = regfile[2];
 wire [31:0] step_size = regfile[3];
 wire [15:0] max_iter = regfile[4][15:0];
 wire m_or_j = regfile[5][0];
+wire [DATA_WIDTH-1:0] cx_i = regfile[6][DATA_WIDTH-1:0]; // used only for julia
+wire [DATA_WIDTH-1:0] cy_i = regfile[7][DATA_WIDTH-1:0]; // used only for julia
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -244,7 +246,7 @@ always @(posedge out_stream_aclk) begin
                 end
                 else begin
                     y <= y + 9'd1;
-                    y_n <= y_n + step_size;
+                    y_n <= y_n - step_size;
                 end
             end
             else begin
@@ -336,7 +338,7 @@ always @(posedge out_stream_aclk) begin
                         g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
-                    else begin // mandelbrot mode
+                    else begin
                         r <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + 8 +: 8];
@@ -353,12 +355,12 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    if (m_or_j) begin // julia mode
+                    if (m_or_j) begin
                         r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
-                    else begin // mandelbrot mode
+                    else begin
                         r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + 8 +: 8];
@@ -375,12 +377,12 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    if (m_or_j) begin // julia mode
+                    if (m_or_j) begin
                         r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
-                    else begin // mandelbrot mode
+                    else begin
                         r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + 8 +: 8];
@@ -397,12 +399,12 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
                     
-                    if (m_or_j) begin // julia mode
+                    if (m_or_j) begin
                         r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
-                    else begin // mandelbrot mode
+                    else begin
                         r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + 8 +: 8];
@@ -419,12 +421,12 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    if (m_or_j) begin // julia mode
+                    if (m_or_j) begin
                         r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
-                    else begin // mandelbrot mode
+                    else begin
                         r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
@@ -441,13 +443,12 @@ always @(posedge out_stream_aclk) begin
                     new_pixel <= 1'b1;
                     valid_int <= 1'b1;
 
-                    if (m_or_j) begin // julia mode
+                    if (m_or_j) begin
                         r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
-                    else begin // mandelbrot mode
-
+                    else begin
                         r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
                         g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
                         b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + 8 +: 8];
