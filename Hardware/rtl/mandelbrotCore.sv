@@ -39,7 +39,7 @@ module mandelbrotCore #(
 
     // Combinational next-state logic
     always_comb begin
-        // Default (hold state)
+        // Default
         x_next = x_reg;
         y_next = y_reg;
         iter_next = iter_reg;

@@ -263,7 +263,10 @@ always @(posedge out_stream_aclk) begin
     end
 end
 
-reg [$clog2(MANDEL_CORE_COUNT):0] waiting, next_waiting, packer_waiting;
+reg [$clog2(MANDEL_CORE_COUNT-1+2)-1:0] waiting, next_waiting, packer_waiting;
+reg [$clog2(MANDEL_CORE_COUNT-1)-1:0] core_iter, next_core_iter;
+reg CORE_RELOADED;
+reg reload_core;
 
 localparam [$clog2(MANDEL_CORE_COUNT):0] WC0 = 0;
 localparam [$clog2(MANDEL_CORE_COUNT):0] WC1 = 1;
@@ -274,6 +277,7 @@ localparam [$clog2(MANDEL_CORE_COUNT):0] WC5 = 5;
 localparam [$clog2(MANDEL_CORE_COUNT):0] WC6 = 6;
 localparam [$clog2(MANDEL_CORE_COUNT):0] WC7 = 7;
 localparam [$clog2(MANDEL_CORE_COUNT):0] PACKER_WAIT = 15; // waiting for the packer to be finish so can send next value
+localparam [$clog2(MANDEL_CORE_COUNT):0] CORE_RELOAD = 14; // waiting for the packer to be finish so can send next value
 
 reg [7:0] r, g, b; // rgb values to send to the packer
 
@@ -466,29 +470,28 @@ always @(posedge out_stream_aclk) begin
 
                     if (m_or_j) begin // julia mode
                         if (packer_waiting == WC0) begin // need to restart C8
-                            core_start[WC7-1+1 + MANDEL_CORE_COUNT] <= 1'b1;
                             x_0[WC7 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
                             y_0[WC7 * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
-                            
+                            core_start[WC7-1+1 + MANDEL_CORE_COUNT] <= 1'b1;
                         end
                         else begin
-                            core_start[packer_waiting-1] <= 1'b1;
                             x_0[(packer_waiting-1) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
                             y_0[(packer_waiting-1) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            core_start[packer_waiting-1] <= 1'b1;
                         end
                         
                     end
                     else begin // mandelbrot mode
                         if (packer_waiting == WC0) begin // need to restart C8
-                            core_start[WC7-1+1] <= 1'b1;
                             x_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
                             y_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            core_start[WC7-1+1] <= 1'b1;
                             
                         end
                         else begin
-                            core_start[packer_waiting-1] <= 1'b1;
                             x_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
                             y_0[(packer_waiting-1) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                            core_start[packer_waiting-1] <= 1'b1;
                         end
                     end
                 end
@@ -496,6 +499,13 @@ always @(posedge out_stream_aclk) begin
                     next_waiting <= PACKER_WAIT;
                     valid_int <= 1'b1;
                     new_pixel <= 1'b0;
+                end
+            end
+            CORE_RELOAD: begin
+                if (CORE_RELOADED) begin
+                    next_waiting <= WC0;
+                    CORE_RELOADED <= 1'b0;
+                    reload_core <= 1'b0;
                 end
             end
             default: begin
@@ -506,14 +516,138 @@ always @(posedge out_stream_aclk) begin
         endcase
     end
     else begin
-        next_waiting <= WC0;
-        valid_int <= 1'b0;
-        new_pixel <= 1'b0;
+        core_iter <= 0;
+        reload_core <= 1'b1;
+        new_pixel <= 1'b1;
+        next_waiting <= CORE_RELOAD;
     end
+end
+
+always @(posedge out_stream_aclk) begin
+    case (core_iter)
+        0: begin
+            if (reload_core) begin
+                new_pixel <= 1'b1;
+                if (m_or_j) begin // julia mode
+                        x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                        y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                        core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                    end
+                else begin // mandelbrot mode
+                    x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+1-1] <= 1'b1;
+                end
+                next_core_iter <= core_iter + 1;
+            end
+        end
+        1: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= core_iter + 1;
+        end
+        2: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= core_iter + 1;
+        end
+        3: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= core_iter + 1;
+        end
+        4: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= core_iter + 1;
+        end
+        5: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= core_iter + 1;
+        end
+        6: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= core_iter + 1;
+        end
+        7: begin
+            new_pixel <= 1'b1;
+            if (m_or_j) begin // julia mode
+                    x_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                    y_0[(core_iter) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                    core_start[core_iter+MANDEL_CORE_COUNT] <= 1'b1;
+                end
+            else begin // mandelbrot mode
+                x_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= x_n;
+                y_0[(core_iter) * DATA_WIDTH +: DATA_WIDTH] <= y_n;
+                core_start[core_iter+1-1] <= 1'b1;
+            end
+            next_core_iter <= 0;
+            CORE_RELOADED <= 1'b1;
+        end
+
+        default: next_core_iter <= 0; // reset to 0 if something goes wrong
+    endcase
 end
     
 always @(posedge out_stream_aclk) begin
     waiting <= next_waiting;
+    core_iter <= next_core_iter;
 end
 
 fractalCores #(
