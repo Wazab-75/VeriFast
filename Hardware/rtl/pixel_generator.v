@@ -294,9 +294,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin // mandelbrot mode
-                        r <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 0;
+                        g <= 0;
+                        b <= 0;
                     end
 
                 end
@@ -317,9 +317,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin // mandelbrot mode
-                        r <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 36;
+                        g <= 36;
+                        b <= 36;
                     end
                 end
                 else begin
@@ -339,9 +339,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin
-                        r <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 72;
+                        g <= 72;
+                        b <= 72;
                     end
                 end
                 else begin
@@ -361,9 +361,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin
-                        r <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 108;
+                        g <= 108;
+                        b <= 108;
                     end
                 end
                 else begin
@@ -383,9 +383,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin
-                        r <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 144;
+                        g <= 144;
+                        b <= 144;
                     end
                 end
                 else begin
@@ -405,9 +405,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin
-                        r <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 180;
+                        g <= 180;
+                        b <= 180;
                     end
                 end
                 else begin
@@ -427,9 +427,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin
-                        r <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 216;
+                        g <= 216;
+                        b <= 216;
                     end
                 end
                 else begin
@@ -449,9 +449,9 @@ always @(posedge out_stream_aclk) begin
                         b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH + 8 +: 8];
                     end
                     else begin
-                        r <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
-                        g <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8];
-                        b <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + 8 +: 8];
+                        r <= 252;
+                        g <= 252;
+                        b <= 252;
                     end
                 end
                 else begin
@@ -479,7 +479,7 @@ always @(posedge out_stream_aclk) begin
                         
                     end
                     else begin // mandelbrot mode
-                        if (packer_waiting == WC0) begin // need to restart C8
+                        if (packer_waiting == WC0) begin // need to restart C7
                             core_start[WC7-1+1] <= 1'b1;
                             x_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= x_n;
                             y_0[WC7 * DATA_WIDTH +: DATA_WIDTH] <= y_n;
