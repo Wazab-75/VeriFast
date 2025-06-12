@@ -294,14 +294,14 @@ always @(posedge out_stream_aclk) begin
 
                     // send rgb here
                     if (m_or_j) begin // julia mode
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 0;
+                        g <= 0;
+                        b <= 0;
                     end
                     else begin // mandelbrot mode
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 0;
+                        g <= 0;
+                        b <= 0;
                     end
 
                 end
@@ -339,14 +339,14 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
 
                     if (m_or_j) begin // julia mode
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 72;
+                        g <= 72;
+                        b <= 72;
                     end
                     else begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 72;
+                        g <= 72;
+                        b <= 72;
                     end
                 end
                 else begin
@@ -361,14 +361,14 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
 
                     if (m_or_j) begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 108;
+                        g <= 108;
+                        b <= 108;
                     end
                     else begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 108;
+                        g <= 108;
+                        b <= 108;
                     end
                 end
                 else begin
@@ -383,14 +383,14 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
 
                     if (m_or_j) begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 144;
+                        g <= 144;
+                        b <= 144;
                     end
                     else begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 144;
+                        g <= 144;
+                        b <= 144;
                     end
                 end
                 else begin
@@ -405,14 +405,14 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
                     
                     if (m_or_j) begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 180;
+                        g <= 180;
+                        b <= 180;
                     end
                     else begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 180;
+                        g <= 180;
+                        b <= 180;
                     end
                 end
                 else begin
@@ -427,14 +427,14 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
 
                     if (m_or_j) begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 216;
+                        g <= 216;
+                        b <= 216;
                     end
                     else begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 216;
+                        g <= 216;
+                        b <= 216;
                     end
                 end
                 else begin
@@ -449,14 +449,14 @@ always @(posedge out_stream_aclk) begin
                     valid_int <= 1'b1;
 
                     if (m_or_j) begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 252;
+                        g <= 252;
+                        b <= 252;
                     end
                     else begin
-                        r <= 36;
-                        g <= 36;
-                        b <= 36;
+                        r <= 252;
+                        g <= 252;
+                        b <= 252;
                     end
                 end
                 else begin
