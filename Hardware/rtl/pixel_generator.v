@@ -653,8 +653,6 @@ always @(posedge out_stream_aclk) begin
     end
     else begin
         next_waiting <= RC0;
-        waiting <= RC0;
-        next_waiting <= RC0;
         valid_int <= 1'b0;
         new_pixel <= 1'b0;
         packer_waiting <= WC0;
