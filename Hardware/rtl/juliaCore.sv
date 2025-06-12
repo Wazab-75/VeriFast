@@ -8,9 +8,9 @@ module juliaCore#(
     input logic rst_i,
     input logic start_i,
 
-    input logic signed [DATA_WIDTH-1:0] zx_i, // Initial z = zx + i*zy
+    input logic signed [DATA_WIDTH-1:0] zx_i, // initial z = zx + i*zy
     input logic signed [DATA_WIDTH-1:0] zy_i,
-    input logic signed [DATA_WIDTH-1:0] cx_i, // Constant c = cx + i*cy
+    input logic signed [DATA_WIDTH-1:0] cx_i, // constant c = cx + i*cy
     input logic signed [DATA_WIDTH-1:0] cy_i,
 
     input logic [MAX_ITER_WIDTH-1:0] max_iter_i,
@@ -19,25 +19,22 @@ module juliaCore#(
     output logic done_o
 );
 
-    // State registers
+    // state registers
     logic signed [DATA_WIDTH-1:0] x_reg, y_reg;
     logic signed [DATA_WIDTH-1:0] cx_reg, cy_reg;
     logic [MAX_ITER_WIDTH-1:0] iter_reg;
     logic running_reg;
 
-    // Stage 1: multiplier results
     logic signed [DATA_WIDTH-1:0] x2_s1, y2_s1, xy_s1;
     qMult_sc qMult_x2(.input1_i(x_reg), .input2_i(x_reg), .result_o(x2_s1));
     qMult_sc qMult_y2(.input1_i(y_reg), .input2_i(y_reg), .result_o(y2_s1));
     qMult_sc qMult_xy(.input1_i(x_reg), .input2_i(y_reg), .result_o(xy_s1));
 
-    // Stage 2: pipeline registers
     logic signed [DATA_WIDTH-1:0] x2_s2, y2_s2, xy_s2;
     logic signed [DATA_WIDTH-1:0] cx_s2, cy_s2;
     logic [MAX_ITER_WIDTH-1:0] iter_s2;
     logic running_s2;
 
-    // Stage 3: combinational next-state logic
     logic signed [DATA_WIDTH-1:0] x_next, y_next;
     logic [MAX_ITER_WIDTH-1:0] iter_next;
     logic done_next;

@@ -310,7 +310,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC1: begin
-                if ((done[1]&!m_or_j) | (done[1 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[1]&!m_or_j) | (done[1 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC2;
                     new_pixel <= 1'b1;
@@ -332,7 +335,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC2: begin
-                if ((done[2]&!m_or_j) | (done[2 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[2]&!m_or_j) | (done[2 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC3;
                     new_pixel <= 1'b1;
@@ -354,7 +360,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC3: begin
-                if ((done[3]&!m_or_j) | (done[3 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[3]&!m_or_j) | (done[3 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC4;
                     new_pixel <= 1'b1;
@@ -376,7 +385,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC4: begin
-                if ((done[4]&!m_or_j) | (done[4 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[4]&!m_or_j) | (done[4 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC5;
                     new_pixel <= 1'b1;
@@ -398,7 +410,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC5: begin
-                if ((done[5]&!m_or_j) | (done[5 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[5]&!m_or_j) | (done[5 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC6;
                     new_pixel <= 1'b1;
@@ -420,7 +435,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC6: begin
-                if ((done[6]&!m_or_j) | (done[6 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[6]&!m_or_j) | (done[6 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC7;
                     new_pixel <= 1'b1;
@@ -442,7 +460,10 @@ always @(posedge out_stream_aclk) begin
                 end
             end
             WC7: begin
-                if ((done[7]&!m_or_j) | (done[7 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[7]&!m_or_j) | (done[7 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC0;
                     new_pixel <= 1'b1;
