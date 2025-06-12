@@ -283,7 +283,10 @@ always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
         case (waiting)
             WC0: begin
-                if ((done[0]&!m_or_j) | (done[0 + MANDEL_CORE_COUNT]&m_or_j)) begin
+                if (x == 0 && y == 0) begin
+                    next_waiting <= RC0;
+                end
+                else if ((done[0]&!m_or_j) | (done[0 + MANDEL_CORE_COUNT]&m_or_j)) begin
                     next_waiting <= PACKER_WAIT;
                     packer_waiting <= WC1;
                     new_pixel <= 1'b1;
@@ -598,7 +601,6 @@ always @(posedge out_stream_aclk) begin
                 next_waiting <= RC7;
             end
             RC7: begin
-                new_pixel <= 1'b1;
                 if (m_or_j) begin // julia mode
                         x_0[(RC7-10) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= x_n;
                         y_0[(RC7-10) * DATA_WIDTH + MANDEL_CORE_COUNT * DATA_WIDTH +: DATA_WIDTH] <= y_n;
@@ -615,12 +617,10 @@ always @(posedge out_stream_aclk) begin
             default: begin
                 next_waiting <= RC0;
                 valid_int <= 1'b0;
-                new_pixel <= 1'b1;
             end
         endcase
     end
     else begin
-        new_pixel <= 1'b1;
         next_waiting <= RC0;
     end
 end
