@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Jun 11 14:07:07 2025" VIVADOVERSION="2023.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu Jun 12 11:37:51 2025" VIVADOVERSION="2023.2">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="base" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -40101,7 +40101,7 @@
         <PERIPHERAL INSTANCE="iop_arduino_mb"/>
       </PERIPHERALS>
     </MODULE>
-    <MODULE COREREVISION="1" FULLNAME="/pixel_generator_0" HWVERSION="5.5" INSTANCE="pixel_generator_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_generator" VLNV="xilinx.com:user:pixel_generator:5.5">
+    <MODULE COREREVISION="1" FULLNAME="/pixel_generator_0" HWVERSION="5.8" INSTANCE="pixel_generator_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_generator" VLNV="xilinx.com:user:pixel_generator:5.8">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi_lite" NAME="reg0" RANGE="4096" USAGE="register">
