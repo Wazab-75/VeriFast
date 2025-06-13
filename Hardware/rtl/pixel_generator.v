@@ -58,8 +58,8 @@ input           s_axi_lite_wvalid
 
 );
 
-localparam X_SIZE = 640;
-localparam Y_SIZE = 480;
+reg [15:0] X_SIZE = regfile[5][15:0];
+reg [15:0] Y_SIZE = regfile[5][31:16];
 parameter  REG_FILE_SIZE = 8;
 localparam REG_FILE_AWIDTH = $clog2(REG_FILE_SIZE);
 parameter  AXI_LITE_ADDR_WIDTH = 8;
@@ -223,7 +223,7 @@ wire signed [31:0] start_x_0 = regfile[1];
 wire signed [31:0] start_y_0 = regfile[2];
 wire [31:0] step_size = regfile[3];
 wire [15:0] max_iter = regfile[4][15:0];
-wire m_or_j = regfile[5][0];
+wire m_or_j = regfile[4][16];
 wire [DATA_WIDTH-1:0] cx_i = regfile[6][DATA_WIDTH-1:0]; // used only for julia
 wire [DATA_WIDTH-1:0] cy_i = regfile[7][DATA_WIDTH-1:0]; // used only for julia
 
