@@ -237,20 +237,20 @@ always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
         if (new_pixel) begin
             if (lastx) begin
-                x <= 10'd0;
+                x <= 16'd0;
                 x_n <= start_x_0;
                 if (lasty) begin
-                    y <= 9'd0;
+                    y <= 16'd0;
                     y_n <= start_y_0;
                     regfile[4][17] <= ~regfile[4][17];
                 end
                 else begin
-                    y <= y + 9'd1;
+                    y <= y + 16'd1;
                     y_n <= y_n - step_size;
                 end
             end
             else begin
-                x <= x + 9'd1;
+                x <= x + 16'd1;
                 x_n <= x_n + step_size;
             end
         end

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu Jun 12 20:34:07 2025" VIVADOVERSION="2023.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sat Jun 14 19:17:17 2025" VIVADOVERSION="2023.2">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="base" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -40101,7 +40101,7 @@
         <PERIPHERAL INSTANCE="iop_arduino_mb"/>
       </PERIPHERALS>
     </MODULE>
-    <MODULE COREREVISION="1" FULLNAME="/pixel_generator_0" HWVERSION="6.4" INSTANCE="pixel_generator_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_generator" VLNV="xilinx.com:user:pixel_generator:6.4">
+    <MODULE COREREVISION="1" FULLNAME="/pixel_generator_0" HWVERSION="2.3" INSTANCE="pixel_generator_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_generator" VLNV="xilinx.com:user:pixel_generator:2.3">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi_lite" NAME="reg0" RANGE="4096" USAGE="register">
@@ -40474,7 +40474,7 @@
         <PARAMETER NAME="PCW_ACT_ENET0_PERIPHERAL_FREQMHZ" VALUE="125.000000"/>
         <PARAMETER NAME="PCW_ACT_ENET1_PERIPHERAL_FREQMHZ" VALUE="10.000000"/>
         <PARAMETER NAME="PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ" VALUE="100.000000"/>
-        <PARAMETER NAME="PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ" VALUE="142.857132"/>
+        <PARAMETER NAME="PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ" VALUE="125.000000"/>
         <PARAMETER NAME="PCW_ACT_FPGA2_PERIPHERAL_FREQMHZ" VALUE="200.000000"/>
         <PARAMETER NAME="PCW_ACT_FPGA3_PERIPHERAL_FREQMHZ" VALUE="100.000000"/>
         <PARAMETER NAME="PCW_ACT_I2C_PERIPHERAL_FREQMHZ" VALUE="50"/>
@@ -40520,7 +40520,7 @@
         <PARAMETER NAME="PCW_CAN_PERIPHERAL_FREQMHZ" VALUE="100"/>
         <PARAMETER NAME="PCW_CAN_PERIPHERAL_VALID" VALUE="0"/>
         <PARAMETER NAME="PCW_CLK0_FREQ" VALUE="100000000"/>
-        <PARAMETER NAME="PCW_CLK1_FREQ" VALUE="142857132"/>
+        <PARAMETER NAME="PCW_CLK1_FREQ" VALUE="125000000"/>
         <PARAMETER NAME="PCW_CLK2_FREQ" VALUE="200000000"/>
         <PARAMETER NAME="PCW_CLK3_FREQ" VALUE="100000000"/>
         <PARAMETER NAME="PCW_CORE0_FIQ_INTR" VALUE="0"/>
@@ -40659,7 +40659,7 @@
         <PARAMETER NAME="PCW_FCLK0_PERIPHERAL_DIVISOR0" VALUE="5"/>
         <PARAMETER NAME="PCW_FCLK0_PERIPHERAL_DIVISOR1" VALUE="2"/>
         <PARAMETER NAME="PCW_FCLK1_PERIPHERAL_CLKSRC" VALUE="IO PLL"/>
-        <PARAMETER NAME="PCW_FCLK1_PERIPHERAL_DIVISOR0" VALUE="7"/>
+        <PARAMETER NAME="PCW_FCLK1_PERIPHERAL_DIVISOR0" VALUE="8"/>
         <PARAMETER NAME="PCW_FCLK1_PERIPHERAL_DIVISOR1" VALUE="1"/>
         <PARAMETER NAME="PCW_FCLK2_PERIPHERAL_CLKSRC" VALUE="IO PLL"/>
         <PARAMETER NAME="PCW_FCLK2_PERIPHERAL_DIVISOR0" VALUE="5"/>
@@ -40672,7 +40672,7 @@
         <PARAMETER NAME="PCW_FCLK_CLK2_BUF" VALUE="TRUE"/>
         <PARAMETER NAME="PCW_FCLK_CLK3_BUF" VALUE="TRUE"/>
         <PARAMETER NAME="PCW_FPGA0_PERIPHERAL_FREQMHZ" VALUE="100"/>
-        <PARAMETER NAME="PCW_FPGA1_PERIPHERAL_FREQMHZ" VALUE="142"/>
+        <PARAMETER NAME="PCW_FPGA1_PERIPHERAL_FREQMHZ" VALUE="120"/>
         <PARAMETER NAME="PCW_FPGA2_PERIPHERAL_FREQMHZ" VALUE="200"/>
         <PARAMETER NAME="PCW_FPGA3_PERIPHERAL_FREQMHZ" VALUE="100"/>
         <PARAMETER NAME="PCW_FPGA_FCLK0_ENABLE" VALUE="1"/>
@@ -41141,7 +41141,7 @@
         <PARAMETER NAME="PCW_S_AXI_GP1_FREQMHZ" VALUE="10"/>
         <PARAMETER NAME="PCW_S_AXI_GP1_ID_WIDTH" VALUE="6"/>
         <PARAMETER NAME="PCW_S_AXI_HP0_DATA_WIDTH" VALUE="64"/>
-        <PARAMETER NAME="PCW_S_AXI_HP0_FREQMHZ" VALUE="142.857"/>
+        <PARAMETER NAME="PCW_S_AXI_HP0_FREQMHZ" VALUE="125.0"/>
         <PARAMETER NAME="PCW_S_AXI_HP0_ID_WIDTH" VALUE="6"/>
         <PARAMETER NAME="PCW_S_AXI_HP1_DATA_WIDTH" VALUE="64"/>
         <PARAMETER NAME="PCW_S_AXI_HP1_FREQMHZ" VALUE="10"/>
@@ -41579,7 +41579,7 @@
             <CONNECTION INSTANCE="pixel_generator_0" PORT="s_axi_lite_aclk"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="O" NAME="FCLK_CLK1" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="O" NAME="FCLK_CLK1" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="S_AXI_HP0_ACLK"/>
             <CONNECTION INSTANCE="video_hdmi_in_color_convert" PORT="ap_clk"/>
@@ -42300,7 +42300,7 @@
             <CONNECTION INSTANCE="axi_protocol_convert_0" PORT="m_axi_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="S_AXI_HP0_ACLK" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="S_AXI_HP0_ACLK" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -43021,7 +43021,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="64"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="1"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="1"/>
@@ -47076,7 +47076,7 @@
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="peripheral_reset" POLARITY="ACTIVE_HIGH" RIGHT="0" SIGIS="rst"/>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="slowest_sync_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="slowest_sync_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -50762,7 +50762,7 @@
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
-    <MODULE COREREVISION="2114115086" FULLNAME="/trace_analyzer_arduino/trace_cntrl_64_0" HWVERSION="1.4" INSTANCE="trace_analyzer_arduino_trace_cntrl_64_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="trace_cntrl_64" VLNV="xilinx.com:hls:trace_cntrl_64:1.4">
+    <MODULE COREREVISION="2114126325" FULLNAME="/trace_analyzer_arduino/trace_cntrl_64_0" HWVERSION="1.4" INSTANCE="trace_analyzer_arduino_trace_cntrl_64_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="trace_cntrl_64" VLNV="xilinx.com:hls:trace_cntrl_64:1.4">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="s_axi_trace_cntrl" NAME="Reg" RANGE="65536" USAGE="register">
@@ -52753,7 +52753,7 @@
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
-    <MODULE COREREVISION="2114115085" FULLNAME="/trace_analyzer_pmoda/trace_cntrl_32_0" HWVERSION="1.4" INSTANCE="trace_analyzer_pmoda_trace_cntrl_32_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="trace_cntrl_32" VLNV="xilinx.com:hls:trace_cntrl_32:1.4">
+    <MODULE COREREVISION="2114126325" FULLNAME="/trace_analyzer_pmoda/trace_cntrl_32_0" HWVERSION="1.4" INSTANCE="trace_analyzer_pmoda_trace_cntrl_32_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="trace_cntrl_32" VLNV="xilinx.com:hls:trace_cntrl_32:1.4">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="s_axi_trace_cntrl" NAME="Reg" RANGE="65536" USAGE="register">
@@ -57682,7 +57682,7 @@
             <CONNECTION INSTANCE="rst_ps7_0_fclk0" PORT="peripheral_aresetn"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="m_axi_mm2s_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="m_axi_mm2s_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -57752,7 +57752,7 @@
             <CONNECTION INSTANCE="video_axi_mem_intercon" PORT="S01_AXI_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="m_axi_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="m_axi_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -57837,7 +57837,7 @@
             <CONNECTION INSTANCE="video_axi_mem_intercon" PORT="S00_AXI_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="m_axis_mm2s_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="m_axis_mm2s_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -57969,7 +57969,7 @@
             <CONNECTION INSTANCE="video_axi_interconnect_0" PORT="M00_AXI_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="s_axis_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="s_axis_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -58064,7 +58064,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="32"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="0"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="1"/>
@@ -58112,7 +58112,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="64"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="1"/>
@@ -58158,7 +58158,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_axi_vdma_M_AXIS_MM2S" NAME="M_AXIS_MM2S" TYPE="INITIATOR" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -58181,7 +58181,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_in_pixel_pack_stream_out_32" NAME="S_AXIS_S2MM" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -59843,7 +59843,7 @@
             <CONNECTION INSTANCE="rst_ps7_0_fclk0" PORT="peripheral_aresetn"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="m_axi_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="m_axi_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -60019,7 +60019,7 @@
             <CONNECTION INSTANCE="video_axi_interconnect_0" PORT="M10_AXI_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="s_axis_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="s_axis_s2mm_aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -60114,7 +60114,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="64"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="1"/>
@@ -60160,7 +60160,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="pixel_generator_0_out_stream" NAME="S_AXIS_S2MM" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -60223,7 +60223,7 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="BUS"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -60307,7 +60307,7 @@
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="video_hdmi_in_color_convert_stream_out_24" NAME="S_AXIS" TYPE="SLAVE" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -60331,7 +60331,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_in_axis_register_slice_0_M_AXIS" NAME="M_AXIS" TYPE="MASTER" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -60355,7 +60355,7 @@
         </BUSINTERFACE>
       </BUSINTERFACES>
     </MODULE>
-    <MODULE COREREVISION="2114115084" FULLNAME="/video/hdmi_in/color_convert" HWVERSION="1.0" INSTANCE="video_hdmi_in_color_convert" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="color_convert" VLNV="xilinx.com:hls:color_convert:1.0">
+    <MODULE COREREVISION="2114126323" FULLNAME="/video/hdmi_in/color_convert" HWVERSION="1.0" INSTANCE="video_hdmi_in_color_convert" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="color_convert" VLNV="xilinx.com:hls:color_convert:1.0">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="s_axi_control" NAME="Reg" RANGE="65536" USAGE="register">
@@ -60737,7 +60737,7 @@
         <PARAMETER NAME="C_S_AXI_CONTROL_HIGHADDR" VALUE="0x43C5FFFF"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -60901,7 +60901,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="32"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="0"/>
@@ -60948,7 +60948,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_in_frontend_v_vid_in_axi4s_0_video_out" NAME="stream_in_24" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -60970,7 +60970,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_in_color_convert_stream_out_24" NAME="stream_out_24" TYPE="MASTER" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -61436,7 +61436,7 @@
     </MODULE>
     <MODULE COREREVISION="3" FULLNAME="/video/hdmi_in/frontend/dvi2rgb_0" HWVERSION="1.7" INSTANCE="video_hdmi_in_frontend_dvi2rgb_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="dvi2rgb" VLNV="digilentinc.com:ip:dvi2rgb:1.7">
       <DOCUMENTS>
-        <DOCUMENT SOURCE="/home/max/code/VeriFast/Hardware/overlay/ip/dvi2rgb_v1_7/docs/dvi2rgb.pdf"/>
+        <DOCUMENT SOURCE="/home/max/code/EE2Project-main/maths-accelerator/overlay/ip/dvi2rgb_v1_7/docs/dvi2rgb.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="kAddBUFG" VALUE="false"/>
@@ -61601,7 +61601,7 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -61687,7 +61687,7 @@
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="video_hdmi_in_frontend_v_vid_in_axi4s_0_video_out" NAME="video_out" TYPE="INITIATOR" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="0"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -62104,7 +62104,7 @@
         </BUSINTERFACE>
       </BUSINTERFACES>
     </MODULE>
-    <MODULE COREREVISION="2114115085" FULLNAME="/video/hdmi_in/pixel_pack" HWVERSION="1.0" INSTANCE="video_hdmi_in_pixel_pack" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_pack" VLNV="xilinx.com:hls:pixel_pack:1.0">
+    <MODULE COREREVISION="2114126324" FULLNAME="/video/hdmi_in/pixel_pack" HWVERSION="1.0" INSTANCE="video_hdmi_in_pixel_pack" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_pack" VLNV="xilinx.com:hls:pixel_pack:1.0">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="s_axi_control" NAME="Reg" RANGE="65536" USAGE="register">
@@ -62176,7 +62176,7 @@
         <PARAMETER NAME="C_S_AXI_CONTROL_HIGHADDR" VALUE="0x43C4FFFF"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -62345,7 +62345,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="32"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="0"/>
@@ -62392,7 +62392,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_in_axis_register_slice_0_M_AXIS" NAME="stream_in_24" TYPE="SLAVE" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -62416,7 +62416,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_in_pixel_pack_stream_out_32" NAME="stream_out_32" TYPE="INITIATOR" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -62473,7 +62473,7 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="BUS"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -62557,7 +62557,7 @@
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="video_hdmi_out_pixel_unpack_stream_out_24" NAME="S_AXIS" TYPE="SLAVE" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -62581,7 +62581,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_out_axis_register_slice_0_M_AXIS" NAME="M_AXIS" TYPE="MASTER" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -62605,7 +62605,7 @@
         </BUSINTERFACE>
       </BUSINTERFACES>
     </MODULE>
-    <MODULE COREREVISION="2114115084" FULLNAME="/video/hdmi_out/color_convert" HWVERSION="1.0" INSTANCE="video_hdmi_out_color_convert" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="color_convert" VLNV="xilinx.com:hls:color_convert:1.0">
+    <MODULE COREREVISION="2114126323" FULLNAME="/video/hdmi_out/color_convert" HWVERSION="1.0" INSTANCE="video_hdmi_out_color_convert" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="color_convert" VLNV="xilinx.com:hls:color_convert:1.0">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="s_axi_control" NAME="Reg" RANGE="65536" USAGE="register">
@@ -62987,7 +62987,7 @@
         <PARAMETER NAME="C_S_AXI_CONTROL_HIGHADDR" VALUE="0x43C6FFFF"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -63151,7 +63151,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="32"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="0"/>
@@ -63198,7 +63198,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_out_axis_register_slice_0_M_AXIS" NAME="stream_in_24" TYPE="SLAVE" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -63222,7 +63222,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_out_color_convert_stream_out_24" NAME="stream_out_24" TYPE="INITIATOR" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -63876,7 +63876,7 @@
     </MODULE>
     <MODULE COREREVISION="7" FULLNAME="/video/hdmi_out/frontend/rgb2dvi_0" HWVERSION="1.2" INSTANCE="video_hdmi_out_frontend_rgb2dvi_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="rgb2dvi" VLNV="digilentinc.com:ip:rgb2dvi:1.2">
       <DOCUMENTS>
-        <DOCUMENT SOURCE="/home/max/code/VeriFast/Hardware/overlay/ip/rgb2dvi_v1_2/docs/rgb2dvi_v1_2.pdf"/>
+        <DOCUMENT SOURCE="/home/max/code/EE2Project-main/maths-accelerator/overlay/ip/rgb2dvi_v1_2/docs/rgb2dvi_v1_2.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="kClkPrimitive" VALUE="MMCM"/>
@@ -63991,7 +63991,7 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -64087,7 +64087,7 @@
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="video_hdmi_out_color_convert_stream_out_24" NAME="video_in" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="0"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -64515,7 +64515,7 @@
         </BUSINTERFACE>
       </BUSINTERFACES>
     </MODULE>
-    <MODULE COREREVISION="2114115085" FULLNAME="/video/hdmi_out/pixel_unpack" HWVERSION="1.0" INSTANCE="video_hdmi_out_pixel_unpack" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_unpack" VLNV="xilinx.com:hls:pixel_unpack:1.0">
+    <MODULE COREREVISION="2114126324" FULLNAME="/video/hdmi_out/pixel_unpack" HWVERSION="1.0" INSTANCE="video_hdmi_out_pixel_unpack" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="pixel_unpack" VLNV="xilinx.com:hls:pixel_unpack:1.0">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="s_axi_control" NAME="Reg" RANGE="65536" USAGE="register">
@@ -64557,7 +64557,7 @@
         <PARAMETER NAME="C_S_AXI_CONTROL_HIGHADDR" VALUE="0x43C7FFFF"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="1.42857e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
+        <PORT CLKFREQUENCY="1.25e+08" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="ps7_0_FCLK_CLK1">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_0" PORT="FCLK_CLK1"/>
           </CONNECTIONS>
@@ -64726,7 +64726,7 @@
           <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="32"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_BURST" VALUE="0"/>
           <PARAMETER NAME="HAS_CACHE" VALUE="0"/>
@@ -64773,7 +64773,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_axi_vdma_M_AXIS_MM2S" NAME="stream_in_32" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
@@ -64796,7 +64796,7 @@
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="video_hdmi_out_pixel_unpack_stream_out_24" NAME="stream_out_24" TYPE="MASTER" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="CLK_DOMAIN" VALUE="base_ps7_0_0_FCLK_CLK1"/>
-          <PARAMETER NAME="FREQ_HZ" VALUE="1.42857e+08"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="1.25e+08"/>
           <PARAMETER NAME="HAS_TKEEP" VALUE="1"/>
           <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
           <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
