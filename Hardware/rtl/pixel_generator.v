@@ -165,8 +165,13 @@ always @(posedge s_axi_lite_aclk) begin
             end
         end
 
-        AWAIT_WRITE: begin //Perform the write
-            regfile[writeAddr] <= writeData;
+        AWAIT_WRITE: begin
+            if (writeAddr == 4) begin
+
+                regfile[4] <= {writeData[31:18], regfile[4][17], writeData[16:0]};
+            end else begin
+                regfile[writeAddr] <= writeData;
+            end
             writeState <= AWAIT_RESP;
         end
 
@@ -224,11 +229,9 @@ wire signed [31:0] start_x_0 = regfile[1];
 wire signed [31:0] start_y_0 = regfile[2];
 wire [31:0] step_size = regfile[3];
 wire [15:0] max_iter = regfile[4][15:0];
-//wire toggle = regfile[4][17];
 wire m_or_j = regfile[4][16];
 wire [DATA_WIDTH-1:0] cx_i = regfile[6][DATA_WIDTH-1:0]; // used only for julia
 wire [DATA_WIDTH-1:0] cy_i = regfile[7][DATA_WIDTH-1:0]; // used only for julia
-reg next_toggle;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -239,7 +242,7 @@ always @(posedge out_stream_aclk) begin
                 if (lasty) begin
                     y <= 9'd0;
                     y_n <= start_y_0;
-                    next_toggle <= ~regfile[4][17];
+                    regfile[4][17] <= ~regfile[4][17];
                 end
                 else begin
                     y <= y + 9'd1;
@@ -257,12 +260,7 @@ always @(posedge out_stream_aclk) begin
         y <= 0;
         x_n <= start_x_0;
         y_n <= start_y_0;
-        next_toggle <= 0;
     end
-end
-
-always @(posedge out_stream_aclk) begin
-    regfile[4][17] <= next_toggle;
 end
 
 localparam STATE_WIDTH = $clog2(MANDEL_CORE_COUNT+9);
