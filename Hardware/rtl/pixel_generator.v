@@ -165,8 +165,13 @@ always @(posedge s_axi_lite_aclk) begin
             end
         end
 
-        AWAIT_WRITE: begin //Perform the write
-            regfile[writeAddr] <= writeData;
+        AWAIT_WRITE: begin
+            if (writeAddr == 4) begin
+
+                regfile[4] <= {writeData[31:18], regfile[4][17], writeData[16:0]};
+            end else begin
+                regfile[writeAddr] <= writeData;
+            end
             writeState <= AWAIT_RESP;
         end
 
@@ -196,15 +201,15 @@ parameter MANDEL_CORE_COUNT = 8;
 parameter JULIA_CORE_COUNT = 8;
 parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 
-wire [15:0] X_SIZE = regfile[5][15:0];
-wire [15:0] Y_SIZE = regfile[5][31:16];
+wire [15:0] x_size = regfile[5][15:0];
+wire [15:0] y_size = regfile[5][31:16];
 
-reg [15:0] x;
-reg [15:0] y;
+reg [9:0] x;
+reg [8:0] y;
 
 wire first = (x == 0) & (y==0);
-wire lastx = (x == X_SIZE - 1);
-wire lasty = (y == Y_SIZE - 1);
+wire lastx = (x == x_size - 1);
+wire lasty = (y == y_size - 1);
 wire [7:0] frame = regfile[0];
 
 wire ready;
@@ -237,6 +242,7 @@ always @(posedge out_stream_aclk) begin
                 if (lasty) begin
                     y <= 16'd0;
                     y_n <= start_y_0;
+                    regfile[4][17] <= ~regfile[4][17];
                 end
                 else begin
                     y <= y + 16'd1;
