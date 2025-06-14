@@ -204,8 +204,8 @@ parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 wire [15:0] x_size = regfile[5][15:0];
 wire [15:0] y_size = regfile[5][31:16];
 
-reg [9:0] x;
-reg [8:0] y;
+reg [15:0] x;
+reg [15:0] y;
 
 wire first = (x == 0) & (y==0);
 wire lastx = (x == x_size - 1);
