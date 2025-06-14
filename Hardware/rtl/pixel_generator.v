@@ -21,45 +21,43 @@
 
 
 module pixel_generator(
-input           out_stream_aclk,
-input           s_axi_lite_aclk,
-input           axi_resetn,
-input           periph_resetn,
-
-//Stream output
-output [31:0]   out_stream_tdata,
-output [3:0]    out_stream_tkeep,
-output          out_stream_tlast,
-input           out_stream_tready,
-output          out_stream_tvalid,
-output [0:0]    out_stream_tuser, 
-
-//AXI-Lite S
-input [AXI_LITE_ADDR_WIDTH-1:0]     s_axi_lite_araddr,
-output          s_axi_lite_arready,
-input           s_axi_lite_arvalid,
-
-input [AXI_LITE_ADDR_WIDTH-1:0]     s_axi_lite_awaddr,
-output          s_axi_lite_awready,
-input           s_axi_lite_awvalid,
-
-input           s_axi_lite_bready,
-output [1:0]    s_axi_lite_bresp,
-output          s_axi_lite_bvalid,
-
-output [31:0]   s_axi_lite_rdata,
-input           s_axi_lite_rready,
-output [1:0]    s_axi_lite_rresp,
-output          s_axi_lite_rvalid,
-
-input  [31:0]   s_axi_lite_wdata,
-output          s_axi_lite_wready,
-input           s_axi_lite_wvalid
-
+    input           out_stream_aclk,
+    input           s_axi_lite_aclk,
+    input           axi_resetn,
+    input           periph_resetn,
+    
+    //Stream output
+    output [31:0]   out_stream_tdata,
+    output [3:0]    out_stream_tkeep,
+    output          out_stream_tlast,
+    input           out_stream_tready,
+    output          out_stream_tvalid,
+    output [0:0]    out_stream_tuser, 
+    
+    //AXI-Lite S
+    input [AXI_LITE_ADDR_WIDTH-1:0]     s_axi_lite_araddr,
+    output          s_axi_lite_arready,
+    input           s_axi_lite_arvalid,
+    
+    input [AXI_LITE_ADDR_WIDTH-1:0]     s_axi_lite_awaddr,
+    output          s_axi_lite_awready,
+    input           s_axi_lite_awvalid,
+    
+    input           s_axi_lite_bready,
+    output [1:0]    s_axi_lite_bresp,
+    output          s_axi_lite_bvalid,
+    
+    output [31:0]   s_axi_lite_rdata,
+    input           s_axi_lite_rready,
+    output [1:0]    s_axi_lite_rresp,
+    output          s_axi_lite_rvalid,
+    
+    input  [31:0]   s_axi_lite_wdata,
+    output          s_axi_lite_wready,
+    input           s_axi_lite_wvalid
+    
 );
 
-reg [15:0] X_SIZE = regfile[5][15:0];
-reg [15:0] Y_SIZE = regfile[5][31:16];
 parameter  REG_FILE_SIZE = 8;
 localparam REG_FILE_AWIDTH = $clog2(REG_FILE_SIZE);
 parameter  AXI_LITE_ADDR_WIDTH = 8;
@@ -198,12 +196,15 @@ parameter MANDEL_CORE_COUNT = 8;
 parameter JULIA_CORE_COUNT = 8;
 parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
 
+wire [15:0] x_size = regfile[5][15:0];
+wire [15:0] y_size = regfile[5][31:16];
+
 reg [9:0] x;
 reg [8:0] y;
 
 wire first = (x == 0) & (y==0);
-wire lastx = (x == X_SIZE - 1);
-wire lasty = (y == Y_SIZE - 1);
+wire lastx = (x == x_size - 1);
+wire lasty = (y == y_size - 1);
 wire [7:0] frame = regfile[0];
 
 wire ready;
@@ -223,10 +224,11 @@ wire signed [31:0] start_x_0 = regfile[1];
 wire signed [31:0] start_y_0 = regfile[2];
 wire [31:0] step_size = regfile[3];
 wire [15:0] max_iter = regfile[4][15:0];
-reg toggle = regfile[4][17];
+//wire toggle = regfile[4][17];
 wire m_or_j = regfile[4][16];
 wire [DATA_WIDTH-1:0] cx_i = regfile[6][DATA_WIDTH-1:0]; // used only for julia
 wire [DATA_WIDTH-1:0] cy_i = regfile[7][DATA_WIDTH-1:0]; // used only for julia
+reg next_toggle;
 
 always @(posedge out_stream_aclk) begin
     if (periph_resetn) begin
@@ -237,7 +239,7 @@ always @(posedge out_stream_aclk) begin
                 if (lasty) begin
                     y <= 9'd0;
                     y_n <= start_y_0;
-                    toggle <= ~toggle;
+                    next_toggle <= ~regfile[4][17];
                 end
                 else begin
                     y <= y + 9'd1;
@@ -255,7 +257,12 @@ always @(posedge out_stream_aclk) begin
         y <= 0;
         x_n <= start_x_0;
         y_n <= start_y_0;
+        next_toggle <= 0;
     end
+end
+
+always @(posedge out_stream_aclk) begin
+    regfile[4][17] <= next_toggle;
 end
 
 localparam STATE_WIDTH = $clog2(MANDEL_CORE_COUNT+9);
