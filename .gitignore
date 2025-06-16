@@ -31,6 +31,18 @@ ENV/
 *.swp
 *.swo
 
+# SV/Verilator
+**/obj_dir/
+*.vcd
+
+# Generated files
+*.png
+*.csv
+
 # OS
 .DS_Store
 Thumbs.db 
+
+# File types
+*.csv
+*.png
