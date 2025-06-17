@@ -107,6 +107,7 @@ def generate_mandelbrot():
             
             request_end = time.time()
             total_time = request_end - request_start
+            request_delay = total_time - computation_time
             
             # Log detailed performance metrics
             performance_log.append({
@@ -116,6 +117,7 @@ def generate_mandelbrot():
                 'computation_time': computation_time,
                 'generate_time': round(generate_time, 3),
                 'image_fetch_time': round(img_time if version == 'hardware' else 0, 3),
+                'request_delay': round(request_delay, 3),
                 'total_time': round(total_time, 3)
             })
             
@@ -125,6 +127,7 @@ def generate_mandelbrot():
             flask_response.headers['X-Generate-Time'] = str(round(generate_time, 3))
             if version == 'hardware':
                 flask_response.headers['X-Image-Fetch-Time'] = str(round(img_time, 3))
+            flask_response.headers['X-Request-Delay'] = str(round(request_delay, 3))
             flask_response.headers['X-Total-Time'] = str(round(total_time, 3))
             return flask_response
         else:
@@ -203,6 +206,7 @@ def generate_julia():
             
             request_end = time.time()
             total_time = request_end - request_start
+            request_delay = total_time - computation_time
             
             # Log detailed performance metrics
             performance_log.append({
@@ -212,6 +216,7 @@ def generate_julia():
                 'computation_time': computation_time,
                 'generate_time': round(generate_time, 3),
                 'image_fetch_time': round(img_time if version == 'hardware' else 0, 3),
+                'request_delay': round(request_delay, 3),
                 'total_time': round(total_time, 3)
             })
             
@@ -221,6 +226,7 @@ def generate_julia():
             flask_response.headers['X-Generate-Time'] = str(round(generate_time, 3))
             if version == 'hardware':
                 flask_response.headers['X-Image-Fetch-Time'] = str(round(img_time, 3))
+            flask_response.headers['X-Request-Delay'] = str(round(request_delay, 3))
             flask_response.headers['X-Total-Time'] = str(round(total_time, 3))
             return flask_response
         else:
