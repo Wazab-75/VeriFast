@@ -146,9 +146,6 @@ async function generateFractal(keepPrevious = false) {
     let selectedRes = currentVersion === 'hardware' ? 
         hardwareResSelect.value : softwareResSelect.value;
     let dimensions = resolutionMap[selectedRes] || [640, 480];
-
-    const startTime = performance.now();
-    const requestStartTime = performance.now();
     
     try {
         const response = await fetch('/generate', {
@@ -166,29 +163,25 @@ async function generateFractal(keepPrevious = false) {
             })
         });
 
-        const requestEndTime = performance.now();
-        const requestDelay = (requestEndTime - requestStartTime) / 1000;
-
         if (!response.ok) throw new Error(await response.text());
         const blob = await response.blob();
         if (blob.size === 0) throw new Error('Received empty image');
 
-        const endTime = performance.now();
-        const totalTime = (endTime - startTime) / 1000;
-        const websiteDelay = totalTime - requestDelay;
+        // Get timing from server response
+        const computationTime = parseFloat(response.headers.get('X-Computation-Time') || '0');
+        const requestDelay = parseFloat(response.headers.get('X-Request-Delay') || '0');
 
         // Add to performance data
         performanceData.push({
             type: 'mandelbrot',
             version: currentVersion,
             resolution: `${dimensions[0]}x${dimensions[1]}`,
-            computation_time: parseFloat(response.headers.get('X-Computation-Time') || '0'),
-            request_delay: requestDelay,
-            website_delay: websiteDelay
+            computation_time: computationTime,
+            request_delay: requestDelay
         });
 
         // Update computation time display
-        timeDisplay.textContent = `Computation time: ${(parseFloat(response.headers.get('X-Computation-Time') || '0')).toFixed(3)}s`;
+        timeDisplay.textContent = `Computation time: ${computationTime.toFixed(3)}s`;
 
         // Update the image
         if (keepPrevious) {
@@ -246,11 +239,11 @@ async function generateJuliaFromClick(cx, cy) {
     const juliaTimeDisplay = document.getElementById('juliaComputationTime');
     
     try {
-        const startTime = performance.now();
         const response = await fetch('/generate_julia', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                version: currentVersion,
                 width: 320,
                 height: 240,
                 max_iter: parseInt(document.getElementById('iterations').value),
@@ -274,8 +267,20 @@ async function generateJuliaFromClick(cx, cy) {
         // Check again if Mandelbrot generation started while we were processing
         if (isGenerating) return;
 
-        const endTime = performance.now();
-        const computationTime = (endTime - startTime) / 1000; // Convert to seconds
+        // Get timing from server response
+        const computationTime = parseFloat(response.headers.get('X-Computation-Time') || '0');
+        const requestDelay = parseFloat(response.headers.get('X-Request-Delay') || '0');
+
+        // Add to performance data
+        performanceData.push({
+            type: 'julia',
+            version: currentVersion,
+            resolution: '320x240',
+            computation_time: computationTime,
+            request_delay: requestDelay
+        });
+
+        // Update computation time display
         juliaTimeDisplay.textContent = `Computation time: ${computationTime.toFixed(3)}s`;
 
         // Create new image element
