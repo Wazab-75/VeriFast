@@ -303,8 +303,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC0;
                     end
-                    core_start[WC7-1] <= 1'b0;
-                    core_start[WC7 + MANDEL_CORE_COUNT] <= 1'b0;
+                    if (m_or_j) core_start[7 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[7] <= 1'b0;
                 end
                 WC1: begin
                     if ((done[1]&!m_or_j) | (done[1 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -327,8 +327,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC1;
                     end
-                    core_start[waiting -1] <= 1'b0;
-                    core_start[waiting + MANDEL_CORE_COUNT-1] <= 1'b0;
+                    if (m_or_j) core_start[0 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[0] <= 1'b0;
                 end
                 WC2: begin
                     if ((done[2]&!m_or_j) | (done[2 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -351,6 +351,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC2;
                     end
+                    if (m_or_j) core_start[1 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[1] <= 1'b0;
                 end
                 WC3: begin
                     if ((done[3]&!m_or_j) | (done[3 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -373,8 +375,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC3;
                     end
-                    core_start[waiting -1] <= 1'b0;
-                    core_start[waiting + MANDEL_CORE_COUNT-1] <= 1'b0;
+                    if (m_or_j) core_start[2 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[2] <= 1'b0;
                 end
                 WC4: begin
                     if ((done[4]&!m_or_j) | (done[4 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -397,8 +399,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC4;
                     end
-                    core_start[waiting -1] <= 1'b0;
-                    core_start[waiting + MANDEL_CORE_COUNT-1] <= 1'b0;
+                    if (m_or_j) core_start[3 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[3] <= 1'b0;
                 end
                 WC5: begin
                     if ((done[5]&!m_or_j) | (done[5 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -421,8 +423,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC5;
                     end
-                    core_start[waiting -1] <= 1'b0;
-                    core_start[waiting + MANDEL_CORE_COUNT-1] <= 1'b0;
+                    if (m_or_j) core_start[4 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[4] <= 1'b0;
                 end
                 WC6: begin
                     if ((done[6]&!m_or_j) | (done[6 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -445,8 +447,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC6;
                     end
-                    core_start[waiting -1] <= 1'b0;
-                    core_start[waiting + MANDEL_CORE_COUNT-1] <= 1'b0;
+                    if (m_or_j) core_start[5 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[5] <= 1'b0;
                 end
                 WC7: begin
                     if ((done[7]&!m_or_j) | (done[7 + MANDEL_CORE_COUNT]&m_or_j)) begin
@@ -469,8 +471,8 @@ module pixel_generator(
                     else begin
                         next_waiting <= WC7;
                     end
-                    core_start[waiting -1] <= 1'b0;
-                    core_start[waiting + MANDEL_CORE_COUNT-1] <= 1'b0;
+                    if (m_or_j) core_start[6 + MANDEL_CORE_COUNT] <= 1'b0;
+                    else core_start[6] <= 1'b0;
                 end
                 PACKER_WAIT: begin
                     if (ready) begin
