@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VeriFast</title>
-    <link rel="icon" type="image/png" href="/static/logo.png">
+    <link rel="icon" type="image/svg+xml" href="/static/logo.png">
     <link rel="stylesheet" href="/static/styles.css">
     <style>
         .back-button {
@@ -88,7 +88,14 @@
         <!-- Mandelbrot Widget -->
         <div class="mandelbrot-widget">
             <div class="widget-header">
-                <div class="widget-title">Mandelbrot Set</div>
+                <div class="widget-title">
+                    <span>Mandelbrot Set</span>
+                    <button id="performanceButton" class="icon-button" title="View Performance Stats">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 14h12v-2H2v2zm0-4h12V8H2v2zm0-4h12V4H2v2z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
                 <div class="version-selector">
                     <span>Version:</span>
                     <select id="versionSelect" onchange="handleVersionChange()">
@@ -126,21 +133,39 @@
                     <label for="colorScheme">Color Palette</label>
                     <select id="colorScheme">
                         <option value="jet">Jet</option>
-                        <option value="rainbow">Rainbow</option>
-                        <option value="hsv">HSV</option>
-                        <option value="hot">Hot</option>
+                        <option value="hot">hot</option>
+                        <option value="Viridis">Viridis</option>
+                        <option value="Plasma">Plasma</option>
                     </select>
+                </div>
+
+                <div class="control-group" id="softwareResolutionGroup">
+                    <label for="softwareResolution">Software Resolution</label>
+                    <select id="softwareResolution">
+                        <option value="low">640x480</option>
+                        <option value="medium" selected>1600x1200</option>
+                        <option value="high">3200x2400</option>
+                        <option value="ultra">6400x4800</option>
+                    </select>
+                </div>
+
+                <div class="control-group" id="hardwareResolutionGroup" style="display:none;">
+                    <label for="hardwareResolution">Hardware Resolution</label>
+                    <select id="hardwareResolution">
+                        <option value="low" selected>640x480</option>
+                        <option value="medium">1600x1200</option>
+                        <option value="high">3200x2400</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Zoom Ratio</label>
+                    <div id="zoomRatio" class="value-display">1.0x</div>
                 </div>
 
                 <div class="button-container">
                     <button class="button" id="generateButton">Generate Fractal</button>
                     <button class="button" id="downloadButton" disabled>Download</button>
-                    <div class="quality-dropdown" id="qualityDropdown">
-                        <div class="quality-option" data-quality="low">Low (640x480)</div>
-                        <div class="quality-option" data-quality="medium">Medium (1280x960)</div>
-                        <div class="quality-option" data-quality="high">High (2560x1920)</div>
-                        <div class="quality-option" data-quality="ultra">Ultra (5120x3840)</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -155,10 +180,51 @@
                 </div>
             </div>
         </div>
+
+        <!-- Performance Modal -->
+        <div id="performanceModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Performance Statistics</h2>
+                    <button class="close-button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3>Mandelbrot Speed</h3>
+                            <div id="mandelbrotSpeed">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Julia Speed</h3>
+                            <div id="juliaSpeed">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Request Delay</h3>
+                            <div id="requestDelay">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Current Zoom</h3>
+                            <div id="currentZoom">1.0x</div>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Resolution</h3>
+                            <div id="currentResolution">640x480</div>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Iterations</h3>
+                            <div id="currentIterations">100</div>
+                        </div>
+                    </div>
+                    <div class="performance-history">
+                        <h3>Recent Renders</h3>
+                        <div id="renderHistory"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Pass FPGA availability to JavaScript
         const FPGA_AVAILABLE = {{ 'true' if fpga_available else 'false' }};
     </script>
     <script src="/static/script.js"></script>

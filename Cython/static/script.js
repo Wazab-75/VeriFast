@@ -5,35 +5,42 @@ const currentView = {
     center_y: 0
 };
 
-// Reset zoom to initial values
+// Function to update zoom ratio display
+function updateZoomRatio() {
+    const zoomRatio = document.getElementById('zoomRatio');
+    zoomRatio.textContent = `${currentView.zoom.toFixed(1)}x`;
+}
+
+// Add coordinate display
+const coordDisplay = document.createElement('div');
+coordDisplay.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px; border-radius: 4px; font-family: monospace;';
+document.getElementById('mandelbrotContainer').appendChild(coordDisplay);
+
+// Update coordinates on mouse move
+document.getElementById('mandelbrotImage').addEventListener('mousemove', (event) => {
+    if (!isInitialized) return;
+    const { c_real, c_imag } = getComplexFromMouse(event, event.target);
+    coordDisplay.textContent = `${c_real.toFixed(4)} + ${c_imag.toFixed(4)}i`;
+});
+
+// Clear coordinates when mouse leaves
+document.getElementById('mandelbrotImage').addEventListener('mouseleave', () => {
+    coordDisplay.textContent = '';
+});
+
+// Function to reset zoom and view to original parameters
 function resetZoom() {
     currentView.zoom = 1.0;
     currentView.center_x = -0.5;
     currentView.center_y = 0;
+    updateZoomRatio();
     generateFractal(false);
 }
 
-// Add event listener for reset button
-document.getElementById('resetZoomButton').addEventListener('click', resetZoom);
-
-// Make reset button visible only when fractal is initialized
-function updateResetButtonVisibility() {
-    const resetButton = document.getElementById('resetZoomButton');
-    resetButton.style.display = isInitialized ? 'flex' : 'none';
-}
-
-// Update reset button visibility when fractal is generated
-const originalGenerateFractal = generateFractal;
-generateFractal = async function(keepPrevious = false) {
-    const result = await originalGenerateFractal(keepPrevious);
-    updateResetButtonVisibility();
-    return result;
-};
-
 let isGenerating = false;
 let isInitialized = false;
-let lastClickTime = 0;
-let currentVersion = 'software'; // Default to software version
+
+document.getElementById('resetZoomButton').addEventListener('click', resetZoom);
 
 // Update value displays for range inputs
 document.querySelectorAll('input[type="range"]').forEach(input => {
@@ -43,6 +50,31 @@ document.querySelectorAll('input[type="range"]').forEach(input => {
     });
 });
 
+let currentVersion = 'software'; // Default to software version
+
+// Resolution selectors
+const softwareResSelect = document.getElementById('softwareResolution');
+const hardwareResSelect = document.getElementById('hardwareResolution');
+
+// Map resolutions to dimensions
+const resolutionMap = {
+    low: [640, 480],
+    medium: [1600, 1200],
+    high: [3200, 2400],
+    ultra: [6400, 4800]
+};
+
+function updateResolutionSelectorVisibility() {
+    if (currentVersion === 'hardware') {
+        softwareResSelect.parentElement.style.display = 'none';
+        hardwareResSelect.parentElement.style.display = 'inline-block';
+    } else {
+        softwareResSelect.parentElement.style.display = 'inline-block';
+        hardwareResSelect.parentElement.style.display = 'none';
+    }
+}
+
+// Handle version change
 function handleVersionChange() {
     const versionSelect = document.getElementById('versionSelect');
     const generateButton = document.getElementById('generateButton');
@@ -54,7 +86,8 @@ function handleVersionChange() {
     const juliaComputationTime = document.getElementById('juliaComputationTime');
     
     currentVersion = versionSelect.value;
-    
+    updateResolutionSelectorVisibility();
+
     // Reset images and messages
     mandelbrotImage.style.display = 'none';
     juliaImage.style.display = 'none';
@@ -63,30 +96,21 @@ function handleVersionChange() {
     computationTime.textContent = '';
     juliaComputationTime.textContent = '';
     
-    if (currentVersion === 'hardware') {
-        if (!FPGA_AVAILABLE) {
-            // Disable hardware mode if FPGA is not available
-            versionSelect.value = 'software';
-            currentVersion = 'software';
-            loadingMessage.textContent = 'FPGA not available - Hardware mode disabled';
-            return;
-        }
-        
-        // Disable iterations control in hardware mode
-        iterationsInput.disabled = true;
-        iterationsInput.value = 100; // Fixed value for hardware
-        document.querySelector('.value-display').textContent = '100';
-        
-        // Enable generate button for hardware mode
-        generateButton.disabled = false;
-        generateButton.textContent = 'Generate Fractal';
-    } else {
-        // Enable iterations control in software mode
-        iterationsInput.disabled = false;
-        generateButton.disabled = false;
-        generateButton.textContent = 'Generate Fractal';
-    }
+    if (currentVersion === 'hardware' && !FPGA_AVAILABLE) {
+        versionSelect.value = 'software';
+        currentVersion = 'software';
+        loadingMessage.textContent = 'FPGA not available - Hardware mode disabled';
+        updateResolutionSelectorVisibility();
+        return;
+    } 
+
+    // Enable iterations control in software mode
+    iterationsInput.disabled = false;
+    generateButton.disabled = false;
+    generateButton.textContent = 'Generate Fractal';
 }
+
+document.getElementById('versionSelect').addEventListener('change', handleVersionChange);
 
 // Generate Mandelbrot fractal with current parameters
 async function generateFractal(keepPrevious = false) {
@@ -105,48 +129,93 @@ async function generateFractal(keepPrevious = false) {
     if (!keepPrevious) {
         mandelbrotImg.style.display = 'none';
         loadingMessage.style.display = 'flex';
+    } else {
+        // Create a temporary image for the new view
+        const tempImg = document.createElement('img');
+        tempImg.style.position = 'absolute';
+        tempImg.style.top = '0';
+        tempImg.style.left = '0';
+        tempImg.style.width = '100%';
+        tempImg.style.height = '100%';
+        tempImg.style.opacity = '0';
+        tempImg.style.transition = 'opacity 0.1s ease-in-out';
+        mandelbrotImg.parentElement.appendChild(tempImg);
     }
 
+    // Choose resolution based on current version and selection
+    let selectedRes = currentVersion === 'hardware' ? 
+        hardwareResSelect.value : softwareResSelect.value;
+    let dimensions = resolutionMap[selectedRes] || [640, 480];
+
+    const startTime = performance.now();
+    const requestStartTime = performance.now();
+    
     try {
-        const startTime = performance.now();
         const response = await fetch('/generate', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                width: 800,
-                height: 600,
+                version: currentVersion,
+                width: dimensions[0],
+                height: dimensions[1],
                 max_iter: parseInt(document.getElementById('iterations').value),
                 zoom: currentView.zoom,
                 center_x: currentView.center_x,
                 center_y: currentView.center_y,
-                cmap: document.getElementById('colorScheme').value,
-                version: currentVersion
+                cmap: document.getElementById('colorScheme').value
             })
         });
 
-        if (!response.ok) throw new Error(await response.text());
+        const requestEndTime = performance.now();
+        const requestDelay = (requestEndTime - requestStartTime) / 1000;
 
+        if (!response.ok) throw new Error(await response.text());
         const blob = await response.blob();
         if (blob.size === 0) throw new Error('Received empty image');
 
         const endTime = performance.now();
-        const computationTime = (endTime - startTime) / 1000;
-        timeDisplay.textContent = `Computation time: ${computationTime.toFixed(3)}s`;
+        const totalTime = (endTime - startTime) / 1000;
+        const websiteDelay = totalTime - requestDelay;
 
-        // Create a new image and wait for it to load
-        const newImage = new Image();
-        newImage.onload = () => {
-            mandelbrotImg.src = newImage.src;
+        // Add to performance data
+        performanceData.push({
+            type: 'mandelbrot',
+            version: currentVersion,
+            resolution: `${dimensions[0]}x${dimensions[1]}`,
+            computation_time: parseFloat(response.headers.get('X-Computation-Time') || '0'),
+            request_delay: requestDelay,
+            website_delay: websiteDelay
+        });
+
+        // Update computation time display
+        timeDisplay.textContent = `Computation time: ${(parseFloat(response.headers.get('X-Computation-Time') || '0')).toFixed(3)}s`;
+
+        // Update the image
+        if (keepPrevious) {
+            const tempImg = mandelbrotImg.parentElement.lastElementChild;
+            tempImg.src = URL.createObjectURL(blob);
+            tempImg.onload = () => {
+                tempImg.style.opacity = '1';
+                setTimeout(() => {
+                    mandelbrotImg.src = tempImg.src;
+                    mandelbrotImg.style.display = 'block';
+                    tempImg.remove();
+                }, 300);
+            };
+        } else {
+            mandelbrotImg.src = URL.createObjectURL(blob);
             mandelbrotImg.style.display = 'block';
-            loadingMessage.style.display = 'none';
-            downloadButton.disabled = false;
-            generateButton.disabled = false;
-            isGenerating = false;
-            isInitialized = true;
-        };
-        newImage.src = URL.createObjectURL(blob);
+        }
+
+        loadingMessage.style.display = 'none';
+        downloadButton.disabled = false;
+        generateButton.disabled = false;
+        isInitialized = true;
+
+        if (modal.style.display === 'block') {
+            updatePerformanceStats();
+        }
+
     } catch (error) {
         console.error('Error:', error);
         generateButton.disabled = false;
@@ -154,14 +223,23 @@ async function generateFractal(keepPrevious = false) {
         loadingMessage.textContent = `Generation failed: ${error.message}`;
         loadingMessage.style.display = 'flex';
         timeDisplay.textContent = 'Computation failed';
+    } finally {
         isGenerating = false;
     }
 }
 
 // Generate Julia set from click coordinates
 async function generateJuliaFromClick(cx, cy) {
+    // Don't generate Julia set in hardware mode
+    if (currentVersion === 'hardware') {
+        const juliaContainer = document.getElementById('juliaContainer');
+        const juliaTimeDisplay = document.getElementById('juliaComputationTime');
+        juliaTimeDisplay.textContent = 'Julia Set not available in hardware mode';
+        return;
+    }
+
+    // If Mandelbrot is generating, don't generate Julia
     if (isGenerating) return;
-    isGenerating = true;
 
     const juliaContainer = document.getElementById('juliaContainer');
     const currentImage = juliaContainer.querySelector('img');
@@ -173,10 +251,10 @@ async function generateJuliaFromClick(cx, cy) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                width: 400,
-                height: 300,
+                width: 320,
+                height: 240,
                 max_iter: parseInt(document.getElementById('iterations').value),
-                zoom: 1.5,
+                zoom: 1.0,
                 zx: 0.0,
                 zy: 0.0,
                 center_x: cx,
@@ -185,10 +263,16 @@ async function generateJuliaFromClick(cx, cy) {
             })
         });
 
+        // If Mandelbrot generation started while we were waiting, abort Julia update
+        if (isGenerating) return;
+
         if (!response.ok) throw new Error(await response.text());
 
         const blob = await response.blob();
         if (blob.size === 0) throw new Error('Empty Julia image');
+
+        // Check again if Mandelbrot generation started while we were processing
+        if (isGenerating) return;
 
         const endTime = performance.now();
         const computationTime = (endTime - startTime) / 1000; // Convert to seconds
@@ -212,8 +296,6 @@ async function generateJuliaFromClick(cx, cy) {
     } catch (error) {
         console.error('Julia generation failed:', error);
         juliaTimeDisplay.textContent = 'Computation failed';
-    } finally {
-        isGenerating = false;
     }
 }
 
@@ -223,46 +305,82 @@ function getComplexFromMouse(event, img) {
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
 
-    const scale_x = 3.5 / currentView.zoom;
-    const scale_y = 2.0 / currentView.zoom;
+    const scale_x = 4.0 / currentView.zoom;
+    const aspect_ratio = rect.width/rect.height;
+    const scale_y = scale_x / aspect_ratio;
 
-    const c_real = currentView.center_x - scale_x / 2 + scale_x * x;
-    const c_imag = currentView.center_y - scale_y / 2 + scale_y * y;
+    let c_real, c_imag;
+
+    c_real = currentView.center_x - scale_x /2 + scale_x * x;
+    c_imag = currentView.center_y + scale_y /2 - scale_y * y;
 
     return { c_real, c_imag };
 }
 
 // Handle image click for zoom and Julia
-document.getElementById('mandelbrotImage').addEventListener('mousedown', async (event) => {
+document.getElementById('mandelbrotImage').addEventListener('click', async (event) => {
     if (isGenerating || !isInitialized) return;
     
     const img = event.target;
-    const { c_real, c_imag } = getComplexFromMouse(event, img);
+    const rect = img.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
 
-    // Update Mandelbrot zoom
+    const scale_x = 4.0 / currentView.zoom;
+    const aspect_ratio = rect.width/rect.height;
+    const scale_y = scale_x / aspect_ratio;
+
+    // Calculate the clicked point in complex coordinates
+    let c_real, c_imag;
+
+    c_real = currentView.center_x - scale_x / 2 + scale_x * x;
+    c_imag = currentView.center_y + scale_y / 2 - scale_y * y;
+
+    // Update to make clicked point the new center
     currentView.center_x = c_real;
     currentView.center_y = c_imag;
     currentView.zoom *= 3;
+    updateZoomRatio();
 
-    // Generate Mandelbrot first
-    await generateFractal(true);
+    // Start Mandelbrot generation immediately
+    const mandelbrotPromise = generateFractal(true);
     
-    // Only generate Julia if Mandelbrot generation was successful
-    if (!isGenerating) {
-        generateJuliaFromClick(c_real, c_imag);
+    // Start Julia generation in parallel if not in hardware mode
+    if (currentVersion !== 'hardware') {
+        generateJuliaFromClick(c_real, c_imag).catch(error => {
+            console.error('Julia generation failed:', error);
+        });
     }
+
+    // Wait for Mandelbrot to complete
+    await mandelbrotPromise;
 });
 
 // Live Julia on mouse move
 let debounceTimer = null;
+let lastJuliaRequest = null;
 document.getElementById('mandelbrotImage').addEventListener('mousemove', (event) => {
-    if (!isInitialized) return;
+    if (!isInitialized || currentVersion === 'hardware') return;
     
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         const img = event.target;
         const { c_real, c_imag } = getComplexFromMouse(event, img);
-        generateJuliaFromClick(c_real, c_imag);
+        
+        // Cancel any pending Julia request
+        if (lastJuliaRequest) {
+            lastJuliaRequest.abort();
+        }
+        
+        // Create new AbortController for this request
+        lastJuliaRequest = new AbortController();
+        
+        // Generate Julia set without waiting
+        generateJuliaFromClick(c_real, c_imag).catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Julia generation failed:', error);
+            }
+        });
     }, 150);
 });
 
@@ -271,194 +389,116 @@ document.getElementById('generateButton').addEventListener('click', () => genera
 
 // Handle download button
 const downloadButton = document.getElementById('downloadButton');
-const qualityDropdown = document.getElementById('qualityDropdown');
 
-downloadButton.addEventListener('click', () => {
-    qualityDropdown.classList.toggle('show');
-});
+downloadButton.addEventListener('click', async () => {
+    try {
+        const selectedRes = currentVersion === 'hardware' ? hardwareResSelect.value : softwareResSelect.value;
+        const dimensions = resolutionMap[selectedRes] || [640, 480];
 
-// Handle quality selection
-document.querySelectorAll('.quality-option').forEach(option => {
-    option.addEventListener('click', async () => {
-        const quality = option.dataset.quality;
-        const dimensions = {
-            low: [800, 600],
-            medium: [1600, 1200],
-            high: [3200, 2400],
-            ultra: [6400, 4800]
-        }[quality];
-
-        try {
-            const response = await fetch('/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    width: dimensions[0],
-                    height: dimensions[1],
-                    max_iter: parseInt(document.getElementById('iterations').value),
-                    zoom: currentView.zoom,
-                    center_x: currentView.center_x,
-                    center_y: currentView.center_y,
-                    cmap: document.getElementById('colorScheme').value
-                })
-            });
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `mandelbrot_${quality}.png`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            }
-        } catch (error) {
-            console.error('Download failed:', error);
-        }
-        qualityDropdown.classList.remove('show');
-    });
-});
-
-// Close dropdown when clicking outside
-document.addEventListener('click', (event) => {
-    if (!event.target.closest('.button-container')) {
-        qualityDropdown.classList.remove('show');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    const mandelbrotImage = document.getElementById('mandelbrotImage');
-    const juliaImage = document.getElementById('juliaImage');
-    const generateButton = document.getElementById('generateButton');
-    const qualityButton = document.getElementById('qualityButton');
-    const qualityDropdown = document.getElementById('qualityDropdown');
-    const qualityOptions = document.querySelectorAll('.quality-option');
-    const loadingMessage = document.getElementById('loadingMessage');
-    const computationTime = document.getElementById('computationTime');
-    const fpgaStatus = document.getElementById('fpgaStatus');
-
-    // Get all input elements
-    const inputs = document.querySelectorAll('input[type="range"], select');
-    let debounceTimer;
-
-    // Function to generate Mandelbrot
-    async function generateMandelbrot() {
-        try {
-            loadingMessage.style.display = 'flex';
-            computationTime.textContent = '';
-
-            const params = {
-                version: 'hardware',
-                width: 640,
-                height: 480,
+        const response = await fetch('/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                width: dimensions[0],
+                height: dimensions[1],
                 max_iter: parseInt(document.getElementById('iterations').value),
-                zoom: parseFloat(document.getElementById('zoom').value),
-                center_x: parseFloat(document.getElementById('centerX').value),
-                center_y: parseFloat(document.getElementById('centerY').value),
-                cmap: document.getElementById('colormap').value
-            };
-
-            const response = await fetch('/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(params)
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const blob = await response.blob();
-            const imageUrl = URL.createObjectURL(blob);
-            mandelbrotImage.src = imageUrl;
-            mandelbrotImage.onload = () => {
-                loadingMessage.style.display = 'none';
-                URL.revokeObjectURL(imageUrl);
-            };
-        } catch (error) {
-            console.error('Error:', error);
-            loadingMessage.textContent = 'Error generating image. Please try again.';
-        }
-    }
-
-    // Function to generate Julia
-    async function generateJulia() {
-        try {
-            const params = {
-                version: 'hardware',
-                width: 640,
-                height: 480,
-                max_iter: parseInt(document.getElementById('iterations').value),
-                zoom: parseFloat(document.getElementById('zoom').value),
-                center_x: parseFloat(document.getElementById('centerX').value),
-                center_y: parseFloat(document.getElementById('centerY').value),
-                cmap: document.getElementById('colormap').value
-            };
-
-            const response = await fetch('/generate_julia', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(params)
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const blob = await response.blob();
-            const imageUrl = URL.createObjectURL(blob);
-            juliaImage.src = imageUrl;
-            juliaImage.onload = () => {
-                URL.revokeObjectURL(imageUrl);
-            };
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    // Function to handle input changes with debounce
-    function handleInputChange() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            generateMandelbrot();
-            generateJulia();
-        }, 500); // 500ms debounce
-    }
-
-    // Add event listeners to all inputs
-    inputs.forEach(input => {
-        input.addEventListener('input', handleInputChange);
-    });
-
-    // Quality dropdown functionality
-    qualityButton.addEventListener('click', function() {
-        qualityDropdown.classList.toggle('show');
-    });
-
-    qualityOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const quality = this.getAttribute('data-quality');
-            qualityButton.textContent = this.textContent;
-            qualityDropdown.classList.remove('show');
-            handleInputChange();
+                zoom: currentView.zoom,
+                center_x: currentView.center_x,
+                center_y: currentView.center_y,
+                cmap: document.getElementById('colorScheme').value
+            })
         });
-    });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!event.target.matches('#qualityButton')) {
-            qualityDropdown.classList.remove('show');
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mandelbrot_${selectedRes}.png`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            a.remove();
         }
-    });
+    } catch (error) {
+        console.error('Download failed:', error);
+    }
+});
 
-    // Initial generation
-    generateMandelbrot();
-    generateJulia();
+// Initialize version UI on page load
+handleVersionChange();
+
+// Performance Modal Handling
+const modal = document.getElementById('performanceModal');
+const performanceButton = document.getElementById('performanceButton');
+const closeButton = document.querySelector('.close-button');
+// Store performance data
+let performanceData = [];
+
+// Function to update performance stats
+async function updatePerformanceStats() {
+    try {
+        const response = await fetch('/performance');
+        const data = await response.json();
+        performanceData = data;
+        
+        // Calculate statistics for each type
+        const mandelbrotData = data.filter(item => item.type === 'mandelbrot');
+        const juliaData = data.filter(item => item.type === 'julia');
+        
+        // Calculate averages for each type
+        const mandelbrotAvg = mandelbrotData.length > 0 ? 
+            (mandelbrotData.reduce((a, b) => a + b.computation_time, 0) / mandelbrotData.length).toFixed(3) : '-';
+        const juliaAvg = juliaData.length > 0 ? 
+            (juliaData.reduce((a, b) => a + b.computation_time, 0) / juliaData.length).toFixed(3) : '-';
+        const requestAvg = data.length > 0 ? 
+            (data.reduce((a, b) => a + b.request_delay, 0) / data.length).toFixed(3) : '-';
+        
+        // Update stats display
+        document.getElementById('mandelbrotSpeed').textContent = `${mandelbrotAvg}s`;
+        document.getElementById('juliaSpeed').textContent = `${juliaAvg}s`;
+        document.getElementById('requestDelay').textContent = `${requestAvg}s`;
+        document.getElementById('currentZoom').textContent = `${currentView.zoom.toFixed(1)}x`;
+        
+        // Get current resolution
+        const selectedRes = currentVersion === 'hardware' ? 
+            hardwareResSelect.value : softwareResSelect.value;
+        const dimensions = resolutionMap[selectedRes] || [640, 480];
+        document.getElementById('currentResolution').textContent = 
+            `${dimensions[0]}x${dimensions[1]}`;
+        
+        // Update iterations
+        document.getElementById('currentIterations').textContent = 
+            document.getElementById('iterations').value;
+        
+        // Update render history
+        const historyDiv = document.getElementById('renderHistory');
+        historyDiv.innerHTML = data.slice(-5).reverse().map(item => `
+            <div class="render-item">
+                ${item.type} (${item.version}) - ${item.resolution}<br>
+                Computation: ${item.computation_time.toFixed(3)}s<br>
+                Request Delay: ${item.request_delay.toFixed(3)}s
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error fetching performance data:', error);
+    }
+}
+
+// Show modal
+performanceButton.addEventListener('click', () => {
+    modal.style.display = 'block';
+    updatePerformanceStats();
+});
+
+// Close modal
+closeButton.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 });
