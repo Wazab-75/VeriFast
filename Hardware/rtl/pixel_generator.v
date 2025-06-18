@@ -223,6 +223,8 @@ module pixel_generator(
     
     wire [(MAX_ITER_WIDTH) * (CORE_COUNT) - 1:0] mandelbrot_iter;
     reg [CORE_COUNT-1:0] core_start;
+
+    reg [MAX_ITER_WIDTH-1:0] iter_count;
     
     // Registers from AXI-Lite
     wire signed [31:0] start_x_0 = regfile[1];
@@ -286,7 +288,7 @@ module pixel_generator(
     localparam [STATE_WIDTH-1:0] RC6 = 16;
     localparam [STATE_WIDTH-1:0] RC7 = 17;
     
-    reg [7:0] r, g, b; // rgb values to send to the packer
+    wire [7:0] r, g, b; // rgb values to send to the packer
     
     always @(posedge out_stream_aclk) begin
         if (periph_resetn) begin
@@ -298,66 +300,10 @@ module pixel_generator(
                         new_pixel <= 1'b1;
                         valid_int <= 1'b1;
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end 
-                            else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end 
-                            else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC0 * MAX_ITER_WIDTH +: 16];
                         end
                     end
                     else begin
@@ -374,65 +320,10 @@ module pixel_generator(
                         valid_int <= 1'b1;
     
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end 
-                            else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1* MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC1 * MAX_ITER_WIDTH +: 16];
                         end 
                     end
                     else begin
@@ -449,66 +340,10 @@ module pixel_generator(
                         valid_int <= 1'b1;
     
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end 
-                            else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end 
-                            else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC2 * MAX_ITER_WIDTH +: 16];
                         end 
                     end
                     else begin
@@ -524,64 +359,10 @@ module pixel_generator(
                         new_pixel <= 1'b1;
                         valid_int <= 1'b1;
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC3 * MAX_ITER_WIDTH +: 16];
                         end
                     end
                     else begin
@@ -598,65 +379,10 @@ module pixel_generator(
                         valid_int <= 1'b1;
     
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end 
-                            else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC4 * MAX_ITER_WIDTH +: 16];
                         end 
                     end
                     else begin
@@ -673,64 +399,10 @@ module pixel_generator(
                         valid_int <= 1'b1;
                         
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC5 * MAX_ITER_WIDTH +: 16];
                         end 
                     end
                     else begin
@@ -747,64 +419,10 @@ module pixel_generator(
                         valid_int <= 1'b1;
     
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC6 * MAX_ITER_WIDTH +: 16];
                         end 
                     end
                     else begin
@@ -821,64 +439,10 @@ module pixel_generator(
                         valid_int <= 1'b1;
     
                         if (m_or_j) begin // julia mode
-                            if (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH + MANDEL_CORE_COUNT * MAX_ITER_WIDTH +: 16];
                         end
                         else begin // mandelbrot mode
-                            if (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 16] == max_iter) begin
-                                r <= 0;
-                                g <= 0;
-                                b <= 0;
-                            end else begin
-                                case (colour_mode) 
-                                    2'b00: begin // blue-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                    2'b01: begin // red-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 4] << 2);
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 3];
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 6] << 1);
-                                    end
-                                    2'b10: begin // green-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 6] << 1);
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 4] << 2);
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 3];
-                                    end
-                                    default: begin // blue-based
-                                        r <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 5] << 3) ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 3];
-                                        g <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 8] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 6] << 1);
-                                        b <= (mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 7] ^ mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 4] << 2);
-                                    end
-                                endcase
-                            end
+                            iter_count <= mandelbrot_iter[WC7 * MAX_ITER_WIDTH +: 16];
                         end 
                     end
                     else begin
@@ -1072,6 +636,15 @@ module pixel_generator(
         .cy_i(cy_i), // used only for julia
         .iter_o(mandelbrot_iter),
         .done_o(done)
+    );
+
+    colourMap #(
+        .MAX_ITER_WIDTH(MAX_ITER_WIDTH)
+    ) colourMap (
+        .colour_i(colour_mode),
+        .iter_i(iter_count),
+        .max_iter_i(max_iter),
+        .r_o(r), .g_o(g), .b_o(b)
     );
     
     packer pixel_packer(    .aclk(out_stream_aclk),
