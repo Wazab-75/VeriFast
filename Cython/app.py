@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import io
 import time
 import socket
@@ -17,16 +19,49 @@ performance_log = []  # Track performance of renders
 FPGA_SERVER_URL = "https://f65b-146-179-86-172.ngrok-free.app"  # FPGA server ngrok URL
 TIMEOUT = 5  # Timeout in seconds
 
+# Configure session with connection pooling and retries
+session = requests.Session()
+retries = Retry(
+    total=3,
+    backoff_factor=0.1,
+    status_forcelist=[500, 502, 503, 504]
+)
+adapter = HTTPAdapter(
+    max_retries=retries,
+    pool_connections=100,
+    pool_maxsize=100
+)
+session.mount('https://', adapter)
+session.mount('http://', adapter)
+
+# Cache for server status
+server_status_cache = {
+    'last_check': 0,
+    'is_available': False,
+    'cache_duration': 5  # seconds
+}
+
 def check_fpga_server():
-    """Check if FPGA server is reachable"""
+    """Check if FPGA server is reachable with caching"""
+    current_time = time.time()
+    
+    # Return cached result if still valid
+    if current_time - server_status_cache['last_check'] < server_status_cache['cache_duration']:
+        return server_status_cache['is_available']
+    
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(TIMEOUT)
-        hostname = "f65b-146-179-86-172.ngrok-free.app"
-        result = sock.connect_ex((hostname, 443))  # Using port 443 for HTTPS
-        sock.close()
-        return result == 0
+        # Use session for connection pooling
+        response = session.get(f"{FPGA_SERVER_URL}/", timeout=1)
+        is_available = response.status_code == 200
+        
+        # Update cache
+        server_status_cache['last_check'] = current_time
+        server_status_cache['is_available'] = is_available
+        
+        return is_available
     except:
+        server_status_cache['last_check'] = current_time
+        server_status_cache['is_available'] = False
         return False
 
 @app.route('/')
@@ -75,13 +110,18 @@ def generate_mandelbrot():
         request_start = time.time()
         logger.info(f"Starting {version} Mandelbrot generation request")
         
-        response = requests.post(
+        # Use session for connection pooling
+        response = session.post(
             f"{FPGA_SERVER_URL}/generate", 
             json=request_data,
             timeout=TIMEOUT
         )
         
         if response.status_code == 200:
+            generate_end = time.time()
+            generate_time = generate_end - request_start
+            logger.info(f"Generate request completed in {generate_time:.3f}s")
+            
             # Parse response data
             response_data = response.json()
             computation_time = float(response_data.get('computation_time', 0))
@@ -89,7 +129,11 @@ def generate_mandelbrot():
             # Get image data based on version
             if version == 'hardware':
                 logger.info("Fetching hardware image...")
-                img_response = requests.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
+                img_start = time.time()
+                img_response = session.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
+                img_time = time.time() - img_start
+                logger.info(f"Hardware image fetch completed in {img_time:.3f}s")
+                
                 if img_response.status_code != 200:
                     return "Failed to get hardware image", 500
                 img_byte_arr = io.BytesIO(img_response.content)
@@ -98,21 +142,29 @@ def generate_mandelbrot():
                 img_byte_arr = io.BytesIO(image_data)
             
             request_end = time.time()
-            request_delay = request_end - request_start - computation_time
+            total_time = request_end - request_start
+            request_delay = total_time - computation_time
             
-            # Log performance metrics
+            # Log detailed performance metrics
             performance_log.append({
                 'type': 'mandelbrot',
                 'version': version,
                 'resolution': f"{width}x{height}",
-                'computation_time': round(computation_time, 3),
-                'request_delay': round(request_delay, 3)
+                'computation_time': computation_time,
+                'generate_time': round(generate_time, 3),
+                'image_fetch_time': round(img_time if version == 'hardware' else 0, 3),
+                'request_delay': round(request_delay, 3),
+                'total_time': round(total_time, 3)
             })
             
-            # Return image with timing headers
+            # Return image with detailed timing headers
             flask_response = send_file(img_byte_arr, mimetype='image/png')
-            flask_response.headers['X-Computation-Time'] = str(round(computation_time, 3))
+            flask_response.headers['X-Computation-Time'] = str(computation_time)
+            flask_response.headers['X-Generate-Time'] = str(round(generate_time, 3))
+            if version == 'hardware':
+                flask_response.headers['X-Image-Fetch-Time'] = str(round(img_time, 3))
             flask_response.headers['X-Request-Delay'] = str(round(request_delay, 3))
+            flask_response.headers['X-Total-Time'] = str(round(total_time, 3))
             return flask_response
         else:
             return f"Error from FPGA server: {response.text}", response.status_code
@@ -158,13 +210,18 @@ def generate_julia():
         request_start = time.time()
         logger.info(f"Starting {version} Julia generation request")
         
-        response = requests.post(
+        # Use session for connection pooling
+        response = session.post(
             f"{FPGA_SERVER_URL}/generate_julia", 
             json=request_data,
             timeout=TIMEOUT
         )
         
         if response.status_code == 200:
+            generate_end = time.time()
+            generate_time = generate_end - request_start
+            logger.info(f"Generate request completed in {generate_time:.3f}s")
+            
             # Parse response data
             response_data = response.json()
             computation_time = float(response_data.get('computation_time', 0))
@@ -172,7 +229,11 @@ def generate_julia():
             # Get image data based on version
             if version == 'hardware':
                 logger.info("Fetching hardware image...")
-                img_response = requests.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
+                img_start = time.time()
+                img_response = session.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
+                img_time = time.time() - img_start
+                logger.info(f"Hardware image fetch completed in {img_time:.3f}s")
+                
                 if img_response.status_code != 200:
                     return "Failed to get hardware image", 500
                 img_byte_arr = io.BytesIO(img_response.content)
@@ -181,21 +242,29 @@ def generate_julia():
                 img_byte_arr = io.BytesIO(image_data)
             
             request_end = time.time()
-            request_delay = request_end - request_start - computation_time
+            total_time = request_end - request_start
+            request_delay = total_time - computation_time
             
-            # Log performance metrics
+            # Log detailed performance metrics
             performance_log.append({
                 'type': 'julia',
                 'version': version,
                 'resolution': f"{width}x{height}",
-                'computation_time': round(computation_time, 3),
-                'request_delay': round(request_delay, 3)
+                'computation_time': computation_time,
+                'generate_time': round(generate_time, 3),
+                'image_fetch_time': round(img_time if version == 'hardware' else 0, 3),
+                'request_delay': round(request_delay, 3),
+                'total_time': round(total_time, 3)
             })
             
-            # Return image with timing headers
+            # Return image with detailed timing headers
             flask_response = send_file(img_byte_arr, mimetype='image/png')
-            flask_response.headers['X-Computation-Time'] = str(round(computation_time, 3))
+            flask_response.headers['X-Computation-Time'] = str(computation_time)
+            flask_response.headers['X-Generate-Time'] = str(round(generate_time, 3))
+            if version == 'hardware':
+                flask_response.headers['X-Image-Fetch-Time'] = str(round(img_time, 3))
             flask_response.headers['X-Request-Delay'] = str(round(request_delay, 3))
+            flask_response.headers['X-Total-Time'] = str(round(total_time, 3))
             return flask_response
         else:
             return f"Error from FPGA server: {response.text}", response.status_code
