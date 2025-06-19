@@ -201,15 +201,15 @@ module pixel_generator(
     parameter JULIA_CORE_COUNT = 8;
     parameter CORE_COUNT = MANDEL_CORE_COUNT + JULIA_CORE_COUNT;
     
-    wire [15:0] x_size = regfile[5][15:0];
-    wire [15:0] y_size = regfile[5][31:16];
+    //wire [15:0] x_size = regfile[5][15:0];
+    //wire [15:0] y_size = regfile[5][31:16];
     
     reg [15:0] x;
     reg [15:0] y;
     
     wire first = (x == 0) & (y==0);
-    wire lastx = (x == x_size - 1);
-    wire lasty = (y == y_size - 1);
+    wire lastx = (x == 1920 - 1);
+    wire lasty = (y == 1080 - 1);
     wire [7:0] frame = regfile[0];
     
     wire ready;

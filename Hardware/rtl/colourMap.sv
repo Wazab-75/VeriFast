@@ -36,28 +36,39 @@ module colourMap#(
             else if (max_iter_i[1] == 1) iter_scaled = iter_scaled << 6;
             else if (max_iter_i[0] == 1) iter_scaled = iter_scaled << 7;
 
-            case(colour_i)
-                2'b00: begin
-                    r_o = iter_scaled[0+:8] ^ iter_scaled[0+:6] << 1;
-                    g_o = iter_scaled[0+:7] ^ iter_scaled[0+:4] << 2;
-                    b_o = iter_scaled[0+:5] << 3 ^ iter_scaled[0+:3];
-                end
-                2'b01: begin
-                    r_o = iter_scaled[0+:7] ^ iter_scaled[0+:4] << 2;
-                    g_o = iter_scaled[0+:5] << 3 ^ iter_scaled[0+:3];
-                    b_o = iter_scaled[0+:8] ^ iter_scaled[0+:6] << 1;
-                end
-                2'b10: begin
-                    r_o = iter_scaled[0+:8] ^ iter_scaled[0+:6] << 1;
-                    g_o = iter_scaled[0+:7] ^ iter_scaled[0+:4] << 2;
-                    b_o = iter_scaled[0+:5] << 3 ^ iter_scaled[0+:3];
-                end
-                default: begin
-                    r_o = iter_scaled[0+:5] << 3 ^ iter_scaled[0+:3];
-                    g_o = iter_scaled[0+:8] ^ iter_scaled[0+:6] << 1;
-                    b_o = iter_scaled[0+:7] ^ iter_scaled[0+:4] << 2;
-                end
-            endcase
+            if (iter_i == max_iter_i) begin
+                r_o = 0;
+                g_o = 0;
+                b_o = 0;
+            end
+            else begin
+                case(colour_i)
+                    2'b00: begin
+                        r_o = iter_scaled[7:0];
+                        g_o = iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'h3C) b_o = 8'h3C - iter_scaled[7:0];
+                        else b_o = 8'h00;
+                    end
+                    2'b01: begin
+                        r_o = iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'h3C) g_o = 8'h3C - iter_scaled[7:0];
+                        else g_o = 8'h00;
+                        b_o = iter_scaled[7:0];
+                    end
+                    2'b10: begin
+                        if (iter_scaled[7:0] <= 8'h3C) r_o = 8'h3C - iter_scaled[7:0];
+                        else r_o = 8'h00;
+                        g_o = iter_scaled[7:0];
+                        b_o = iter_scaled[7:0];
+                    end
+                    default: begin
+                        r_o = iter_scaled[7:0];
+                        g_o = iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'h3C) b_o = 8'h3C - iter_scaled[7:0];
+                        else b_o = 8'h00;                  
+                    end
+                endcase
+            end
         end
     end
 endmodule
