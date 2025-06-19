@@ -128,8 +128,19 @@ def generate_mandelbrot():
             generation_time_backend = float(response_data.get('generation_time', 0))
             
             # Get image data based on version
-            image_data = base64.b64decode(response_data['image'])
-            img_byte_arr = io.BytesIO(image_data)
+            if version == 'hardware':
+                logger.info("Fetching hardware image...")
+                img_start = time.time()
+                img_response = session.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
+                img_time = time.time() - img_start
+                logger.info(f"Hardware image fetch completed in {img_time:.3f}s")
+                
+                if img_response.status_code != 200:
+                    return "Failed to get hardware image", 500
+                img_byte_arr = io.BytesIO(img_response.content)
+            else:
+                image_data = base64.b64decode(response_data['image'])
+                img_byte_arr = io.BytesIO(image_data)
             
             request_end = time.time()
             total_time = request_end - request_start
@@ -250,8 +261,19 @@ def generate_julia():
             generation_time_backend = float(response_data.get('generation_time', 0))
             
             # Get image data based on version
-            image_data = base64.b64decode(response_data['image'])
-            img_byte_arr = io.BytesIO(image_data)
+            if version == 'hardware':
+                logger.info("Fetching hardware image...")
+                img_start = time.time()
+                img_response = session.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
+                img_time = time.time() - img_start
+                logger.info(f"Hardware image fetch completed in {img_time:.3f}s")
+                
+                if img_response.status_code != 200:
+                    return "Failed to get hardware image", 500
+                img_byte_arr = io.BytesIO(img_response.content)
+            else:
+                image_data = base64.b64decode(response_data['image'])
+                img_byte_arr = io.BytesIO(image_data)
             
             request_end = time.time()
             total_time = request_end - request_start
