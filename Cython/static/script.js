@@ -59,7 +59,7 @@ const hardwareResSelect = document.getElementById('hardwareResolution');
 // Map resolutions to dimensions
 const resolutionMap = {
     low: [640, 480],
-    medium: [1600, 1200],
+    medium: [1024, 768],
     high: [3200, 2400],
     ultra: [6400, 4800]
 };
@@ -230,14 +230,6 @@ async function generateFractal(keepPrevious = false) {
 
 // Generate Julia set from click coordinates
 async function generateJuliaFromClick(cx, cy) {
-    // Don't generate Julia set in hardware mode
-    if (currentVersion === 'hardware') {
-        const juliaContainer = document.getElementById('juliaContainer');
-        const juliaTimeDisplay = document.getElementById('juliaComputationTime');
-        juliaTimeDisplay.textContent = 'Julia Set not available in hardware mode';
-        return;
-    }
-
     // If Mandelbrot is generating, don't generate Julia
     if (isGenerating) return;
 
@@ -251,12 +243,13 @@ async function generateJuliaFromClick(cx, cy) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                width: 320,
-                height: 240,
+                version: currentVersion,
+                width: 640,
+                height: 480,
                 max_iter: parseInt(document.getElementById('iterations').value),
                 zoom: 1.0,
-                zx: 0.0,
-                zy: 0.0,
+                zx: 1.5,
+                zy: 2.0,
                 center_x: cx,
                 center_y: cy,
                 cmap: document.getElementById('colorScheme').value
@@ -345,12 +338,10 @@ document.getElementById('mandelbrotImage').addEventListener('click', async (even
     // Start Mandelbrot generation immediately
     const mandelbrotPromise = generateFractal(true);
     
-    // Start Julia generation in parallel if not in hardware mode
-    if (currentVersion !== 'hardware') {
-        generateJuliaFromClick(c_real, c_imag).catch(error => {
-            console.error('Julia generation failed:', error);
-        });
-    }
+    generateJuliaFromClick(c_real, c_imag).catch(error => {
+        console.error('Julia generation failed:', error);
+    });
+
 
     // Wait for Mandelbrot to complete
     await mandelbrotPromise;
@@ -360,7 +351,7 @@ document.getElementById('mandelbrotImage').addEventListener('click', async (even
 let debounceTimer = null;
 let lastJuliaRequest = null;
 document.getElementById('mandelbrotImage').addEventListener('mousemove', (event) => {
-    if (!isInitialized || currentVersion === 'hardware') return;
+    if (!isInitialized) return;
     
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {

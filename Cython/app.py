@@ -153,19 +153,56 @@ def generate_julia():
 
         # Prepare request parameters
         version = data.get('version', 'software')
-        width = data.get('width', 320)
-        height = data.get('height', 240)
-        
-        request_data = {
-            "version": version,
-            "width": width,
-            "height": height,
-            "max_iter": data.get('max_iter', 300),
-            "zoom": data.get('zoom', 1.0),
-            "center_x": data.get('center_x', -0.7),
-            "center_y": data.get('center_y', 0.0),
-            "cmap": data.get('cmap', 'hot')
-        }
+
+        if version == 'hardware':
+            width = data.get('width', 640)
+            height = data.get('height', 480)
+            center_x = data.get('center_x', -0.5)
+            center_y = data.get('center_y', 0.0)
+            zoom = data.get('zoom', 1.0)
+            scale_x = 4.0 / zoom
+            scale_y = 3.0 / zoom
+            top_x = center_x - scale_x / 2
+            top_y = center_y + scale_y / 2
+
+            request_data = {
+                "version": version,
+                "width": width,
+                "height": height,
+                "max_iter": data.get('max_iter', 300),
+                "zoom": zoom,
+                "top_x": top_x,
+                "top_y": top_y,
+                "center_x": center_x,
+                "center_y": center_y,
+                "cmap": data.get('cmap', 'hot')
+            }
+
+        else:  # software
+            width = data.get('width', 320)
+            height = data.get('height', 240)
+            center_x = data.get('center_x', -0.5)
+            center_y = data.get('center_y', 0.0)
+            zoom = data.get('zoom', 1.0)
+            scale_x = 4.0 / zoom
+            scale_y = 3.0 / zoom
+            top_x = 0
+            top_y = 0
+
+            request_data = {
+                "version": version,
+                "width": width,
+                "height": height,
+                "max_iter": data.get('max_iter', 300),
+                "zoom": data.get('zoom', 1.0),
+                "top_x": top_x,
+                "top_y": top_y,
+                "center_x": data.get('center_x', -0.7),
+                "center_y": data.get('center_y', 0.0),
+                "cmap": data.get('cmap', 'hot')
+            }
+
+
 
         # Send request to FPGA server
         request_start = time.time()
