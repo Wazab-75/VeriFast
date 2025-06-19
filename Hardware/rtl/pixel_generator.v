@@ -208,8 +208,8 @@ module pixel_generator(
     reg [15:0] y;
     
     wire first = (x == 0) & (y==0);
-    wire lastx = (x == 1920 - 1);
-    wire lasty = (y == 1080 - 1);
+    wire lastx = (x == 1080 - 1);
+    wire lasty = (y == 810 - 1);
     wire [7:0] frame = regfile[0];
     
     wire ready;

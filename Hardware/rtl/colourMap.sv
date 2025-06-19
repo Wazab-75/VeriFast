@@ -46,17 +46,17 @@ module colourMap#(
                     2'b00: begin
                         r_o = iter_scaled[7:0];
                         g_o = iter_scaled[7:0];
-                        if (iter_scaled[7:0] <= 8'h3C) b_o = 8'h3C - iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'hC8) b_o = 8'hC8 - (iter_scaled[7:0] << 2);
                         else b_o = 8'h00;
                     end
                     2'b01: begin
                         r_o = iter_scaled[7:0];
-                        if (iter_scaled[7:0] <= 8'h3C) g_o = 8'h3C - iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'hC8) g_o = 8'hC8 - (iter_scaled[7:0] << 2);
                         else g_o = 8'h00;
                         b_o = iter_scaled[7:0];
                     end
                     2'b10: begin
-                        if (iter_scaled[7:0] <= 8'h3C) r_o = 8'h3C - iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'hC8) r_o = 8'hC8 - (iter_scaled[7:0] << 2);
                         else r_o = 8'h00;
                         g_o = iter_scaled[7:0];
                         b_o = iter_scaled[7:0];
@@ -64,7 +64,7 @@ module colourMap#(
                     default: begin
                         r_o = iter_scaled[7:0];
                         g_o = iter_scaled[7:0];
-                        if (iter_scaled[7:0] <= 8'h3C) b_o = 8'h3C - iter_scaled[7:0];
+                        if (iter_scaled[7:0] <= 8'hC8) b_o = 8'hC8 - (iter_scaled[7:0] << 2);
                         else b_o = 8'h00;                  
                     end
                 endcase
