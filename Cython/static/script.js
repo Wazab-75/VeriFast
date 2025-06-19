@@ -59,7 +59,7 @@ const hardwareResSelect = document.getElementById('hardwareResolution');
 // Map resolutions to dimensions
 const resolutionMap = {
     low: [640, 480],
-    medium: [1600, 1200],
+    medium: [1024, 768],
     high: [3200, 2400],
     ultra: [6400, 4800]
 };
@@ -146,6 +146,9 @@ async function generateFractal(keepPrevious = false) {
     let selectedRes = currentVersion === 'hardware' ? 
         hardwareResSelect.value : softwareResSelect.value;
     let dimensions = resolutionMap[selectedRes] || [640, 480];
+
+    const startTime = performance.now();
+    const requestStartTime = performance.now();
     
     try {
         const response = await fetch('/generate', {
@@ -163,25 +166,29 @@ async function generateFractal(keepPrevious = false) {
             })
         });
 
+        const requestEndTime = performance.now();
+        const requestDelay = (requestEndTime - requestStartTime) / 1000;
+
         if (!response.ok) throw new Error(await response.text());
         const blob = await response.blob();
         if (blob.size === 0) throw new Error('Received empty image');
 
-        // Get timing from server response
-        const computationTime = parseFloat(response.headers.get('X-Computation-Time') || '0');
-        const requestDelay = parseFloat(response.headers.get('X-Request-Delay') || '0');
+        const endTime = performance.now();
+        const totalTime = (endTime - startTime) / 1000;
+        const websiteDelay = totalTime - requestDelay;
 
         // Add to performance data
         performanceData.push({
             type: 'mandelbrot',
             version: currentVersion,
             resolution: `${dimensions[0]}x${dimensions[1]}`,
-            computation_time: computationTime,
-            request_delay: requestDelay
+            computation_time: parseFloat(response.headers.get('X-Computation-Time') || '0'),
+            request_delay: requestDelay,
+            website_delay: websiteDelay
         });
 
         // Update computation time display
-        timeDisplay.textContent = `Computation time: ${computationTime.toFixed(3)}s`;
+        timeDisplay.textContent = `Computation time: ${(parseFloat(response.headers.get('X-Computation-Time') || '0')).toFixed(3)}s`;
 
         // Update the image
         if (keepPrevious) {
@@ -223,14 +230,6 @@ async function generateFractal(keepPrevious = false) {
 
 // Generate Julia set from click coordinates
 async function generateJuliaFromClick(cx, cy) {
-    // Don't generate Julia set in hardware mode
-    if (currentVersion === 'hardware') {
-        const juliaContainer = document.getElementById('juliaContainer');
-        const juliaTimeDisplay = document.getElementById('juliaComputationTime');
-        juliaTimeDisplay.textContent = 'Julia Set not available in hardware mode';
-        return;
-    }
-
     // If Mandelbrot is generating, don't generate Julia
     if (isGenerating) return;
 
@@ -239,17 +238,18 @@ async function generateJuliaFromClick(cx, cy) {
     const juliaTimeDisplay = document.getElementById('juliaComputationTime');
     
     try {
+        const startTime = performance.now();
         const response = await fetch('/generate_julia', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 version: currentVersion,
-                width: 320,
-                height: 240,
+                width: 640,
+                height: 480,
                 max_iter: parseInt(document.getElementById('iterations').value),
                 zoom: 1.0,
-                zx: 0.0,
-                zy: 0.0,
+                zx: 1.5,
+                zy: 2.0,
                 center_x: cx,
                 center_y: cy,
                 cmap: document.getElementById('colorScheme').value
@@ -267,17 +267,19 @@ async function generateJuliaFromClick(cx, cy) {
         // Check again if Mandelbrot generation started while we were processing
         if (isGenerating) return;
 
-        // Get timing from server response
+        // Get timing from server response headers
         const computationTime = parseFloat(response.headers.get('X-Computation-Time') || '0');
         const requestDelay = parseFloat(response.headers.get('X-Request-Delay') || '0');
+        const totalTime = parseFloat(response.headers.get('X-Total-Time') || '0');
 
         // Add to performance data
         performanceData.push({
             type: 'julia',
             version: currentVersion,
-            resolution: '320x240',
+            resolution: '640x480',
             computation_time: computationTime,
-            request_delay: requestDelay
+            request_delay: requestDelay,
+            total_time: totalTime
         });
 
         // Update computation time display
@@ -350,12 +352,10 @@ document.getElementById('mandelbrotImage').addEventListener('click', async (even
     // Start Mandelbrot generation immediately
     const mandelbrotPromise = generateFractal(true);
     
-    // Start Julia generation in parallel if not in hardware mode
-    if (currentVersion !== 'hardware') {
-        generateJuliaFromClick(c_real, c_imag).catch(error => {
-            console.error('Julia generation failed:', error);
-        });
-    }
+    generateJuliaFromClick(c_real, c_imag).catch(error => {
+        console.error('Julia generation failed:', error);
+    });
+
 
     // Wait for Mandelbrot to complete
     await mandelbrotPromise;
@@ -365,7 +365,7 @@ document.getElementById('mandelbrotImage').addEventListener('click', async (even
 let debounceTimer = null;
 let lastJuliaRequest = null;
 document.getElementById('mandelbrotImage').addEventListener('mousemove', (event) => {
-    if (!isInitialized || currentVersion === 'hardware') return;
+    if (!isInitialized) return;
     
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
@@ -432,6 +432,62 @@ downloadButton.addEventListener('click', async () => {
 
 // Initialize version UI on page load
 handleVersionChange();
+
+// Add click-to-edit functionality for iterations
+document.getElementById('iterationsDisplay').addEventListener('click', function() {
+    const currentValue = this.textContent;
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '1';
+    input.max = '65000';
+    input.value = currentValue;
+    input.style.cssText = `
+        width: 60px;
+        background: var(--primary);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: var(--text);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: inherit;
+        font-family: inherit;
+        outline: none;
+    `;
+    
+    // Replace the display with input
+    this.style.display = 'none';
+    this.parentNode.insertBefore(input, this);
+    input.focus();
+    input.select();
+    
+    // Handle input events
+    const handleInput = () => {
+        let value = parseInt(input.value);
+        if (isNaN(value) || value < 1) value = 1;
+        if (value > 65000) value = 65000;
+        
+        // Update slider and display
+        document.getElementById('iterations').value = value;
+        this.textContent = value;
+        
+        // Remove input and show display
+        input.remove();
+        this.style.display = 'block';
+    };
+    
+    input.addEventListener('blur', handleInput);
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            handleInput();
+        }
+    });
+    
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            input.remove();
+            this.style.display = 'block';
+        }
+    });
+});
 
 // Performance Modal Handling
 const modal = document.getElementById('performanceModal');

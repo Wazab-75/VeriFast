@@ -17,7 +17,7 @@ performance_log = []  # Track performance of renders
 
 # FPGA server configuration
 FPGA_SERVER_URL = "https://f65b-146-179-86-172.ngrok-free.app"  # FPGA server ngrok URL
-TIMEOUT = 5  # Timeout in seconds
+TIMEOUT = 7  # Timeout in seconds
 
 # Configure session with connection pooling and retries
 session = requests.Session()
@@ -125,25 +125,15 @@ def generate_mandelbrot():
             # Parse response data
             response_data = response.json()
             computation_time = float(response_data.get('computation_time', 0))
+            generation_time_backend = float(response_data.get('generation_time', 0))
             
             # Get image data based on version
-            if version == 'hardware':
-                logger.info("Fetching hardware image...")
-                img_start = time.time()
-                img_response = session.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
-                img_time = time.time() - img_start
-                logger.info(f"Hardware image fetch completed in {img_time:.3f}s")
-                
-                if img_response.status_code != 200:
-                    return "Failed to get hardware image", 500
-                img_byte_arr = io.BytesIO(img_response.content)
-            else:
-                image_data = base64.b64decode(response_data['image'])
-                img_byte_arr = io.BytesIO(image_data)
+            image_data = base64.b64decode(response_data['image'])
+            img_byte_arr = io.BytesIO(image_data)
             
             request_end = time.time()
             total_time = request_end - request_start
-            request_delay = total_time - computation_time
+            request_delay = total_time - generation_time_backend
             
             # Log detailed performance metrics
             performance_log.append({
@@ -151,8 +141,7 @@ def generate_mandelbrot():
                 'version': version,
                 'resolution': f"{width}x{height}",
                 'computation_time': computation_time,
-                'generate_time': round(generate_time, 3),
-                'image_fetch_time': round(img_time if version == 'hardware' else 0, 3),
+                'generation_time_backend': round(generation_time_backend, 3),
                 'request_delay': round(request_delay, 3),
                 'total_time': round(total_time, 3)
             })
@@ -160,9 +149,7 @@ def generate_mandelbrot():
             # Return image with detailed timing headers
             flask_response = send_file(img_byte_arr, mimetype='image/png')
             flask_response.headers['X-Computation-Time'] = str(computation_time)
-            flask_response.headers['X-Generate-Time'] = str(round(generate_time, 3))
-            if version == 'hardware':
-                flask_response.headers['X-Image-Fetch-Time'] = str(round(img_time, 3))
+            flask_response.headers['X-Generation-Time-Backend'] = str(round(generation_time_backend, 3))
             flask_response.headers['X-Request-Delay'] = str(round(request_delay, 3))
             flask_response.headers['X-Total-Time'] = str(round(total_time, 3))
             return flask_response
@@ -192,19 +179,54 @@ def generate_julia():
 
         # Prepare request parameters
         version = data.get('version', 'software')
-        width = data.get('width', 320)
-        height = data.get('height', 240)
-        
-        request_data = {
-            "version": version,
-            "width": width,
-            "height": height,
-            "max_iter": data.get('max_iter', 300),
-            "zoom": data.get('zoom', 1.0),
-            "center_x": data.get('center_x', -0.7),
-            "center_y": data.get('center_y', 0.0),
-            "cmap": data.get('cmap', 'hot')
-        }
+
+        if version == 'hardware':
+            width = data.get('width', 640)
+            height = data.get('height', 480)
+            center_x = data.get('center_x', -0.5)
+            center_y = data.get('center_y', 0.0)
+            zoom = data.get('zoom', 1.0)
+            scale_x = 4.0 / zoom
+            scale_y = 3.0 / zoom
+            top_x = center_x - scale_x / 2
+            top_y = center_y + scale_y / 2
+
+            request_data = {
+                "version": version,
+                "width": width,
+                "height": height,
+                "max_iter": data.get('max_iter', 300),
+                "zoom": zoom,
+                "top_x": top_x,
+                "top_y": top_y,
+                "center_x": center_x,
+                "center_y": center_y,
+                "cmap": data.get('cmap', 'hot')
+            }
+
+        else:  # software
+            width = data.get('width', 320)
+            height = data.get('height', 240)
+            center_x = data.get('center_x', -0.5)
+            center_y = data.get('center_y', 0.0)
+            zoom = data.get('zoom', 1.0)
+            scale_x = 4.0 / zoom
+            scale_y = 3.0 / zoom
+            top_x = 0
+            top_y = 0
+
+            request_data = {
+                "version": version,
+                "width": width,
+                "height": height,
+                "max_iter": data.get('max_iter', 300),
+                "zoom": data.get('zoom', 1.0),
+                "top_x": top_x,
+                "top_y": top_y,
+                "center_x": data.get('center_x', -0.7),
+                "center_y": data.get('center_y', 0.0),
+                "cmap": data.get('cmap', 'hot')
+            }
 
         # Send request to FPGA server
         request_start = time.time()
@@ -225,25 +247,15 @@ def generate_julia():
             # Parse response data
             response_data = response.json()
             computation_time = float(response_data.get('computation_time', 0))
+            generation_time_backend = float(response_data.get('generation_time', 0))
             
             # Get image data based on version
-            if version == 'hardware':
-                logger.info("Fetching hardware image...")
-                img_start = time.time()
-                img_response = session.get(f"{FPGA_SERVER_URL}/debug_hw_frame", timeout=TIMEOUT)
-                img_time = time.time() - img_start
-                logger.info(f"Hardware image fetch completed in {img_time:.3f}s")
-                
-                if img_response.status_code != 200:
-                    return "Failed to get hardware image", 500
-                img_byte_arr = io.BytesIO(img_response.content)
-            else:
-                image_data = base64.b64decode(response_data['image'])
-                img_byte_arr = io.BytesIO(image_data)
+            image_data = base64.b64decode(response_data['image'])
+            img_byte_arr = io.BytesIO(image_data)
             
             request_end = time.time()
             total_time = request_end - request_start
-            request_delay = total_time - computation_time
+            request_delay = total_time - generation_time_backend
             
             # Log detailed performance metrics
             performance_log.append({
@@ -251,8 +263,7 @@ def generate_julia():
                 'version': version,
                 'resolution': f"{width}x{height}",
                 'computation_time': computation_time,
-                'generate_time': round(generate_time, 3),
-                'image_fetch_time': round(img_time if version == 'hardware' else 0, 3),
+                'generation_time_backend': round(generation_time_backend, 3),
                 'request_delay': round(request_delay, 3),
                 'total_time': round(total_time, 3)
             })
@@ -260,9 +271,7 @@ def generate_julia():
             # Return image with detailed timing headers
             flask_response = send_file(img_byte_arr, mimetype='image/png')
             flask_response.headers['X-Computation-Time'] = str(computation_time)
-            flask_response.headers['X-Generate-Time'] = str(round(generate_time, 3))
-            if version == 'hardware':
-                flask_response.headers['X-Image-Fetch-Time'] = str(round(img_time, 3))
+            flask_response.headers['X-Generation-Time-Backend'] = str(round(generation_time_backend, 3))
             flask_response.headers['X-Request-Delay'] = str(round(request_delay, 3))
             flask_response.headers['X-Total-Time'] = str(round(total_time, 3))
             return flask_response
